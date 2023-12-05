@@ -1,5 +1,7 @@
 package ipca.utility.bookinghousesapp
 
+import org.json.JSONObject
+
 data class House(
     var id_house : Int,
     var name : String,
@@ -13,5 +15,28 @@ data class House(
     var codDoor: Int?,
     var sharedRoom: Boolean,
     var localidade : String,
-    var stars : Int
-)
+    var stars : Double
+){
+
+    companion object{
+        fun fromJson(jsonObject: JSONObject) : House {
+            return House(
+                jsonObject["id_house"         ] as Int,
+                jsonObject["name"       ] as String,
+                jsonObject["doorNumber"        ] as Int,
+                jsonObject["floorNumber"  ] as Int,
+                jsonObject["price"  ] as Double,
+                jsonObject["priceyear"  ] as Double,
+                jsonObject["guestsNumber"  ] as Int,
+                jsonObject["road"  ] as String,
+                jsonObject["propertyAssessment"  ] as String,
+                jsonObject["codDoor"  ] as Int,
+                jsonObject["sharedRoom"  ] as Boolean,
+                jsonObject["localidade"  ] as String,
+                jsonObject["stars"  ] as Double,
+
+            )
+        }
+    }
+
+}
