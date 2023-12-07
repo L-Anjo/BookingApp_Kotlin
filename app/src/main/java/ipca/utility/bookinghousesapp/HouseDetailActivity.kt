@@ -11,15 +11,18 @@ import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
 class HouseDetailActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityHousedetailBinding
-    var feedback = arrayListOf<Feedback>()
+    var feedback = arrayListOf<Feedback>(
+        Feedback(2,4,"Muito Bom"),
+        Feedback(3,3,"Muito Bom"),
+        Feedback(4,5,"Muito Bom"),
+    )
     val feedbackAdapter = FeedbackAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHousedetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        feedback.add(Feedback(1,4,"Muito Bom"))
-        feedback.add(Feedback(2,4,"Muito Bom"))
+
         binding.listViewFeebackDetails.adapter = feedbackAdapter
     }
 
