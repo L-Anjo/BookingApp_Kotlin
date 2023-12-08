@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
             rootView.findViewById<TextView>(R.id.textViewName).text = houses[position].name
             rootView.findViewById<TextView>(R.id.textViewGuests).text = houses[position].guestsNumber.toString()
             rootView.findViewById<TextView>(R.id.textViewLocalidade).text = houses[position].localidade
-            rootView.findViewById<TextView>(R.id.textViewStars).text = houses[position].stars.toString()
 
             return rootView
         }

@@ -9,12 +9,12 @@ import org.json.JSONArray
 
 object Backend {
 
-    private const val BASE_API = "http://localhost:7227/api/"
-    private const val PATH_HOUSES = "House"
+    private const val BASE_API = "http://10.0.2.2:7105/api/"
+    private const val PATH_HOUSES = "House/1"
 
     private val client = OkHttpClient()
 
-    fun fetchHouses(lifecycleScope: LifecycleCoroutineScope, callback:(ArrayList<House> )->Unit ) {
+    fun fetchHouseDetail(lifecycleScope: LifecycleCoroutineScope, callback:(House)->Unit ) {
         lifecycleScope.launch(Dispatchers.IO) {
 
             val request = Request.Builder()
@@ -25,17 +25,15 @@ object Backend {
                 val result = response.body!!.string()
 
                 val jsonArray = JSONArray(result)
-                val houses = arrayListOf<House>()
-                for (index in 0..jsonArray.length()-1){
-                    val jsonHouse = jsonArray.getJSONObject(index)
+                if (jsonArray.length() > 0) {
 
+                    val jsonHouse = jsonArray.getJSONObject(0)
                     val house = House.fromJson(jsonHouse)
-                    houses.add(house)
 
-                }
 
                 lifecycleScope.launch(Dispatchers.Main) {
-                    callback(houses)
+                    callback(house)
+                }
                 }
             }
         }

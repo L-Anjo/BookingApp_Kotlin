@@ -444,7 +444,23 @@
                 <ListView
                     android:id="@+id/listViewFeebackDetails"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent">
+
+                </ListView>
+
+                <TextView
+                    android:id="@+id/textViewFBDetailbuged"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_weight="1"
+                    android:text="Comentários:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
             </LinearLayout>
 
         </LinearLayout>

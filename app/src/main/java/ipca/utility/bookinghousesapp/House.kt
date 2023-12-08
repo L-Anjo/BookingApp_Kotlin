@@ -14,8 +14,7 @@ data class House(
     var propertyAssessment: String,
     var codDoor: Int?,
     var sharedRoom: Boolean,
-    var localidade : String,
-    var stars : Double
+    var localidade : String
 ){
 
     companion object{
@@ -32,8 +31,7 @@ data class House(
                 jsonObject["propertyAssessment"  ] as String,
                 jsonObject["codDoor"  ] as Int,
                 jsonObject["sharedRoom"  ] as Boolean,
-                jsonObject["localidade"  ] as String,
-                jsonObject["stars"  ] as Double,
+                jsonObject["localidade"  ] as String
 
             )
         }
