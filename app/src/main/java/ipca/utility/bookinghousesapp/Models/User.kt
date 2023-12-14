@@ -1,4 +1,4 @@
-package ipca.utility.bookinghousesapp
+package ipca.utility.bookinghousesapp.Models
 
 data class User (
     var id_user : Int,

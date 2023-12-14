@@ -1,6 +1,5 @@
 package ipca.utility.bookinghousesapp
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,9 +9,13 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import ipca.utility.bookinghousesapp.Models.Feedback
 import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
 
@@ -27,16 +30,21 @@ class HouseDetailActivity : AppCompatActivity() {
     )
     val feedbackAdapter = FeedbackAdapter()
 
-    val imageList = listOf(R.drawable.baseline_house_24,R.drawable.baseline_person_outline_24)
+    var imageList = listOf(R.drawable.baseline_house_24,R.drawable.baseline_person_outline_24,R.drawable.test)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHousedetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.listViewFeebackDetails.adapter = feedbackAdapter
 
-        val viewPager: ViewPager = binding.viewPager
-        val PagerAdapter = ImagePagerAdapter(imageList)
-        viewPager.adapter = PagerAdapter
+        val viewPager: ViewPager2 = binding.viewPager
+        val tabLayout: TabLayout = binding.tabLayout
+        val pagerAdapter = ImagePagerAdapter(imageList, this)
+        viewPager.adapter = pagerAdapter
+
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = "Tab ${position + 1}"
+        }.attach()
 
         Backend.fetchHouseDetail(lifecycleScope) { house,postalCode,imageListt ->
             house?.let {
@@ -92,29 +100,28 @@ class HouseDetailActivity : AppCompatActivity() {
 
     }
 
-    inner class ImagePagerAdapter(private val images: List<Int>) : PagerAdapter() {
+    inner class ImagePagerAdapter(private val images: List<Int>, activity: AppCompatActivity) :
+        FragmentStateAdapter(activity) {
 
-        override fun getCount(): Int {
-            return images.size
-        }
+        override fun getItemCount(): Int = images.size
 
-        override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val view = inflater.inflate(R.layout.image_view_carrousel, container, false)
-
-            val imageView = view.findViewById<ImageView>(R.id.idIVImage)
-            imageView.setImageResource(images[position])
-
-            container.addView(view)
-            return view
-        }
-
-        override fun isViewFromObject(view: View, obj: Any): Boolean {
-            return view == obj
-        }
-
-        override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {
-            container.removeView(obj as View)
+        override fun createFragment(position: Int): Fragment {
+            return ImageFragment(images[position])
         }
     }
+
+       class ImageFragment(private val imageResId: Int) : Fragment() {
+
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View? {
+            val view = inflater.inflate(R.layout.image_view_carrousel, container, false)
+            val imageView = view.findViewById<ImageView>(R.id.idIVImage)
+            imageView.setImageResource(imageResId)
+            return view
+        }
+    }
+
 }

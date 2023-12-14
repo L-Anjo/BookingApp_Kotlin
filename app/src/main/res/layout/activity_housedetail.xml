@@ -27,45 +27,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/imageHouse"
-                    android:layout_width="0dp"
-                    android:layout_height="250dp"
-                    android:scaleType="centerCrop"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-                    app:srcCompat="@drawable/_77b4fc1_a3ff_4d70_b9bb_c06f5363be07"
-                    tools:visibility="invisible" />
 
-                <androidx.viewpager.widget.ViewPager
+                <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPager"
                     android:layout_width="0dp"
                     android:layout_height="250dp"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:layout_margin="10dp"
+                    android:layout_margin="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+                </androidx.viewpager2.widget.ViewPager2>
 
-                <Button
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:minHeight="?attr/actionBarSize"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+                <ImageButton
                     android:id="@+id/buttonBack"
                     style="@style/Widget.Material3.Button.TextButton.Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:icon="@drawable/icons8_back_to_50"
-                    app:iconGravity="start"
-                    app:iconPadding="0dp"
-                    app:iconSize="50dp"
-                    app:iconTint="#000000"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/icons8_back_to_50"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="Voltar" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,4 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "BookingHousesApp"
 include(":app")
+//include(kotlin-client)
  
