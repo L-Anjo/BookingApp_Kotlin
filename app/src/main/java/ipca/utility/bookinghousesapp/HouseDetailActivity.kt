@@ -28,7 +28,7 @@ class HouseDetailActivity : AppCompatActivity() {
         Backend.fetchHouseDetail(lifecycleScope) { house ->
             house?.let {
                 binding.textViewNameDetail.text = it.name
-                binding.textViewLocationDetail.text = it.localidade
+                binding.textViewLocationDetail.text = it.postalCode
                 binding.textViewGuestsDetail.text = it.guestsNumber.toString()
                 binding.textViewAndarDetailD.text = it.floorNumber.toString()
                 binding.textViewNMaximoPessoasDetail.text = it.guestsNumber.toString()

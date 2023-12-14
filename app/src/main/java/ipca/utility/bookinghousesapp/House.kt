@@ -11,10 +11,9 @@ data class House(
     var priceyear: Double?,
     var guestsNumber: Int,
     var road: String,
-    var propertyAssessment: String,
     var codDoor: Int?,
     var sharedRoom: Boolean,
-    var localidade : String
+    var postalCode : String
 ){
 
     companion object{
@@ -28,10 +27,9 @@ data class House(
                 jsonObject["priceyear"  ] as Double,
                 jsonObject["guestsNumber"  ] as Int,
                 jsonObject["road"  ] as String,
-                jsonObject["propertyAssessment"  ] as String,
                 jsonObject["codDoor"  ] as Int,
                 jsonObject["sharedRoom"  ] as Boolean,
-                jsonObject["localidade"  ] as String
+                jsonObject["postalCode"  ] as String
 
             )
         }
