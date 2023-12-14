@@ -56,4 +56,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+
+    implementation("com.github.denzcoskun:ImageSlideshow:0.1.0")
+
 }

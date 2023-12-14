@@ -2,11 +2,13 @@ package ipca.utility.bookinghousesapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
+import androidx.viewpager.widget.ViewPager
 import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
 
@@ -26,26 +28,34 @@ class HouseDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.listViewFeebackDetails.adapter = feedbackAdapter
 
-        Backend.fetchHouseDetail(lifecycleScope) { house,postalCode ->
+        Backend.fetchHouseDetail(lifecycleScope) { house,postalCode,imageList ->
             house?.let {
+                val displayText = if (it.priceYear != 0.0) {
+                    "${it.priceYear}€ / Ano"
+                } else {
+                    "${it.price}€ / Noite"
+                }
                 binding.textViewNameDetail.text = it.name
                 binding.textViewGuestsDetail.text = "${it.guestsNumber}  Pessoas"
                 binding.textViewFloorDetail.text = "${it.floorNumber}  Andar"
                 binding.textViewRoomsDetail.text = "${it.rooms}  Quartos"
                 binding.textViewNMaximoPessoasDetail.text = it.guestsNumber.toString()
-                binding.textViewprecoDetail.text = it.price.toString()
+                binding.textViewprecoDetail.text = displayText
                 binding.textViewAndarDetailD.text = it.floorNumber.toString()
-                val displayText = if (it.priceYear != 0.0) {
-                    "${it.priceYear} / Ano"
-                } else {
-                    "${it.price} / Noite"
-                }
+
                 binding.textViewPrecoNoiteDetail.text = displayText
             }
             postalCode?.let{
                 binding.textViewLocationDetail.text = it.district
                 binding.textViewConcelhoDetail.text = it.concelho
                 binding.textViewDistrictDetail.text = it.district
+            }
+            imageList?.let{
+                Log.d("sdfsd",it[0].image)
+                val imageList = listOf(R.drawable.baseline_house_24,R.drawable.icons8_back_48)
+                //val viewPager: ViewPager = findViewById(R.id.viewPager)
+                //val adapter = ImagePagerAdapter(imageList)
+                //viewPager.adapter = adapter
             }
         }
     }

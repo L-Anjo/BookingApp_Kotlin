@@ -2,6 +2,7 @@ package ipca.utility.bookinghousesapp
 
 import androidx.lifecycle.LifecycleCoroutineScope
 import ipca.utility.bookinghousesapp.Models.House
+import ipca.utility.bookinghousesapp.Models.Image
 import ipca.utility.bookinghousesapp.Models.PostalCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +18,7 @@ object Backend {
 
     private val client = OkHttpClient()
 
-    fun fetchHouseDetail(lifecycleScope: LifecycleCoroutineScope, callback:(House,PostalCode)->Unit ) {
+    fun fetchHouseDetail(lifecycleScope: LifecycleCoroutineScope, callback:(House,PostalCode,ArrayList<Image>)->Unit ) {
         lifecycleScope.launch(Dispatchers.IO) {
 
             val request = Request.Builder()
@@ -33,8 +34,17 @@ object Backend {
                 val postalCodeObject = jsonObject.getJSONObject("postalCode")
                 val postalCode = PostalCode.fromJson(postalCodeObject)
 
+                val imageArray = jsonObject.getJSONArray("images")
+                val imageList = ArrayList<Image>()
+
+                for (i in 0 until imageArray.length()) {
+                    val imageObject = imageArray.getJSONObject(i)
+                    val image = Image.fromJson(imageObject)
+                    imageList.add(image)
+                }
+
                 lifecycleScope.launch(Dispatchers.Main) {
-                    callback(house,postalCode)
+                    callback(house,postalCode,imageList)
                 }
                 }
             }

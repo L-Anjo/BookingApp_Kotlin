@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -31,26 +32,41 @@
                     android:layout_width="0dp"
                     android:layout_height="250dp"
                     android:scaleType="centerCrop"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0"
-                    app:srcCompat="@drawable/_77b4fc1_a3ff_4d70_b9bb_c06f5363be07" />
+                    app:srcCompat="@drawable/_77b4fc1_a3ff_4d70_b9bb_c06f5363be07"
+                    tools:visibility="invisible" />
 
-                <ImageView
-                    android:id="@+id/imageButtonBack"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:background="#00FFFFFF"
-                    android:backgroundTint="#FFFFFF"
-                    android:cropToPadding="false"
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="0dp"
+                    android:layout_height="250dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@drawable/icons8_back_48" />
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/buttonBack"
+                    style="@style/Widget.Material3.Button.TextButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/icons8_back_to_50"
+                    app:iconGravity="start"
+                    app:iconPadding="0dp"
+                    app:iconSize="50dp"
+                    app:iconTint="#000000"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -239,7 +255,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
-                    android:layout_weight="0.15"
+                    android:layout_weight="0.5"
                     android:text="Preço:"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
@@ -248,18 +264,18 @@
                     android:id="@+id/textViewprecoDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="50dp"
-                    android:layout_weight="0.20"
-                    android:text="75$" />
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:text="100$ / noite" />
 
                 <TextView
                     android:id="@+id/textViewRD"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
                     android:layout_marginTop="5dp"
-                    android:layout_weight="0.15"
+                    android:layout_weight="0.5"
                     android:text="Rua:"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
@@ -268,10 +284,8 @@
                     android:id="@+id/textViewRuaDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_weight="0.40"
+                    android:layout_weight="1"
                     android:text="Rua da Escola" />
             </LinearLayout>
 
@@ -289,7 +303,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
-                    android:layout_weight="3"
+                    android:layout_weight="0.3"
                     android:text="Max Pessoas:"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
@@ -299,16 +313,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="30dp"
-                    android:layout_weight="1"
+                    android:layout_marginEnd="15dp"
+                    android:layout_weight="0.5"
                     android:text="6" />
 
                 <TextView
                     android:id="@+id/textViewCPD"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
-                    android:layout_weight="2"
+                    android:layout_weight="0.7"
                     android:text="Código Postal:"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
@@ -318,8 +333,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="0.5"
                     android:text="4750" />
             </LinearLayout>
 
@@ -356,6 +371,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_weight="0.15"
                     android:text="Concelho:"
                     android:textColor="@color/black"
@@ -366,7 +382,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="32dp"
+                    android:layout_marginEnd="35dp"
                     android:layout_weight="0.40" />
             </LinearLayout>
 
@@ -384,7 +400,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
-                    android:layout_weight="0.15"
+                    android:layout_weight="0.1"
                     android:text="Proprietário:"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
@@ -394,16 +410,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="50dp"
-                    android:layout_weight="0.30"
-                    android:text="75$" />
+                    android:layout_marginEnd="0dp"
+                    android:layout_weight="0.2"
+                    android:text="Miguel " />
 
                 <TextView
                     android:id="@+id/textViewDD"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_weight="0.15"
+                    android:layout_weight="0.2"
                     android:text="Distrito:"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
@@ -413,8 +429,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_weight="0.40"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="0.3"
                     android:text="Braga" />
 
             </LinearLayout>
