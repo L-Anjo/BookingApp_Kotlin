@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.ListView
 import android.widget.TextView
+import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             val rootView = layoutInflater.inflate(R.layout.row_house,parent, false)
             rootView.findViewById<TextView>(R.id.textViewName).text = houses[position].name
             rootView.findViewById<TextView>(R.id.textViewGuests).text = houses[position].guestsNumber.toString()
-            rootView.findViewById<TextView>(R.id.textViewLocalidade).text = houses[position].postalCode
+            //rootView.findViewById<TextView>(R.id.textViewLocalidade).text = houses[position].postalCode
 
             return rootView
         }

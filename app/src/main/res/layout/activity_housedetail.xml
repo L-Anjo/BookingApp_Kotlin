@@ -367,8 +367,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_weight="0.40"
-                    android:text="Barcelos" />
+                    android:layout_weight="0.40" />
             </LinearLayout>
 
             <LinearLayout

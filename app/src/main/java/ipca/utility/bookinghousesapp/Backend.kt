@@ -1,11 +1,14 @@
 package ipca.utility.bookinghousesapp
 
 import androidx.lifecycle.LifecycleCoroutineScope
+import ipca.utility.bookinghousesapp.Models.House
+import ipca.utility.bookinghousesapp.Models.PostalCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
+import org.json.JSONObject
 
 object Backend {
 
@@ -14,7 +17,7 @@ object Backend {
 
     private val client = OkHttpClient()
 
-    fun fetchHouseDetail(lifecycleScope: LifecycleCoroutineScope, callback:(House)->Unit ) {
+    fun fetchHouseDetail(lifecycleScope: LifecycleCoroutineScope, callback:(House,PostalCode)->Unit ) {
         lifecycleScope.launch(Dispatchers.IO) {
 
             val request = Request.Builder()
@@ -24,19 +27,17 @@ object Backend {
             client.newCall(request).execute().use { response ->
                 val result = response.body!!.string()
 
-                val jsonArray = JSONArray(result)
-                if (jsonArray.length() > 0) {
+                val jsonObject = JSONObject(result)
+                val house = House.fromJson(jsonObject)
 
-                    val jsonHouse = jsonArray.getJSONObject(0)
-                    val house = House.fromJson(jsonHouse)
-
+                val postalCodeObject = jsonObject.getJSONObject("postalCode")
+                val postalCode = PostalCode.fromJson(postalCodeObject)
 
                 lifecycleScope.launch(Dispatchers.Main) {
-                    callback(house)
+                    callback(house,postalCode)
                 }
                 }
             }
         }
     }
 
-}

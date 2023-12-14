@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
+import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
 
 class HouseDetailActivity : AppCompatActivity() {
@@ -25,15 +26,26 @@ class HouseDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.listViewFeebackDetails.adapter = feedbackAdapter
 
-        Backend.fetchHouseDetail(lifecycleScope) { house ->
+        Backend.fetchHouseDetail(lifecycleScope) { house,postalCode ->
             house?.let {
                 binding.textViewNameDetail.text = it.name
-                binding.textViewLocationDetail.text = it.postalCode
-                binding.textViewGuestsDetail.text = it.guestsNumber.toString()
-                binding.textViewAndarDetailD.text = it.floorNumber.toString()
+                binding.textViewGuestsDetail.text = "${it.guestsNumber}  Pessoas"
+                binding.textViewFloorDetail.text = "${it.floorNumber}  Andar"
+                binding.textViewRoomsDetail.text = "${it.rooms}  Quartos"
                 binding.textViewNMaximoPessoasDetail.text = it.guestsNumber.toString()
                 binding.textViewprecoDetail.text = it.price.toString()
-                binding.textViewFloorDetail.text = it.floorNumber.toString()
+                binding.textViewAndarDetailD.text = it.floorNumber.toString()
+                val displayText = if (it.priceYear != 0.0) {
+                    "${it.priceYear} / Ano"
+                } else {
+                    "${it.price} / Noite"
+                }
+                binding.textViewPrecoNoiteDetail.text = displayText
+            }
+            postalCode?.let{
+                binding.textViewLocationDetail.text = it.district
+                binding.textViewConcelhoDetail.text = it.concelho
+                binding.textViewDistrictDetail.text = it.district
             }
         }
     }
