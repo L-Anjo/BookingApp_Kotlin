@@ -41,17 +41,6 @@
                     app:layout_constraintTop_toTopOf="parent">
                 </androidx.viewpager2.widget.ViewPager2>
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:minHeight="?attr/actionBarSize"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
                 <ImageButton
                     android:id="@+id/buttonBack"
                     style="@style/Widget.Material3.Button.TextButton.Icon"
@@ -62,6 +51,22 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:contentDescription="Voltar" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="200dp"
+                    android:background="#00FFFFFF"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/viewPager"
+                    app:tabBackground="@drawable/tab_pager_selector"
+                    app:tabGravity="center"
+                    app:tabIndicatorHeight="0dp" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

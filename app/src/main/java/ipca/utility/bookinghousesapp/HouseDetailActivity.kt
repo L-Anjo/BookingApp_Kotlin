@@ -29,8 +29,8 @@ class HouseDetailActivity : AppCompatActivity() {
         Feedback(4,5,"Muito Bom"),
     )
     val feedbackAdapter = FeedbackAdapter()
-
-    var imageList = listOf(R.drawable.baseline_house_24,R.drawable.baseline_person_outline_24,R.drawable.test)
+    val imageList = ArrayList<Int>()
+    //var imageList = listOf(R.drawable._77b4fc1_a3ff_4d70_b9bb_c06f5363be07,R.drawable.baseline_person_outline_24,R.drawable.test)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHousedetailBinding.inflate(layoutInflater)
@@ -43,10 +43,9 @@ class HouseDetailActivity : AppCompatActivity() {
         viewPager.adapter = pagerAdapter
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = "Tab ${position + 1}"
         }.attach()
 
-        Backend.fetchHouseDetail(lifecycleScope) { house,postalCode,imageListt ->
+        Backend.fetchHouseDetail(lifecycleScope) { house,postalCode,imageList ->
             house?.let {
                 val displayText = if (it.priceYear != 0.0) {
                     "${it.priceYear}€ / Ano"
@@ -68,10 +67,11 @@ class HouseDetailActivity : AppCompatActivity() {
                 binding.textViewConcelhoDetail.text = it.concelho
                 binding.textViewDistrictDetail.text = it.district
             }
-            imageListt?.let{
+            imageList?.let{
                 Log.d("sdfsd",it[0].image)
+                for (imageName in it) {
 
-
+                }
             }
         }
     }
