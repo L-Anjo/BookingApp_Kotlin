@@ -1,5 +1,6 @@
 package ipca.utility.bookinghousesapp
 
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,9 +11,13 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import ipca.utility.bookinghousesapp.Models.Feedback
@@ -30,6 +35,8 @@ class HouseDetailActivity : AppCompatActivity() {
     )
     val feedbackAdapter = FeedbackAdapter()
     //val imageList = ArrayList<Int>()
+    val imageUrls = mutableListOf<String>()
+
     var imageList = listOf(R.drawable._77b4fc1_a3ff_4d70_b9bb_c06f5363be07,R.drawable.baseline_person_outline_24,R.drawable.test)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,13 +44,16 @@ class HouseDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.listViewFeebackDetails.adapter = feedbackAdapter
 
-
-
-
+        val viewPager: ViewPager2 = binding.viewPager
+        val tabLayout: TabLayout = binding.tabLayout
+        val pagerAdapter = ImagePagerAdapter(imageUrls, this)
+        viewPager.adapter = pagerAdapter
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+        }.attach()
 
         Backend.fetchHouseDetail(lifecycleScope) { house ->
             house?.let {
-                val displayText = if (it.priceyear != 0.0) {
+                val displayText = if (it.priceyear != null) {
                     "${it.priceyear}€ / Ano"
                 } else {
                     "${it.price}€ / Noite"
@@ -59,26 +69,23 @@ class HouseDetailActivity : AppCompatActivity() {
 
                 binding.textViewPrecoNoiteDetail.text = displayText
             }
-            Log.d("sdfsd",(house.postalCode.toString()))
             house.postalCode?.let{
                 binding.textViewLocationDetail.text = it.postalCode.toString()
                 binding.textViewConcelhoDetail.text = it.concelho
                 binding.textViewDistrictDetail.text = it.district
             }
             house.images?.let{
-                Log.d("sdfsd",it[0].image.toString())
                 for (imageName in it) {
+                    val imageUrl = "http://10.0.2.2:7105/Houses/${imageName.image}.${imageName.formato}"
 
+                    imageUrls.add(imageUrl)
                 }
+                pagerAdapter.notifyDataSetChanged()
+                Log.d("sdfsd",(imageUrls.toString()))
             }
         }
-        val viewPager: ViewPager2 = binding.viewPager
-        val tabLayout: TabLayout = binding.tabLayout
-        val pagerAdapter = ImagePagerAdapter(imageList, this)
-        viewPager.adapter = pagerAdapter
 
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-        }.attach()
+
     }
 
     inner class FeedbackAdapter : BaseAdapter(){
@@ -105,26 +112,35 @@ class HouseDetailActivity : AppCompatActivity() {
 
     }
 
-    inner class ImagePagerAdapter(private val images: List<Int>, activity: AppCompatActivity) :
+    inner class ImagePagerAdapter(private val imageUrls: List<String>, activity: FragmentActivity) :
         FragmentStateAdapter(activity) {
 
-        override fun getItemCount(): Int = images.size
+        override fun getItemCount(): Int = imageUrls.size
 
         override fun createFragment(position: Int): Fragment {
-            return ImageFragment(images[position])
+            return ImageFragment(imageUrls[position])
         }
     }
 
-       class ImageFragment(private val imageResId: Int) : Fragment() {
+    class ImageFragment(private val imageUrl: String) : Fragment() {
 
         override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
         ): View? {
+            Log.d("ImageFragment", "onCreateView called")
             val view = inflater.inflate(R.layout.image_view_carrousel, container, false)
             val imageView = view.findViewById<ImageView>(R.id.idIVImage)
-            imageView.setImageResource(imageResId)
+
+            Log.d("sdfsd",(imageUrl))
+            // Carregar a imagem usando Glide a partir da URL
+            Glide.with(this)
+                .load(imageUrl)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(imageView)
+
+
             return view
         }
     }
