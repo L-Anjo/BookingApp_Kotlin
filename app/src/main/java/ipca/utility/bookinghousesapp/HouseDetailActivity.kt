@@ -22,33 +22,29 @@ import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
 class HouseDetailActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityHousedetailBinding
-    var house : House? = null
+    var house : io.swagger.client.models.House? = null
     var feedback = arrayListOf<Feedback>(
         Feedback(2,4,"Muito Bom"),
         Feedback(3,3,"Muito Bom"),
         Feedback(4,5,"Muito Bom"),
     )
     val feedbackAdapter = FeedbackAdapter()
-    val imageList = ArrayList<Int>()
-    //var imageList = listOf(R.drawable._77b4fc1_a3ff_4d70_b9bb_c06f5363be07,R.drawable.baseline_person_outline_24,R.drawable.test)
+    //val imageList = ArrayList<Int>()
+    var imageList = listOf(R.drawable._77b4fc1_a3ff_4d70_b9bb_c06f5363be07,R.drawable.baseline_person_outline_24,R.drawable.test)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHousedetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.listViewFeebackDetails.adapter = feedbackAdapter
 
-        val viewPager: ViewPager2 = binding.viewPager
-        val tabLayout: TabLayout = binding.tabLayout
-        val pagerAdapter = ImagePagerAdapter(imageList, this)
-        viewPager.adapter = pagerAdapter
 
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-        }.attach()
 
-        Backend.fetchHouseDetail(lifecycleScope) { house,postalCode,imageList ->
+
+
+        Backend.fetchHouseDetail(lifecycleScope) { house ->
             house?.let {
-                val displayText = if (it.priceYear != 0.0) {
-                    "${it.priceYear}€ / Ano"
+                val displayText = if (it.priceyear != 0.0) {
+                    "${it.priceyear}€ / Ano"
                 } else {
                     "${it.price}€ / Noite"
                 }
@@ -56,24 +52,33 @@ class HouseDetailActivity : AppCompatActivity() {
                 binding.textViewGuestsDetail.text = "${it.guestsNumber}  Pessoas"
                 binding.textViewFloorDetail.text = "${it.floorNumber}  Andar"
                 binding.textViewRoomsDetail.text = "${it.rooms}  Quartos"
+                binding.textViewRuaDetail.text = it.road
                 binding.textViewNMaximoPessoasDetail.text = it.guestsNumber.toString()
                 binding.textViewprecoDetail.text = displayText
                 binding.textViewAndarDetailD.text = it.floorNumber.toString()
 
                 binding.textViewPrecoNoiteDetail.text = displayText
             }
-            postalCode?.let{
-                binding.textViewLocationDetail.text = it.district
+            Log.d("sdfsd",(house.postalCode.toString()))
+            house.postalCode?.let{
+                binding.textViewLocationDetail.text = it.postalCode.toString()
                 binding.textViewConcelhoDetail.text = it.concelho
                 binding.textViewDistrictDetail.text = it.district
             }
-            imageList?.let{
-                Log.d("sdfsd",it[0].image)
+            house.images?.let{
+                Log.d("sdfsd",it[0].image.toString())
                 for (imageName in it) {
 
                 }
             }
         }
+        val viewPager: ViewPager2 = binding.viewPager
+        val tabLayout: TabLayout = binding.tabLayout
+        val pagerAdapter = ImagePagerAdapter(imageList, this)
+        viewPager.adapter = pagerAdapter
+
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+        }.attach()
     }
 
     inner class FeedbackAdapter : BaseAdapter(){

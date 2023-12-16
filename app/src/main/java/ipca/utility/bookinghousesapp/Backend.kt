@@ -1,6 +1,8 @@
 package ipca.utility.bookinghousesapp
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LifecycleCoroutineScope
+import io.swagger.client.apis.HouseApi
 import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.Models.Image
 import ipca.utility.bookinghousesapp.Models.PostalCode
@@ -10,22 +12,25 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.Objects
 
 object Backend {
 
-    private const val BASE_API = "http://10.0.2.2:7105/api/"
-    private const val PATH_HOUSES = "House/1"
+    private const val BASE_API = "http://10.0.2.2:7105"
+    //private const val PATH_HOUSES = "House"
 
-    private val client = OkHttpClient()
+    //private val client = OkHttpClient()
 
-    fun fetchHouseDetail(lifecycleScope: LifecycleCoroutineScope, callback:(House,PostalCode,ArrayList<Image>)->Unit ) {
+    @SuppressLint("SuspiciousIndentation")
+    fun fetchHouseDetail(lifecycleScope: LifecycleCoroutineScope, callback: (io.swagger.client.models.House)->Unit) {
         lifecycleScope.launch(Dispatchers.IO) {
+            val houseApi = HouseApi("${BASE_API}").apiHouseIdGet(1)
+                lifecycleScope.launch(Dispatchers.Main) {
+                    callback(houseApi)
+                }
 
-            val request = Request.Builder()
-                .url("${BASE_API}${PATH_HOUSES}")
-                .build()
 
-            client.newCall(request).execute().use { response ->
+                /*client.newCall(request).execute().use { response ->
                 val result = response.body!!.string()
 
                 val jsonObject = JSONObject(result)
@@ -47,7 +52,12 @@ object Backend {
                     callback(house,postalCode,imageList)
                 }
                 }
+
+             */
+
+
             }
         }
     }
+
 
