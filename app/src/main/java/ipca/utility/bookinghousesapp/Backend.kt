@@ -1,23 +1,59 @@
 package ipca.utility.bookinghousesapp
 
+import android.util.Log
 import androidx.lifecycle.LifecycleCoroutineScope
 import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.Models.Image
 import ipca.utility.bookinghousesapp.Models.PostalCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.Response
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.IOException
 
 object Backend {
 
     private const val BASE_API = "http://10.0.2.2:7105/api/"
+    private const val AUTHENTICATION_API = "http://10.0.2.2:7235/api/"
     private const val PATH_HOUSES = "House/1"
+    private const val PATH_LOGIN = "Auth/login"
 
     private val client = OkHttpClient()
+    fun login(email: String, password: String, callback: (Boolean, String?) -> Unit) {
+        val requestBody = FormBody.Builder()
+            .add("email", email)
+            .add("password", password)
+            .build()
 
+        val request = Request.Builder()
+            .url("${AUTHENTICATION_API}${PATH_LOGIN}")
+            .post(requestBody)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("teste", "entrou em onfailure")
+                callback(false, null)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val success = response.isSuccessful
+                val message = response.body?.string()
+
+                if (success) {
+                    callback(true, message)
+                } else {
+                    callback(false, "Erro na resposta: $message")
+                }
+            }
+        })
+    }
     fun fetchHouseDetail(lifecycleScope: LifecycleCoroutineScope, callback:(House,PostalCode,ArrayList<Image>)->Unit ) {
         lifecycleScope.launch(Dispatchers.IO) {
 

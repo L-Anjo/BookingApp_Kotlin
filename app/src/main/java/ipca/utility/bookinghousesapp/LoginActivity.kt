@@ -21,12 +21,23 @@ class LoginActivity : AppCompatActivity() {
 
 
 
-        binding.buttonLogin.setOnClickListener{
-            val editTextEmail = binding.editTextEmail.text.toString()
-            val editTextPassword = binding.editTextPassword.text.toString()
+        binding.buttonLogin.setOnClickListener {
+            val email = binding.editTextEmail.text.toString()
+            val password = binding.editTextPassword.text.toString()
+            Log.d("email", email)
+            Log.d("password", password)
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                Backend.login(email, password) { success, message ->
 
-            Log.d("email", editTextEmail)
-            Log.d("password", editTextPassword)
+                    if (success) {
+                        Log.d("LoginActivity", "Login bem-sucedido")
+                    } else {
+                        Log.d("LoginActivity", "Login falhou: $message")
+                    }
+                }
+            } else {
+
+            }
         }
 
         binding.textViewRegister.setOnClickListener{
