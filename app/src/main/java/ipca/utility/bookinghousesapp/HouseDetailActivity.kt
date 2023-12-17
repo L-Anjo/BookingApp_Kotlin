@@ -23,27 +23,25 @@ import com.google.android.material.tabs.TabLayoutMediator
 import ipca.utility.bookinghousesapp.Models.Feedback
 import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
+import org.json.JSONArray
+import org.json.JSONObject
 
 class HouseDetailActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityHousedetailBinding
     var house : io.swagger.client.models.House? = null
-    var feedback = arrayListOf<Feedback>(
-        Feedback(2,4,"Muito Bom"),
-        Feedback(3,3,"Muito Bom"),
-        Feedback(4,5,"Muito Bom"),
-    )
-    val feedbackAdapter = FeedbackAdapter()
-    //val imageList = ArrayList<Int>()
-    val imageUrls = mutableListOf<String>()
+    var usersfeed = mutableListOf<io.swagger.client.models.User>()
+    var feedbacks = arrayListOf<io.swagger.client.models.Feedback?>()
 
-    var imageList = listOf(R.drawable._77b4fc1_a3ff_4d70_b9bb_c06f5363be07,R.drawable.baseline_person_outline_24,R.drawable.test)
+    val feedbackAdapter = FeedbackAdapter()
+    val imageUrls = mutableListOf<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHousedetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.listViewFeebackDetails.adapter = feedbackAdapter
 
+        var count = 0
         val viewPager: ViewPager2 = binding.viewPager
         val tabLayout: TabLayout = binding.tabLayout
         val pagerAdapter = ImagePagerAdapter(imageUrls, this)
@@ -66,35 +64,50 @@ class HouseDetailActivity : AppCompatActivity() {
                 binding.textViewNMaximoPessoasDetail.text = it.guestsNumber.toString()
                 binding.textViewprecoDetail.text = displayText
                 binding.textViewAndarDetailD.text = it.floorNumber.toString()
+                binding.textViewOwnerDetail.text = it.user?.name
 
                 binding.textViewPrecoNoiteDetail.text = displayText
             }
-            house.postalCode?.let{
-                binding.textViewLocationDetail.text = it.postalCode.toString()
+            house.postalCode?.let {
+                binding.textViewLocationDetail.text = it.concelho
+                binding.textViewCodigoPostalDetail.text = it.postalCode.toString()
                 binding.textViewConcelhoDetail.text = it.concelho
                 binding.textViewDistrictDetail.text = it.district
             }
-            house.images?.let{
+            house.images?.let {
                 for (imageName in it) {
-                    val imageUrl = "http://10.0.2.2:7105/Houses/${imageName.image}.${imageName.formato}"
+                    val imageUrl =
+                        "${Backend.BASE_API}/Houses/${imageName.image}.${imageName.formato}"
 
                     imageUrls.add(imageUrl)
                 }
                 pagerAdapter.notifyDataSetChanged()
-                Log.d("sdfsd",(imageUrls.toString()))
             }
+            house.reservations?.let {
+                for(reservation in it) {
+                    if (count < 5) {
+                        reservation.feedback?.let {
+                            reservation.user?.let { user ->
+                                usersfeed.add(user)
+                            }
+                            feedbacks.add(reservation.feedback)
+                            count++
+                        }
+                    }
+                }
+            }
+            feedbackAdapter.notifyDataSetChanged()
         }
-
 
     }
 
     inner class FeedbackAdapter : BaseAdapter(){
         override fun getCount(): Int {
-            return feedback.size
+            return feedbacks.size
         }
 
         override fun getItem(position: Int): Any {
-            return feedback[position]
+            return feedbacks[position]!!
         }
 
         override fun getItemId(position: Int): Long {
@@ -103,9 +116,15 @@ class HouseDetailActivity : AppCompatActivity() {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val rootView = layoutInflater.inflate(R.layout.row_feeback_housedetail,parent, false)
-            rootView.findViewById<TextView>(R.id.textViewNomeFeedback).text = feedback[position].id_feedback.toString()
-            rootView.findViewById<TextView>(R.id.textViewClassiFeedback).text = feedback[position].classification.toString()
-            rootView.findViewById<TextView>(R.id.textViewComentFeedback).text = feedback[position].comment
+            rootView.findViewById<TextView>(R.id.textViewNomeFeedback).text = usersfeed[position]?.name
+            rootView.findViewById<TextView>(R.id.textViewClassiFeedback).text = feedbacks[position]?.classification.toString()
+            rootView.findViewById<TextView>(R.id.textViewComentFeedback).text = feedbacks[position]?.comment
+            var image = "${Backend.BASE_API}/Users/${usersfeed[position].image}${usersfeed[position].imageFormat}"
+
+            Glide.with(rootView)
+                .load(image)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(rootView.findViewById<ImageView>(R.id.imageView4))
 
             return rootView
         }
@@ -133,7 +152,7 @@ class HouseDetailActivity : AppCompatActivity() {
             val view = inflater.inflate(R.layout.image_view_carrousel, container, false)
             val imageView = view.findViewById<ImageView>(R.id.idIVImage)
 
-            Log.d("sdfsd",(imageUrl))
+
             // Carregar a imagem usando Glide a partir da URL
             Glide.with(this)
                 .load(imageUrl)

@@ -16,7 +16,7 @@ import java.util.Objects
 
 object Backend {
 
-    private const val BASE_API = "http://10.0.2.2:7105"
+    internal const val BASE_API = "http://10.0.2.2:7105"
     //private const val PATH_HOUSES = "House"
 
     //private val client = OkHttpClient()
