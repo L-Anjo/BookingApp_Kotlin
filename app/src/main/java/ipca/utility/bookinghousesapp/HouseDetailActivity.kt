@@ -32,7 +32,6 @@ class HouseDetailActivity : AppCompatActivity() {
     var house : io.swagger.client.models.House? = null
     var usersfeed = mutableListOf<io.swagger.client.models.User>()
     var feedbacks = arrayListOf<io.swagger.client.models.Feedback?>()
-
     val feedbackAdapter = FeedbackAdapter()
     val imageUrls = mutableListOf<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +40,7 @@ class HouseDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.listViewFeebackDetails.adapter = feedbackAdapter
 
-        var count = 0
+        var totalClassification = 0.0
         val viewPager: ViewPager2 = binding.viewPager
         val tabLayout: TabLayout = binding.tabLayout
         val pagerAdapter = ImagePagerAdapter(imageUrls, this)
@@ -73,6 +72,7 @@ class HouseDetailActivity : AppCompatActivity() {
                 binding.textViewCodigoPostalDetail.text = it.postalCode.toString()
                 binding.textViewConcelhoDetail.text = it.concelho
                 binding.textViewDistrictDetail.text = it.district
+
             }
             house.images?.let {
                 for (imageName in it) {
@@ -85,17 +85,22 @@ class HouseDetailActivity : AppCompatActivity() {
             }
             house.reservations?.let {
                 for(reservation in it) {
-                    if (count < 5) {
+
                         reservation.feedback?.let {
+                            totalClassification += it.classification!!
                             reservation.user?.let { user ->
                                 usersfeed.add(user)
                             }
                             feedbacks.add(reservation.feedback)
-                            count++
-                        }
+
                     }
                 }
+                if (feedbacks.isNotEmpty()) {
+                    totalClassification = totalClassification.toDouble() / feedbacks.size.toDouble()
+                }
+                binding.textViewClassificationDetail.text = totalClassification.toString()
             }
+
             feedbackAdapter.notifyDataSetChanged()
         }
 

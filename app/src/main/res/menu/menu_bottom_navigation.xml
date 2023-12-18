@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/home"
+        android:title="@string/procurar"
+        android:icon="@drawable/icons8_pesquisar"/>
+
+    <item android:id="@+id/notifications"
+        android:title="@string/notifica_es"
+        android:icon="@drawable/icons8_notifications"/>
+
+    <item android:id="@+id/profile"
+        android:title="@string/perfil"
+        android:icon="@drawable/icons8_profile"/>
+</menu>

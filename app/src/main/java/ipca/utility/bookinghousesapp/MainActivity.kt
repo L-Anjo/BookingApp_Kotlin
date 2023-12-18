@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.listViewHouses.adapter = houseAdapter
+        //binding.listViewHouses.adapter = houseAdapter
 
     }
 
