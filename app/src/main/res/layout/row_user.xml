@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/imageView7"
@@ -71,8 +71,8 @@
         android:id="@+id/buttonRemove"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="32dp"
         android:background="@drawable/icons8_remove_50"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/TextViewEmailUser"
         app:layout_constraintTop_toTopOf="parent" />

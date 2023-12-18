@@ -39,12 +39,12 @@
         android:layout_marginEnd="32dp"
         android:text="Data Inicial"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toStartOf="@+id/textViewGuestsNumber"
+        app:layout_constraintEnd_toStartOf="@+id/textViewReservationGuestsNumber"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/textViewReservationName" />
 
     <TextView
-        android:id="@+id/textViewGuestsNumber"
+        android:id="@+id/textViewReservationGuestsNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -64,7 +64,7 @@
         android:layout_marginEnd="32dp"
         android:text="Data Final"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toStartOf="@+id/textViewGuestsNumber"
+        app:layout_constraintEnd_toStartOf="@+id/textViewReservationGuestsNumber"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/textViewReservationInitialDate" />
 
@@ -72,8 +72,11 @@
         android:id="@+id/line2"
         android:layout_width="0dp"
         android:layout_height="2dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@color/black"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

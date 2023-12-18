@@ -1,5 +1,8 @@
 package ipca.utility.bookinghousesapp.Models
 
-class ReservationStates {
+data class ReservationStates (
 
+    val id: kotlin.Int? = null,
+    val state: kotlin.String? = null
+) {
 }

@@ -17,10 +17,7 @@
         android:theme="@style/Theme.BookingHousesApp"
         tools:targetApi="31">
         <activity
-            android:name=".AdminReservationsList"
-            android:exported="false" />
-        <activity
-            android:name=".AdminUsersList"
+            android:name=".IntroActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,6 +25,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AdminReservationsList"
+            android:exported="false"></activity>
+        <activity
+            android:name=".AdminUsersList"
+            android:exported="false"></activity>
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
@@ -39,7 +42,9 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="false">
+
+        </activity>
     </application>
 
 </manifest>
