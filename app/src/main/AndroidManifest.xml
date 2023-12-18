@@ -33,6 +33,7 @@
         <activity
             android:name=".AdminReservationsList"
             android:exported="false" />
+
         <activity
             android:name=".AdminUsersList"
             android:exported="false" />
