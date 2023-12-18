@@ -21,19 +21,6 @@ class AdminReservationsList : AppCompatActivity() {
     private lateinit var binding : ActivityAdminReservationsListBinding
     val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     var reservations = arrayListOf<Reservation>(
-        Reservation(1, dateFormat.format(Date()),dateFormat.format(Date()).plus(3), 4),
-        Reservation(2, dateFormat.format(Date()),dateFormat.format(Date()).plus(3), 4),
-        Reservation(3, dateFormat.format(Date()),dateFormat.format(Date()).plus(3), 4),
-        Reservation(4, dateFormat.format(Date()),dateFormat.format(Date()).plus(3), 4),
-        Reservation(5, dateFormat.format(Date()),dateFormat.format(Date()).plus(3), 4),
-        Reservation(6, dateFormat.format(Date()),dateFormat.format(Date()).plus(3), 4),
-        Reservation(7, dateFormat.format(Date()),dateFormat.format(Date()).plus(3), 4),
-        Reservation(8, dateFormat.format(Date()),dateFormat.format(Date()).plus(3), 4),
-        Reservation(9, dateFormat.format(Date()),dateFormat.format(Date()).plus(3), 4),
-        Reservation(10, dateFormat.format(Date()),dateFormat.format(Date()).plus(3), 4),
-        Reservation(11, dateFormat.format(Date()),dateFormat.format(Date()).plus(3), 4),
-        Reservation(12, dateFormat.format(Date()),dateFormat.format(Date()).plus(3), 4),
-        Reservation(13, dateFormat.format(Date()),dateFormat.format(Date()).plus(3), 4),
 
     )
 

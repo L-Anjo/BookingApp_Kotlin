@@ -20,9 +20,6 @@
             android:name=".ProfilePage"
             android:exported="false" />
         <activity
-            android:name=".AdminHousesList"
-            android:exported="false" />
-        <activity
             android:name=".IntroActivity"
             android:exported="true">
             <intent-filter>

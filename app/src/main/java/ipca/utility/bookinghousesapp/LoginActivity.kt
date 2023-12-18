@@ -20,26 +20,6 @@ class LoginActivity : AppCompatActivity() {
 
 
 
-
-        binding.buttonLogin.setOnClickListener {
-            val email = binding.editTextEmail.text.toString()
-            val password = binding.editTextPassword.text.toString()
-            Log.d("email", email)
-            Log.d("password", password)
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                Backend.login(email, password) { success, message ->
-
-                    if (success) {
-                        Log.d("LoginActivity", "Login bem-sucedido")
-                    } else {
-                        Log.d("LoginActivity", "Login falhou: $message")
-                    }
-                }
-            } else {
-
-            }
-        }
-
         binding.textViewRegister.setOnClickListener{
             val intent = Intent(this,RegisterActivity::class.java )
             startActivity(intent)
