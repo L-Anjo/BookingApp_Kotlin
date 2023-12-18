@@ -87,6 +87,7 @@ class HouseDetailActivity : AppCompatActivity() {
                 for(reservation in it) {
 
                         reservation.feedback?.let {
+
                             totalClassification += it.classification!!
                             reservation.user?.let { user ->
                                 usersfeed.add(user)

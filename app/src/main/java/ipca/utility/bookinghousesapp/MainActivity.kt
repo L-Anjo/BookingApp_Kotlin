@@ -39,8 +39,8 @@ class MainActivity : AppCompatActivity() {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val rootView = layoutInflater.inflate(R.layout.row_house,parent, false)
-            rootView.findViewById<TextView>(R.id.textViewName).text = houses[position].name
-            rootView.findViewById<TextView>(R.id.textViewGuests).text = houses[position].guestsNumber.toString()
+            //rootView.findViewById<TextView>(R.id.textViewName).text = houses[position].name
+            //rootView.findViewById<TextView>(R.id.textViewGuests).text = houses[position].guestsNumber.toString()
             //rootView.findViewById<TextView>(R.id.textViewLocalidade).text = houses[position].postalCode
 
             return rootView
