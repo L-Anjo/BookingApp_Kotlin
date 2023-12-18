@@ -17,6 +17,9 @@
         android:theme="@style/Theme.BookingHousesApp"
         tools:targetApi="31">
         <activity
+            android:name=".AdminHousesList"
+            android:exported="false" />
+        <activity
             android:name=".IntroActivity"
             android:exported="true">
             <intent-filter>
@@ -27,24 +30,22 @@
         </activity>
         <activity
             android:name=".AdminReservationsList"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".AdminUsersList"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".HouseDetailActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false">
-
-        </activity>
+            android:exported="false"></activity>
     </application>
 
 </manifest>
