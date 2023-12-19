@@ -17,7 +17,7 @@
         app:layout_constraintTop_toBottomOf="@+id/line" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/imageViewRes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -28,7 +28,7 @@
         app:srcCompat="@drawable/icons8_back_50" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewRes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -51,7 +51,7 @@
         android:background="#FA5F5F"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewRes" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
