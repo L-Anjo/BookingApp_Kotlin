@@ -11,4 +11,6 @@
 
     <color name="selecionado">#000000</color>
     <color name="nao_selecionado">#808080</color>
+
+    <color name="nao_selecionadoo">#C1C1C1</color>
 </resources>

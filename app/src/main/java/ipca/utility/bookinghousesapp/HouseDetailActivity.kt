@@ -77,7 +77,7 @@ class HouseDetailActivity : AppCompatActivity() {
             house.images?.let {
                 for (imageName in it) {
                     val imageUrl =
-                        "${Backend.BASE_API}/Houses/${imageName.image}.${imageName.formato}"
+                        "${Backend.BASE_API}/Houses/${imageName.image}${imageName.formato}"
 
                     imageUrls.add(imageUrl)
                 }
