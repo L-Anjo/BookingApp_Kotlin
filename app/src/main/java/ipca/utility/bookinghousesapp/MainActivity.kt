@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        Backend.fetchAllHouses(this, lifecycleScope) { houses ->
+        Backend.fetchAllHouses(lifecycleScope) { houses ->
             houses?.let {
                 adapter.updateData(houses.toList())
             }
