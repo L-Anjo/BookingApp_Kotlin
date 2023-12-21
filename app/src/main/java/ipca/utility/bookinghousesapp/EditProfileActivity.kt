@@ -40,7 +40,7 @@ class EditProfileActivity : AppCompatActivity() {
                 binding.EditTextUserEditPhone.text = phoneEditable
 
                 // Obtenha a senha aqui
-                password = it.password
+                password = it.password.toString()
                 token = it.token.toString()
                 status = it.status.toString().toBoolean()
 

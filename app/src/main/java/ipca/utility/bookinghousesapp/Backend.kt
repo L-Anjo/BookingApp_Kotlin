@@ -61,6 +61,8 @@ object Backend {
         }
     }
 
+
+
     @SuppressLint("SuspiciousIndentation")
     fun login(
         context: Context,
@@ -189,6 +191,24 @@ object Backend {
 
         }
     }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun fetchUserDetail(
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope,
+        callback: (io.swagger.client.models.User) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val userId = sharedPreferences.getInt("user_id", 0)
+            val userApi = UserApi("${BASE_API}").apiUserUserIdGet(userId)
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(userApi)
+            }
+
+        }
+    }
+
 }
 
 
