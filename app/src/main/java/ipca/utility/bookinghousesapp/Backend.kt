@@ -8,6 +8,8 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import io.swagger.client.apis.AuthApi
 import io.swagger.client.apis.HouseApi
 import io.swagger.client.apis.UserApi
+import java.time.LocalDateTime
+import java.util.Date
 import io.swagger.client.infrastructure.ClientException
 import io.swagger.client.infrastructure.ServerException
 import io.swagger.client.infrastructure.ApiClient
@@ -32,60 +34,30 @@ object Backend {
     //private val client = OkHttpClient()
 
     @SuppressLint("SuspiciousIndentation")
-    fun fetchHouseDetail(
-        lifecycleScope: LifecycleCoroutineScope,
-        callback: (io.swagger.client.models.House) -> Unit
-    ) {
+    fun fetchHouseDetail(lifecycleScope: LifecycleCoroutineScope, callback: (io.swagger.client.models.House)->Unit) {
         lifecycleScope.launch(Dispatchers.IO) {
             val houseApi = HouseApi("${BASE_API}").apiHouseIdGet(1)
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(houseApi)
             }
-
-
-            /*client.newCall(request).execute().use { response ->
-                val result = response.body!!.string()
-
-                val jsonObject = JSONObject(result)
-                val house = House.fromJson(jsonObject)
-
-                val postalCodeObject = jsonObject.getJSONObject("postalCode")
-                val postalCode = PostalCode.fromJson(postalCodeObject)
-
-                val imageArray = jsonObject.getJSONArray("images")
-                val imageList = ArrayList<Image>()
-
-                for (i in 0 until imageArray.length()) {
-                    val imageObject = imageArray.getJSONObject(i)
-                    val image = Image.fromJson(imageObject)
-                    imageList.add(image)
-                }
-
-                lifecycleScope.launch(Dispatchers.Main) {
-                    callback(house,postalCode,imageList)
-                }
-                }
-
-             */
-
-
         }
     }
 
-    @SuppressLint("SuspiciousIndentation")
-    fun fetchUserDetail(
-        context: Context,
-        lifecycleScope: LifecycleCoroutineScope,
-        callback: (io.swagger.client.models.User) -> Unit
-    ) {
+    fun fetchAllHouses(lifecycleScope: LifecycleCoroutineScope, callback: (Array<io.swagger.client.models.House>)->Unit) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
-            val userId = sharedPreferences.getInt("user_id", 0)
-            val userApi = UserApi("${BASE_API}").apiUserUserIdGet(userId)
+            val houseListApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseGet()
             lifecycleScope.launch(Dispatchers.Main) {
-                callback(userApi)
+                callback(houseListApi)
             }
+        }
+    }
 
+    fun filterHouses(lifecycleScope: LifecycleCoroutineScope,location: String?,guestsNumber: Int?, startDate: LocalDateTime?,endDate: LocalDateTime?, callback: (Array<io.swagger.client.models.House>)->Unit) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val housesFiltredApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseFilteredGet(location,guestsNumber,startDate,endDate)
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(housesFiltredApi)
+            }
         }
     }
 
