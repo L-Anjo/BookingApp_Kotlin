@@ -140,7 +140,7 @@
                     app:layout_constraintTop_toTopOf="@+id/constraintLayout10" />
 
                 <ImageView
-                    android:id="@+id/imageView14"
+                    android:id="@+id/imageView31"
                     android:layout_width="35dp"
                     android:layout_height="33dp"
                     app:layout_constraintBottom_toBottomOf="parent"

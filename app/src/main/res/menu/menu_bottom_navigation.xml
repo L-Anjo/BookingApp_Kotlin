@@ -4,9 +4,10 @@
         android:title="@string/procurar"
         android:icon="@drawable/icons8_pesquisar"/>
 
-    <item android:id="@+id/notifications"
-        android:title="@string/notifica_es"
-        android:icon="@drawable/icons8_notifications"/>
+    <item
+        android:id="@+id/notifications"
+        android:icon="@drawable/icons8_notifications"
+        android:title="@string/notifica_es" />
 
     <item android:id="@+id/profile"
         android:title="@string/perfil"
