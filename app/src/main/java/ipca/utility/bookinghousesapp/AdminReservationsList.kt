@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.Models.Reservation
 import ipca.utility.bookinghousesapp.Models.User
@@ -19,17 +20,22 @@ import java.util.*
 class AdminReservationsList : AppCompatActivity() {
 
     private lateinit var binding : ActivityAdminReservationsListBinding
-    val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-    var reservations = arrayListOf<Reservation>(
+    var reservations = arrayListOf<io.swagger.client.models.Reservation>()
 
-    )
-
-    val listReservationsAdapter = ReservationsListAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAdminReservationsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.listViewReservations.adapter = listReservationsAdapter
+
+        Backend.GetAllReservations(this, lifecycleScope) { fetchedReservations ->
+            reservations.addAll(fetchedReservations)
+            setupListView()
+        }
+    }
+
+    private fun setupListView() {
+        val adapter = ReservationsListAdapter()
+        binding.listViewReservations.adapter = adapter
     }
 
     inner class ReservationsListAdapter : BaseAdapter(){
@@ -47,9 +53,7 @@ class AdminReservationsList : AppCompatActivity() {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val rootView = layoutInflater.inflate(R.layout.row_reservation,parent, false)
-            rootView.findViewById<TextView>(R.id.textViewReservationName).text = "T3 Braga"
-            rootView.findViewById<TextView>(R.id.textViewReservationInitialDate).text = reservations[position].initDate.toString()
-            rootView.findViewById<TextView>(R.id.textViewReservationFinalDate).text = reservations[position].endDate.toString()
+            rootView.findViewById<TextView>(R.id.textViewReservationName).text = reservations[position].house.toString()
             rootView.findViewById<TextView>(R.id.textViewReservationGuestsNumber).text = reservations[position].guestsNumber.toString()
 
             return rootView

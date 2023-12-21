@@ -5,40 +5,39 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import ipca.utility.bookinghousesapp.Models.User
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminUsersListBinding
 
 class AdminUsersList : AppCompatActivity() {
 
     private lateinit var binding : ActivityAdminUsersListBinding
-    var users = arrayListOf<User>(
-        User(1, "Pedro", "pedro@gmail.com", "password", 12345, "token", true),
-        User(2, "Luis", "luis@gmail.com", "password2", 67890, "token2", true),
-        User(3, "Diogo", "diogo@gmail.com", "password3", 19534, "token3", true),
-        User(3, "Diogo", "diogo@gmail.com", "password3", 19534, "token3", true),
-        User(3, "Diogo", "diogo@gmail.com", "password3", 19534, "token3", true),
-        User(3, "Diogo", "diogo@gmail.com", "password3", 19534, "token3", true),
-        User(3, "Diogo", "diogo@gmail.com", "password3", 19534, "token3", true),
-        User(3, "Diogo", "diogo@gmail.com", "password3", 19534, "token3", true),
-        User(3, "Diogo", "diogo@gmail.com", "password3", 19534, "token3", true),
-        User(3, "Diogo", "diogo@gmail.com", "password3", 19534, "token3", true),
-        User(3, "Diogo", "diogo@gmail.com", "password3", 19534, "token3", true),
-        User(3, "Diogo", "diogo@gmail.com", "password3", 19534, "token3", true),
-        User(3, "Diogo", "diogo@gmail.com", "password3", 19534, "token3", true),
-        User(3, "Diogo", "diogo@gmail.com", "password3", 19534, "token3", true),
+    private var users = arrayListOf<io.swagger.client.models.User>()
 
-    )
-
-    val listUserAdapter = UsersListAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAdminUsersListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.listViewUsers.adapter = listUserAdapter
+
+        Backend.GetAllUsers(this, lifecycleScope) { fetchedUsers ->
+            users.addAll(fetchedUsers)
+            setupListView()
+        }
+
     }
 
-    inner class UsersListAdapter : BaseAdapter(){
+    private fun setupListView() {
+        val adapter = UserListAdapter()
+        binding.listViewUsers.adapter = adapter
+    }
+
+    inner class UserListAdapter : BaseAdapter() {
+
         override fun getCount(): Int {
             return users.size
         }
@@ -48,7 +47,7 @@ class AdminUsersList : AppCompatActivity() {
         }
 
         override fun getItemId(position: Int): Long {
-            return 0
+            return position.toLong()
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -56,9 +55,15 @@ class AdminUsersList : AppCompatActivity() {
             rootView.findViewById<TextView>(R.id.TextViewNomeUser).text = users[position].name
             rootView.findViewById<TextView>(R.id.TextViewEmailUser).text = users[position].email
             rootView.findViewById<TextView>(R.id.TextViewPhoneUser).text = users[position].phone.toString()
-
+            val avatar = rootView.findViewById<ImageView>(R.id.imageView7)
+            val imageUrl = "${Backend.BASE_API}/Users/${users[position].image}${users[position].imageFormat}"
+            Glide.with(this@AdminUsersList)
+                .asBitmap()
+                .load(imageUrl)
+                .transition(BitmapTransitionOptions.withCrossFade())
+                .transform(CircleCrop())
+                .into(avatar)
             return rootView
         }
-
     }
 }

@@ -99,6 +99,7 @@
                 android:text="Email" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutAllUsers"
                 android:layout_width="match_parent"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
@@ -149,6 +150,7 @@
                     app:srcCompat="@drawable/icons8_arrow_50" />
             </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutAllReservations"
                 android:layout_width="match_parent"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
@@ -199,6 +201,7 @@
                     app:srcCompat="@drawable/icons8_arrow_50" />
             </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutAllHouses"
                 android:layout_width="match_parent"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
