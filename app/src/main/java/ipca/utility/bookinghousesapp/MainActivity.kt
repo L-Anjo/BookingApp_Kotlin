@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -82,23 +83,62 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        Backend.fetchAllHouses(lifecycleScope) { houses ->
+       /*Backend.fetchAllHouses(lifecycleScope) { houses ->
             houses?.let {
                 adapter.updateData(houses.toList())
             }
 
+        }*/
+        Backend.fetchAllHouses().observe(this){
+            it.onError {error ->
+                Toast.makeText(
+                    this@MainActivity,
+                    "Erro:${error.error}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            it.onNetworkError {
+                Toast.makeText(
+                    this@MainActivity,
+                    "Sem Ligação à Internet",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            it.onSuccess {houses ->
+                houses?.let {
+                    adapter.updateData(houses.toList())
+                }
+            }
         }
+
 
         buttonSearch.setOnClickListener {
             val editTextLocalidade = binding.editTextTextLocalidade.text.toString()
             val editTextGuests = binding.editTextTextGuests.text.toString().toIntOrNull()
             val radiobuttonRoom = binding.radioButtonRoom.isChecked
 
-            Backend.filterHouses(lifecycleScope,editTextLocalidade,editTextGuests,radiobuttonRoom,startDate, endDate){houses ->
-                houses?.let {
-                    adapter.updateData(houses.toList())
+            Backend.filterHouses(editTextLocalidade,editTextGuests,radiobuttonRoom,startDate, endDate).observe(this){
+                it.onError {error ->
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Erro:${error.error}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
-        }
+                it.onNetworkError {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Sem Ligação à Internet",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                it.onSuccess { houses ->
+                    houses?.let {
+                        adapter.updateData(houses.toList())
+                    }
+                }
+            }
+
         }
 
     }

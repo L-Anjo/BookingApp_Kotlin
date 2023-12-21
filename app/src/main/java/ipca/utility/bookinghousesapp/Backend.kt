@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import android.util.Log
 import android.content.Context
 import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import io.swagger.client.apis.AuthApi
 import io.swagger.client.apis.HouseApi
 import io.swagger.client.apis.UserApi
@@ -12,18 +14,36 @@ import java.time.LocalDateTime
 import java.util.Date
 import io.swagger.client.infrastructure.ClientException
 import io.swagger.client.infrastructure.ServerException
-import io.swagger.client.infrastructure.ApiClient
-import ipca.utility.bookinghousesapp.Models.House
-import ipca.utility.bookinghousesapp.Models.Image
-import ipca.utility.bookinghousesapp.Models.PostalCode
-import ipca.utility.bookinghousesapp.Models.User
+import ipca.utility.bookinghousesapp.Backend.AUTHENTICATION_API
+import ipca.utility.bookinghousesapp.Backend.BASE_API
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import org.json.JSONArray
-import org.json.JSONObject
+
+import java.io.IOException
 import java.util.Objects
+
+sealed class ResultWrapper<out T> {
+    data class Success<out T>(val value: T) : ResultWrapper<T>()
+    data class Error(val code: Int? = null, val error: String? = null) :
+        ResultWrapper<Nothing>()
+
+    object NetworkError : ResultWrapper<Nothing>()
+
+    inline fun onSuccess(action: (value: T) -> Unit): ResultWrapper<T> {
+        if (this is Success) action(value)
+        return this
+    }
+
+    inline fun onError(action: (error: Error) -> Unit): ResultWrapper<T> {
+        if (this is Error) action(this)
+        return this
+    }
+
+    inline fun onNetworkError(action: () -> Unit): ResultWrapper<T> {
+        if (this is NetworkError) action()
+        return this
+    }
+}
 
 object Backend {
 
@@ -31,36 +51,35 @@ object Backend {
     internal const val AUTHENTICATION_API = "http://10.0.2.2:5159"
     //private const val PATH_HOUSES = "House"
 
-    //private val client = OkHttpClient()
-
-    @SuppressLint("SuspiciousIndentation")
-    fun fetchHouseDetail(lifecycleScope: LifecycleCoroutineScope, callback: (io.swagger.client.models.House)->Unit) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val houseApi = HouseApi("${BASE_API}").apiHouseIdGet(1)
-            lifecycleScope.launch(Dispatchers.Main) {
-                callback(houseApi)
+    suspend fun <T> wrap(apiCall: suspend () -> T): ResultWrapper<T> {
+        return try {
+            ResultWrapper.Success(apiCall())
+        } catch (throwable: Throwable) {
+            Log.e("Repository", throwable.toString())
+            when (throwable) {
+                is IOException -> ResultWrapper.NetworkError
+                else -> {
+                    ResultWrapper.Error(0, throwable.message)
+                }
             }
         }
     }
 
-    fun fetchAllHouses(lifecycleScope: LifecycleCoroutineScope, callback: (Array<io.swagger.client.models.House>)->Unit) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val houseListApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseGet()
-            lifecycleScope.launch(Dispatchers.Main) {
-                callback(houseListApi)
-            }
-        }
+    fun fetchHouseDetail(): LiveData<ResultWrapper<io.swagger.client.models.House>> =
+    liveData(Dispatchers.IO) {
+        emit( wrap { HouseApi(BASE_API).apiHouseIdGet(1) })
     }
 
-    fun filterHouses(lifecycleScope: LifecycleCoroutineScope,location: String?,guestsNumber: Int?,checkedV: Boolean?, startDate: LocalDateTime?,endDate: LocalDateTime?, callback: (Array<io.swagger.client.models.House>)->Unit) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val housesFiltredApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseFilteredGet(location,guestsNumber,checkedV,startDate,endDate)
-            lifecycleScope.launch(Dispatchers.Main) {
-                callback(housesFiltredApi)
-            }
+    fun fetchAllHouses(): LiveData<ResultWrapper<Array<io.swagger.client.models.House>>> =
+        liveData(Dispatchers.IO) {
+            emit( wrap { HouseApi(BASE_API).apiHouseGet() })
         }
-    }
 
+    fun filterHouses(location: String?,guestsNumber: Int?,checkedV: Boolean?, startDate: LocalDateTime?,endDate: LocalDateTime?):
+            LiveData<ResultWrapper<Array<io.swagger.client.models.House>>> =
+        liveData(Dispatchers.IO) {
+            emit( wrap { HouseApi(BASE_API).apiHouseFilteredGet(location,guestsNumber,checkedV,startDate,endDate) })
+        }
 
 
     @SuppressLint("SuspiciousIndentation")
