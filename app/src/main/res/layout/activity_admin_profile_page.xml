@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfilePageActivity">
+    tools:context=".AdminProfilePage">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:text="Perfil"
+                    android:text="Admin"
                     android:textColor="@color/white"
                     android:textSize="30sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -99,49 +99,48 @@
                 android:text="Email" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayoutEditProfile"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="17dp"
                 android:layout_marginEnd="32dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="16dp"
+                android:layout_height="match_parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout"
+                    android:id="@+id/constraintLayout10"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/background_oval_1"
+                    android:background="@drawable/background_oval_2green"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/imageView8"
+                        android:id="@+id/imageView20"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/icons8_edit_50" />
+                        app:srcCompat="@drawable/icons8_person_30" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/textView21"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="Editar Perfil"
+                    android:text="Utilizadores"
                     android:textColor="#FA5F5F"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
-                    app:layout_constraintStart_toEndOf="@+id/constraintLayout"
-                    app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+                    app:layout_constraintBottom_toBottomOf="@+id/constraintLayout10"
+                    app:layout_constraintStart_toEndOf="@+id/constraintLayout10"
+                    app:layout_constraintTop_toTopOf="@+id/constraintLayout10" />
 
                 <ImageView
-                    android:id="@+id/imageView10"
+                    android:id="@+id/imageView14"
                     android:layout_width="35dp"
                     android:layout_height="33dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -182,7 +181,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="Minhas Reservas"
+                    android:text="Reservas"
                     android:textColor="#FA5F5F"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -232,7 +231,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="Minhas Casas"
+                    android:text="Casas"
                     android:textColor="#FA5F5F"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -248,100 +247,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/icons8_arrow_50" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayoutAdminProfile"
-                android:layout_width="match_parent"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="16dp"
-                android:layout_height="match_parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout5"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:background="@drawable/background_oval_5yellow"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/imageView20"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/icons8_admin_50" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/textView21"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="Admin"
-                    android:textColor="#FA5F5F"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/constraintLayout5"
-                    app:layout_constraintStart_toEndOf="@+id/constraintLayout5"
-                    app:layout_constraintTop_toTopOf="@+id/constraintLayout5" />
-
-                <ImageView
-                    android:id="@+id/imageView22"
-                    android:layout_width="35dp"
-                    android:layout_height="33dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/icons8_arrow_50" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayoutLogout"
-                android:layout_width="match_parent"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="16dp"
-                android:layout_height="match_parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout4"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:background="@drawable/background_oval_2green"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/imageView19"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/icons8_logout_50" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/textView20"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="Sair"
-                    android:textColor="#FA5F5F"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/constraintLayout4"
-                    app:layout_constraintStart_toEndOf="@+id/constraintLayout4"
-                    app:layout_constraintTop_toTopOf="@+id/constraintLayout4" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>

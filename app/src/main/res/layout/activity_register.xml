@@ -79,12 +79,23 @@
             android:textColor="#707070"
             android:textSize="19sp" />
 
+        <TextView
+            android:id="@+id/textViewErrorRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="#B01010"
+            android:layout_marginTop="5dp" />
+
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonRegister"
             style="@android:style/Widget.Button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/button_background"
             android:text="Registar"
             android:textColor="#ffffff"
