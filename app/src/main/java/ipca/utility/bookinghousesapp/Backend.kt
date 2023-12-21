@@ -43,9 +43,12 @@ object Backend {
         }
     }
 
-    fun fetchAllHouses(lifecycleScope: LifecycleCoroutineScope, callback: (Array<io.swagger.client.models.House>)->Unit) {
+    fun fetchAllHouses(context: Context, lifecycleScope: LifecycleCoroutineScope, callback: (Array<io.swagger.client.models.House>)->Unit) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val houseListApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseGet()
+            val sharedPreferences =
+                context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", null)
+            val houseListApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseGet(authToken)
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(houseListApi)
             }
@@ -180,11 +183,14 @@ object Backend {
 
     @SuppressLint("SuspiciousIndentation")
     fun GetAllUsers(
+        context: Context,
         lifecycleScope: LifecycleCoroutineScope,
         callback: (Array<io.swagger.client.models.User>) -> Unit
     ) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val userApi = UserApi("${BASE_API}").apiUserGet()
+            val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", "")
+            val userApi = UserApi("${BASE_API}").apiUserGet(authToken)
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(userApi)
             }

@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        Backend.fetchAllHouses(lifecycleScope) { houses ->
+        Backend.fetchAllHouses(this, lifecycleScope) { houses ->
             houses?.let {
                 adapter.updateData(houses.toList())
             }
@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val house = houses[position]
-            var DC = "${house.postalCode.district}, ${house.postalCode.concelho}"
+            var DC = "${house.postalCode?.district}, ${house.postalCode?.concelho}"
             val displayText = if (house.priceyear != null) {
                 "${house.priceyear}€ / Ano"
             } else {
@@ -176,7 +176,7 @@ class MainActivity : AppCompatActivity() {
                 return 0.0
             }
 
-            var totalFeedback = 0
+            var totalFeedback = 0.0
             reservations.forEach { reservation ->
                 reservation.feedback?.let {
                     totalFeedback += it.classification!!
