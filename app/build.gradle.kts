@@ -48,6 +48,12 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    dependencies {
+        implementation ("io.jsonwebtoken:jjwt-api:0.11.5")
+        implementation ("io.jsonwebtoken:jjwt-impl:0.11.5")
+        implementation ("io.jsonwebtoken:jjwt-jackson:0.11.5")
+        implementation ("com.auth0.android:jwtdecode:2.0.0")
+    }
 
     // define a BOM and its version
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.11.0"))
