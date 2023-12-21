@@ -43,12 +43,9 @@ object Backend {
         }
     }
 
-    fun fetchAllHouses(context: Context, lifecycleScope: LifecycleCoroutineScope, callback: (Array<io.swagger.client.models.House>)->Unit) {
+    fun fetchAllHouses(lifecycleScope: LifecycleCoroutineScope, callback: (Array<io.swagger.client.models.House>)->Unit) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val sharedPreferences =
-                context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
-            val authToken = sharedPreferences.getString("access_token", null)
-            val houseListApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseGet(authToken)
+            val houseListApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseGet()
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(houseListApi)
             }
