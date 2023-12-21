@@ -6,7 +6,8 @@
     </style>
 
     <style name="ThemeMaterialCalendar" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
-        <item name="android:windowFullscreen">false</item>
+        <item name="colorPrimary">#FF4848</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
     </style>
 
     <style name="Theme.BookingHousesApp" parent="Base.Theme.BookingHousesApp" />

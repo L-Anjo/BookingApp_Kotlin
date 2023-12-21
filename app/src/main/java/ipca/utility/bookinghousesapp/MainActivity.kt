@@ -6,9 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
@@ -27,6 +29,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
@@ -34,8 +40,8 @@ import java.util.TimeZone
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
-    private lateinit var btShowData: Button
     private lateinit var textShowData: TextView
+    private lateinit var getData: TextView
     var houses = arrayListOf<io.swagger.client.models.House>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,14 +49,23 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         val recyclerView = binding.RecycleViewHouses
         recyclerView.layoutManager = LinearLayoutManager(this)
         val adapter = HouseAdapter(houses)
         recyclerView.adapter = adapter
 
-        btShowData = binding.button2
-        textShowData = binding.textView3
-        btShowData.setOnClickListener {
+        var editTextLocalidade = binding.editTextTextLocalidade.text.toString()?:null
+        var editTextGuests: Int? = binding.editTextTextGuests.text.toString().toIntOrNull()
+        var radiobuttonHouse = binding.radioButtonHouse
+        var radiobuttonRoom = binding.radioButtonRoom
+        var buttonSearch = binding.buttonSearchFilter
+        var startDate: LocalDateTime? = null
+        var endDate: LocalDateTime? = null
+
+        textShowData = binding.textViewCheckInOut
+
+        textShowData.setOnClickListener {
             val picker = MaterialDatePicker.Builder.dateRangePicker()
                 .setTheme(R.style.ThemeMaterialCalendar)
                 .setTitleText("Selecione a Data de Estadia")
@@ -61,6 +76,9 @@ class MainActivity : AppCompatActivity() {
 
             picker.addOnPositiveButtonClickListener {
                 textShowData.setText(convertTimeToDate(it.first) + " - " +convertTimeToDate(it.second))
+                startDate = convertTimeToDatee(it.first)
+                endDate = convertTimeToDatee(it.second)
+
             }
             picker.addOnNegativeButtonClickListener {
                 picker.dismiss()
@@ -75,6 +93,14 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        buttonSearch.setOnClickListener {
+        Backend.filterHouses(lifecycleScope,editTextLocalidade,editTextGuests,startDate, endDate){houses ->
+            houses?.let {
+                adapter.updateData(houses.toList())
+            }
+        }
+        }
+
     }
 
 
@@ -83,6 +109,10 @@ class MainActivity : AppCompatActivity() {
         utc.timeInMillis = time
         val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         return format.format(utc.time)
+    }
+
+    private fun convertTimeToDatee(time: Long): LocalDateTime{
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneOffset.UTC)
     }
 
     class HouseAdapter(private var houses: List<io.swagger.client.models.House>) : RecyclerView.Adapter<HouseAdapter.ViewHolder>() {

@@ -3,6 +3,7 @@ package ipca.utility.bookinghousesapp
 import android.annotation.SuppressLint
 import androidx.lifecycle.LifecycleCoroutineScope
 import io.swagger.client.apis.HouseApi
+import io.swagger.client.apis.UserApi
 import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.Models.Image
 import ipca.utility.bookinghousesapp.Models.PostalCode
@@ -12,11 +13,14 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
 import org.json.JSONObject
+import java.time.LocalDateTime
+import java.util.Date
 import java.util.Objects
 
 object Backend {
 
     internal const val BASE_API = "http://10.0.2.2:7105"
+
 
     @SuppressLint("SuspiciousIndentation")
     fun fetchHouseDetail(lifecycleScope: LifecycleCoroutineScope, callback: (io.swagger.client.models.House)->Unit) {
@@ -33,6 +37,15 @@ object Backend {
             val houseListApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseGet()
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(houseListApi)
+            }
+        }
+    }
+
+    fun filterHouses(lifecycleScope: LifecycleCoroutineScope,location: String?,guestsNumber: Int?, startDate: LocalDateTime?,endDate: LocalDateTime?, callback: (Array<io.swagger.client.models.House>)->Unit) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val housesFiltredApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseFilteredGet(location,guestsNumber,startDate,endDate)
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(housesFiltredApi)
             }
         }
     }
