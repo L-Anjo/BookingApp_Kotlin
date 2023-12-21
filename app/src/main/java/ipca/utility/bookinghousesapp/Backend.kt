@@ -7,6 +7,7 @@ import android.content.Context
 import androidx.lifecycle.LifecycleCoroutineScope
 import io.swagger.client.apis.AuthApi
 import io.swagger.client.apis.HouseApi
+import io.swagger.client.apis.ReservationApi
 import io.swagger.client.apis.UserApi
 import io.swagger.client.infrastructure.ClientException
 import io.swagger.client.infrastructure.ServerException
@@ -206,13 +207,59 @@ object Backend {
 
     @SuppressLint("SuspiciousIndentation")
     fun GetAllUsers(
+        context: Context,
         lifecycleScope: LifecycleCoroutineScope,
         callback: (Array<io.swagger.client.models.User>) -> Unit
     ) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val userApi = UserApi("${BASE_API}").apiUserGet()
+            val sharedPreferences =
+                context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", null)
+            val userApi = UserApi("${BASE_API}").apiUserGet(authToken)
+
+
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(userApi)
+            }
+
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun GetAllReservations(
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope,
+        callback: (Array<io.swagger.client.models.Reservation>) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val sharedPreferences =
+                context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", null)
+            val reservationsApi = ReservationApi("${BASE_API}").apiReservationGet(authToken)
+
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(reservationsApi)
+            }
+
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun GetAllHouses(
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope,
+        callback: (Array<io.swagger.client.models.House>) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val sharedPreferences =
+                context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", null)
+            val housesApi = HouseApi("${BASE_API}").apiHouseGet(authToken)
+
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(housesApi)
             }
 
         }
