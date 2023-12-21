@@ -38,6 +38,10 @@ class HouseDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHousedetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //
+        val houseId = intent.getIntExtra("HOUSE_ID", -1)
+
         binding.listViewFeebackDetails.adapter = feedbackAdapter
 
         var totalClassification = 0.0

@@ -40,7 +40,7 @@ data class House(
 
 data class House (
 
-    val idHouse: kotlin.Int? = null,
+    val id_house: kotlin.Int? = null,
     val name: kotlin.String,
     val doorNumber: kotlin.Int,
     val floorNumber: kotlin.Int,
