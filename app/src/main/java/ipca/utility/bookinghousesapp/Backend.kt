@@ -52,9 +52,9 @@ object Backend {
         }
     }
 
-    fun filterHouses(lifecycleScope: LifecycleCoroutineScope,location: String?,guestsNumber: Int?, startDate: LocalDateTime?,endDate: LocalDateTime?, callback: (Array<io.swagger.client.models.House>)->Unit) {
+    fun filterHouses(lifecycleScope: LifecycleCoroutineScope,location: String?,guestsNumber: Int?,checkedV: Boolean?, startDate: LocalDateTime?,endDate: LocalDateTime?, callback: (Array<io.swagger.client.models.House>)->Unit) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val housesFiltredApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseFilteredGet(location,guestsNumber,startDate,endDate)
+            val housesFiltredApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseFilteredGet(location,guestsNumber,checkedV,startDate,endDate)
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(housesFiltredApi)
             }

@@ -55,10 +55,6 @@ class MainActivity : AppCompatActivity() {
         val adapter = HouseAdapter(houses)
         recyclerView.adapter = adapter
 
-        var editTextLocalidade = binding.editTextTextLocalidade.text.toString()?:null
-        var editTextGuests: Int? = binding.editTextTextGuests.text.toString().toIntOrNull()
-        var radiobuttonHouse = binding.radioButtonHouse
-        var radiobuttonRoom = binding.radioButtonRoom
         var buttonSearch = binding.buttonSearchFilter
         var startDate: LocalDateTime? = null
         var endDate: LocalDateTime? = null
@@ -94,10 +90,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonSearch.setOnClickListener {
-        Backend.filterHouses(lifecycleScope,editTextLocalidade,editTextGuests,startDate, endDate){houses ->
-            houses?.let {
-                adapter.updateData(houses.toList())
-            }
+            val editTextLocalidade = binding.editTextTextLocalidade.text.toString()
+            val editTextGuests = binding.editTextTextGuests.text.toString().toIntOrNull()
+            val radiobuttonRoom = binding.radioButtonRoom.isChecked
+
+            Backend.filterHouses(lifecycleScope,editTextLocalidade,editTextGuests,radiobuttonRoom,startDate, endDate){houses ->
+                houses?.let {
+                    adapter.updateData(houses.toList())
+                }
         }
         }
 
