@@ -78,7 +78,7 @@ object Backend {
     fun filterHouses(location: String?,guestsNumber: Int?,checkedV: Boolean?, startDate: LocalDateTime?,endDate: LocalDateTime?):
             LiveData<ResultWrapper<Array<io.swagger.client.models.House>>> =
         liveData(Dispatchers.IO) {
-            emit( wrap { HouseApi(BASE_API).apiHouseFilteredGet(location,guestsNumber,checkedV,startDate,endDate) })
+            //emit( wrap { HouseApi(BASE_API).apiHouseFilteredGet(location,guestsNumber,checkedV,startDate,endDate) })
         }
 
 
@@ -228,6 +228,67 @@ object Backend {
                 callback(userApi)
             }
 
+        }
+    }
+
+
+    fun fetchAllHousesSusp(lifecycleScope: LifecycleCoroutineScope, callback: (Array<io.swagger.client.models.House>) -> Unit) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val housesApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseSuspGet()
+            //val housesApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseGet()
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(housesApi)
+                // log para verificar os ids
+                housesApi.forEach { house ->
+                    println("House ID: ${house.id_house}")
+                }
+            }
+
+        }
+    }
+
+    fun updateHouseStateApproved(id: Int, lifecycleScope: LifecycleCoroutineScope, callback: () -> Unit) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            HouseApi("${BASE_API}").apiHouseStateIdPut(id)
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback()
+            }
+
+        }
+    }
+
+
+    fun deleteHouseById(id: Int, lifecycleScope: LifecycleCoroutineScope, callback: () -> Unit) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                HouseApi("${BASE_API}").apiHouseIdDelete(id)
+                lifecycleScope.launch(Dispatchers.Main) {
+                    callback()
+                }
+            } catch (e: Exception) {
+                // Tratar erros, como por exemplo, notificar o utilizador ou registar o erro
+                // Podes imprimir uma mensagem de erro simplesmente assim:
+                println("Erro ao apagar a casa: ${e.message}")
+            }
+        }
+    }
+
+    fun createHouse(house: io.swagger.client.models.House, lifecycleScope: LifecycleCoroutineScope, callback: (Boolean) -> Unit) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val houseApi = HouseApi("${BASE_API}").apiHousePost(house)
+                // Se a criação for bem-sucedida, você pode retornar true
+                lifecycleScope.launch(Dispatchers.Main) {
+                    callback(true)
+                }
+            } catch (e: Exception) {
+                // Em caso de erro, retorne false ou trate conforme necessário
+                // Aqui você pode imprimir uma mensagem de erro simplesmente assim:
+                println("Erro ao criar a casa: ${e.message}")
+                lifecycleScope.launch(Dispatchers.Main) {
+                    callback(false)
+                }
+            }
         }
     }
 

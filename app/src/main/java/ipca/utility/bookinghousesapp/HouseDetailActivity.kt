@@ -42,6 +42,10 @@ class HouseDetailActivity : AppCompatActivity() {
         binding = ActivityHousedetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Obter o houseId da intent
+        val houseId = intent.getIntExtra("HOUSE_ID", -1)
+
+
         progressDialog = ProgressDialog(this)
         progressDialog.setMessage("A carregar...")
         progressDialog.setCancelable(false)
