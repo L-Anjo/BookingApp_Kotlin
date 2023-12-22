@@ -6,53 +6,55 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/imageViewHouse"
         android:layout_width="113dp"
         android:layout_height="110dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:cropToPadding="false"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icons8_person_64" />
 
     <TextView
-        android:id="@+id/TextViewNomeUser"
+        android:id="@+id/TextViewNomeHouse"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="64dp"
         android:text="Nome"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView7"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/imageViewHouse"
+        app:layout_constraintTop_toTopOf="@+id/imageViewHouse" />
 
     <TextView
-        android:id="@+id/TextViewPhoneUser"
+        android:id="@+id/TextViewLocalidadeHouse"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="64dp"
-        android:text="Telemóvel"
+        android:text="Localidade"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView7"
-        app:layout_constraintTop_toBottomOf="@+id/TextViewEmailUser" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageViewHouse"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewNomeHouse" />
 
     <TextView
-        android:id="@+id/TextViewEmailUser"
+        android:id="@+id/textViewHouseCodPostal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="64dp"
-        android:text="Email"
-        android:textColor="@color/black"
+        android:text="Código Postal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView7"
-        app:layout_constraintTop_toBottomOf="@+id/TextViewNomeUser" />
+        app:layout_constraintStart_toEndOf="@+id/imageViewHouse"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewLocalidadeHouse" />
+
 
     <View
         android:id="@+id/line2"
@@ -65,7 +67,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewHouse" />
 
     <Button
         android:id="@+id/buttonRemove"
@@ -74,21 +76,20 @@
         android:background="@drawable/icons8_remove_50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/TextViewEmailUser"
+        app:layout_constraintStart_toEndOf="@+id/TextViewLocalidadeHouse"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/TextViewStateUser"
+        android:id="@+id/textViewHouseStatus"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="64dp"
-        android:layout_marginBottom="8dp"
         android:text="Estado"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView7"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView7"
-        app:layout_constraintTop_toBottomOf="@+id/TextViewPhoneUser" />
+        app:layout_constraintStart_toEndOf="@+id/imageViewHouse"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHouseCodPostal" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package ipca.utility.bookinghousesapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
@@ -30,6 +31,21 @@ class AdminProfilePage : AppCompatActivity() {
                     .transform(CircleCrop())
                     .into(binding.imageView11)
             }
+        }
+
+        binding.constraintLayoutAllReservations.setOnClickListener{
+            val intent = Intent(this,AdminReservationsList::class.java )
+            startActivity(intent)
+        }
+
+        binding.constraintLayoutAllUsers.setOnClickListener{
+            val intent = Intent(this,AdminUsersList::class.java )
+            startActivity(intent)
+        }
+
+        binding.constraintLayoutAllHouses.setOnClickListener{
+            val intent = Intent(this,AdminHousesList::class.java )
+            startActivity(intent)
         }
     }
 }
