@@ -1,6 +1,5 @@
 package ipca.utility.bookinghousesapp
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,12 +7,7 @@ import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import android.util.Log
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import android.widget.EditText
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -55,11 +49,11 @@ class LoginActivity : AppCompatActivity() {
                             Log.w("Teste", "Fetching FCM registration token failed", task.exception)
                             return@OnCompleteListener
                         }
-                        val tokenn = task.result
+                        val token = task.result
 
                         //FirebaseApp.initializeApp(this)
                         val db = FirebaseFirestore.getInstance()
-                        val tokenData = hashMapOf("token" to tokenn)
+                        val tokenData = hashMapOf("token" to token)
                         db.collection("tokens").document(userId.toString())
                             .set(tokenData)
                             .addOnSuccessListener {
@@ -68,7 +62,7 @@ class LoginActivity : AppCompatActivity() {
                             .addOnFailureListener { e ->
                                 Log.w("Teste", "Erro ao salvar token no Firestore", e)
                             }
-                    })
+                    })*/
                 } else {
                     binding.textViewError.text = "Credenciais inválidas. Tente novamente."
                 }
@@ -98,12 +92,6 @@ class LoginActivity : AppCompatActivity() {
                 // FCM SDK (and your app) can post notifications.
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
 
-            } else {
-                // Directly ask for the permission
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
-    }
 
 
 }

@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -21,10 +22,22 @@
             android:resource="@drawable/ezhouselogo_removebg_preview" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/Accent"/>
+            android:resource="@color/Accent" />
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
+
+        <activity
+            android:name=".UserReservationsList"
+            android:exported="false" />
+
+        <activity
+            android:name=".UserHousesList"
+            android:exported="false" />
+        <activity
+            android:name=".AdminHousesList"
+            android:exported="false" />
         <activity
             android:name=".AdminProfilePage"
             android:exported="false" />
@@ -33,10 +46,10 @@
             android:exported="false" />
         <activity
             android:name=".ProfilePageActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".IntroActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".AdminReservationsList"
             android:exported="false" />
