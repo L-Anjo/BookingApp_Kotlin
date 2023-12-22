@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -19,19 +18,13 @@
         tools:targetApi="31">
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_launcher_foreground" />
+            android:resource="@drawable/ezhouselogo_removebg_preview" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/Accent" />
-        <activity
-            android:name=".UserReservationsList"
-            android:exported="false" />
-        <activity
-            android:name=".UserHousesList"
-            android:exported="false" />
-        <activity
-            android:name=".AdminHousesList"
-            android:exported="false" />
+            android:resource="@color/Accent"/>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
         <activity
             android:name=".AdminProfilePage"
             android:exported="false" />
@@ -40,10 +33,10 @@
             android:exported="false" />
         <activity
             android:name=".ProfilePageActivity"
-            android:exported="false" />
+            android:exported="false"></activity>
         <activity
             android:name=".IntroActivity"
-            android:exported="false" />
+            android:exported="false"></activity>
         <activity
             android:name=".AdminReservationsList"
             android:exported="false" />
@@ -68,7 +61,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

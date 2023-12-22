@@ -57,8 +57,8 @@ sealed class ResultWrapper<out T> {
 
 object Backend {
 
-    internal const val BASE_API = "https://bookapih.azurewebsites.net"
-    internal const val AUTHENTICATION_API = "https://authenticationezbooking20231222152833.azurewebsites.net"
+    internal const val BASE_API = "http://10.0.2.2:7105"
+    internal const val AUTHENTICATION_API = "http://10.0.2.2:5159"
     //private const val PATH_HOUSES = "House"
 
     suspend fun <T> wrap(apiCall: suspend () -> T): ResultWrapper<T> {

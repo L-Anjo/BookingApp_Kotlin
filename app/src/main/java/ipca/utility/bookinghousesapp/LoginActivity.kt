@@ -1,5 +1,6 @@
 package ipca.utility.bookinghousesapp
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,7 +8,12 @@ import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import android.util.Log
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.widget.EditText
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,6 +35,7 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.editTextEmail.text.toString()
             val password = binding.editTextPassword.text.toString()
 
+            askNotificationPermission()
             Backend.login(this, lifecycleScope, email, password) { loginSuccessful ->
                 if (loginSuccessful) {
 
@@ -41,17 +48,18 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("LoginActivity", "Login bem-sucedido!")
                     Log.d("token do login", token.toString())
                     Log.d("id do utilizador", userId.toString())
-                    Log.d("id do tipo de utilizador", userType.toString())/*
+                    Log.d("id do tipo de utilizador", userType.toString())
+
                     FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                         if (!task.isSuccessful) {
                             Log.w("Teste", "Fetching FCM registration token failed", task.exception)
                             return@OnCompleteListener
                         }
-                        val token = task.result
+                        val tokenn = task.result
 
                         //FirebaseApp.initializeApp(this)
                         val db = FirebaseFirestore.getInstance()
-                        val tokenData = hashMapOf("token" to token)
+                        val tokenData = hashMapOf("token" to tokenn)
                         db.collection("tokens").document(userId.toString())
                             .set(tokenData)
                             .addOnSuccessListener {
@@ -60,7 +68,7 @@ class LoginActivity : AppCompatActivity() {
                             .addOnFailureListener { e ->
                                 Log.w("Teste", "Erro ao salvar token no Firestore", e)
                             }
-                    })*/
+                    })
                 } else {
                     binding.textViewError.text = "Credenciais inválidas. Tente novamente."
                 }
@@ -72,8 +80,30 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // FCM SDK (and your app) can post notifications.
+        } else {
 
+        }
+    }
+    private fun askNotificationPermission() {
+        // This is only necessary for API level >= 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                // FCM SDK (and your app) can post notifications.
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
 
+            } else {
+                // Directly ask for the permission
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
 
 
 }
