@@ -1,11 +1,13 @@
 package ipca.utility.bookinghousesapp
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -19,6 +21,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -34,16 +37,31 @@ import java.util.TimeZone
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var binding : ActivityMainBinding
     private lateinit var textShowData: TextView
     private lateinit var getData: TextView
     private lateinit var progressDialog: ProgressDialog
+
     var houses = arrayListOf<io.swagger.client.models.House>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> startActivity(Intent(this, MainActivity::class.java))
+                R.id.notifications -> startActivity(Intent(this, HouseDetailActivity::class.java))
+                R.id.profile -> startActivity(Intent(this, ProfilePageActivity::class.java))
+            }
+            true
+        }
+
+        // Define o layout inicial
+        //inflateLayout(R.layout.activity_main)
 
         progressDialog = ProgressDialog(this)
         progressDialog.setMessage("A carregar...")
@@ -58,6 +76,8 @@ class MainActivity : AppCompatActivity() {
         var buttonSearch = binding.buttonSearchFilter
         var startDate: LocalDateTime? = null
         var endDate: LocalDateTime? = null
+
+
 
         textShowData = binding.textViewCheckInOut
 
@@ -103,6 +123,7 @@ class MainActivity : AppCompatActivity() {
                 progressDialog.dismiss()
             }
         }
+
 
 
         buttonSearch.setOnClickListener {

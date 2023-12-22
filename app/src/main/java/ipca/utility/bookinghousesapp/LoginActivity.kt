@@ -8,6 +8,10 @@ import androidx.lifecycle.lifecycleScope
 import android.util.Log
 import android.content.Context
 import android.widget.EditText
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import io.swagger.client.apis.AuthApi
 import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
 import ipca.utility.bookinghousesapp.databinding.ActivityLoginBinding
@@ -37,7 +41,26 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("LoginActivity", "Login bem-sucedido!")
                     Log.d("token do login", token.toString())
                     Log.d("id do utilizador", userId.toString())
-                    Log.d("id do tipo de utilizador", userType.toString())
+                    Log.d("id do tipo de utilizador", userType.toString())/*
+                    FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                        if (!task.isSuccessful) {
+                            Log.w("Teste", "Fetching FCM registration token failed", task.exception)
+                            return@OnCompleteListener
+                        }
+                        val token = task.result
+
+                        //FirebaseApp.initializeApp(this)
+                        val db = FirebaseFirestore.getInstance()
+                        val tokenData = hashMapOf("token" to token)
+                        db.collection("tokens").document(userId.toString())
+                            .set(tokenData)
+                            .addOnSuccessListener {
+                                Log.d("Teste", "Token salvo no Firestore com ID: ${userId}")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.w("Teste", "Erro ao salvar token no Firestore", e)
+                            }
+                    })*/
                 } else {
                     binding.textViewError.text = "Credenciais inválidas. Tente novamente."
                 }
@@ -49,4 +72,8 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+
+
+
 }
