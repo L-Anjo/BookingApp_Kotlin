@@ -1,5 +1,6 @@
 package ipca.utility.bookinghousesapp
 
+import android.app.ProgressDialog
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -30,6 +31,7 @@ import org.json.JSONObject
 class HouseDetailActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityHousedetailBinding
+    private lateinit var progressDialog: ProgressDialog
     var house : io.swagger.client.models.House? = null
     var usersfeed = mutableListOf<io.swagger.client.models.User>()
     var feedbacks = arrayListOf<io.swagger.client.models.Feedback?>()
@@ -39,6 +41,12 @@ class HouseDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHousedetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("A carregar...")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
+
         binding.listViewFeebackDetails.adapter = feedbackAdapter
 
         var totalClassification = 0.0
@@ -122,64 +130,8 @@ class HouseDetailActivity : AppCompatActivity() {
 
                 feedbackAdapter.notifyDataSetChanged()
             }
+            progressDialog.dismiss()
         }
-/*
-        Backend.fetchHouseDetail(lifecycleScope) { house ->
-            house?.let {
-                val displayText = if (it.priceyear != null) {
-                    "${it.priceyear}€ / Ano"
-                } else {
-                    "${it.price}€ / Noite"
-                }
-                binding.textViewNameDetail.text = it.name
-                binding.textViewGuestsDetail.text = "${it.guestsNumber}  Pessoas"
-                binding.textViewFloorDetail.text = "${it.floorNumber}  Andar"
-                binding.textViewRoomsDetail.text = "${it.rooms}  Quartos"
-                binding.textViewRuaDetail.text = it.road
-                binding.textViewNMaximoPessoasDetail.text = it.guestsNumber.toString()
-                binding.textViewprecoDetail.text = displayText
-                binding.textViewAndarDetailD.text = it.floorNumber.toString()
-                binding.textViewOwnerDetail.text = it.user?.name
-
-                binding.textViewPrecoNoiteDetail.text = displayText
-            }
-            house.postalCode?.let {
-                binding.textViewLocationDetail.text = it.concelho
-                binding.textViewCodigoPostalDetail.text = it.postalCode.toString()
-                binding.textViewConcelhoDetail.text = it.concelho
-                binding.textViewDistrictDetail.text = it.district
-
-            }
-            house.images?.let {
-                for (imageName in it) {
-                    val imageUrl =
-                        "${Backend.BASE_API}/Houses/${imageName.image}${imageName.formato}"
-
-                    imageUrls.add(imageUrl)
-                }
-                pagerAdapter.notifyDataSetChanged()
-            }
-            house.reservations?.let {
-                for(reservation in it) {
-
-                        reservation.feedback?.let {
-
-                            totalClassification += it.classification!!
-                            reservation.user?.let { user ->
-                                usersfeed.add(user)
-                            }
-                            feedbacks.add(reservation.feedback)
-
-                    }
-                }
-                if (feedbacks.isNotEmpty()) {
-                    totalClassification = totalClassification.toDouble() / feedbacks.size.toDouble()
-                }
-                binding.textViewClassificationDetail.text = totalClassification.toString()
-            }
-
-            feedbackAdapter.notifyDataSetChanged()
-        }*/
 
     }
 

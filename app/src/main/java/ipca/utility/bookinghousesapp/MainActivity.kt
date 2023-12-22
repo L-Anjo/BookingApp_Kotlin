@@ -1,25 +1,20 @@
 package ipca.utility.bookinghousesapp
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
-import android.widget.BaseAdapter
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -27,22 +22,22 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
     private lateinit var textShowData: TextView
     private lateinit var getData: TextView
+    private lateinit var progressDialog: ProgressDialog
     var houses = arrayListOf<io.swagger.client.models.House>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +45,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("A carregar...")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
 
         val recyclerView = binding.RecycleViewHouses
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -82,13 +81,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-       /*Backend.fetchAllHouses(lifecycleScope) { houses ->
-            houses?.let {
-                adapter.updateData(houses.toList())
-            }
-
-        }*/
         Backend.fetchAllHouses().observe(this){
             it.onError {error ->
                 Toast.makeText(
@@ -108,6 +100,7 @@ class MainActivity : AppCompatActivity() {
                 houses?.let {
                     adapter.updateData(houses.toList())
                 }
+                progressDialog.dismiss()
             }
         }
 
