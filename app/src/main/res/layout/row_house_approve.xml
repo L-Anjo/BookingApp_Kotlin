@@ -29,8 +29,8 @@
 
     <Button
         android:id="@+id/buttonAproveHouse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="31dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/ic_check_green"
@@ -39,8 +39,8 @@
 
     <Button
         android:id="@+id/buttonDecHouse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="42dp"
+        android:layout_height="27dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
@@ -80,7 +80,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Numero p"
-        app:layout_constraintStart_toEndOf="@+id/imageViewHouse"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRuaHouse" />
+        app:layout_constraintStart_toEndOf="@+id/textViewRuaHouse"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHouseName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

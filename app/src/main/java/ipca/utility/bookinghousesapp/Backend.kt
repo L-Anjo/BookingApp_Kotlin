@@ -62,7 +62,8 @@ object Backend {
     //-----
     fun fetchAllHousesSusp(lifecycleScope: LifecycleCoroutineScope, callback: (Array<io.swagger.client.models.House>) -> Unit) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val housesApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseSuspGet()
+            //val housesApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseSuspGet()
+            val housesApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseGet()
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(housesApi)
                 // log para verificar os ids
@@ -98,5 +99,25 @@ object Backend {
             }
         }
     }
+
+    fun createHouse(house: io.swagger.client.models.House, lifecycleScope: LifecycleCoroutineScope, callback: (Boolean) -> Unit) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val houseApi = HouseApi("${BASE_API}").apiHousePost(house)
+                // Se a criação for bem-sucedida, você pode retornar true
+                lifecycleScope.launch(Dispatchers.Main) {
+                    callback(true)
+                }
+            } catch (e: Exception) {
+                // Em caso de erro, retorne false ou trate conforme necessário
+                // Aqui você pode imprimir uma mensagem de erro simplesmente assim:
+                println("Erro ao criar a casa: ${e.message}")
+                lifecycleScope.launch(Dispatchers.Main) {
+                    callback(false)
+                }
+            }
+        }
+    }
+
 
 }
