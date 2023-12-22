@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("LoginActivity", "Login bem-sucedido!")
                     Log.d("token do login", token.toString())
                     Log.d("id do utilizador", userId.toString())
-                    Log.d("id do tipo de utilizador", userType.toString())/*
+                    Log.d("id do tipo de utilizador", userType.toString())
                     FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                         if (!task.isSuccessful) {
                             Log.w("Teste", "Fetching FCM registration token failed", task.exception)
@@ -60,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
                             .addOnFailureListener { e ->
                                 Log.w("Teste", "Erro ao salvar token no Firestore", e)
                             }
-                    })*/
+                    })
                 } else {
                     binding.textViewError.text = "Credenciais inválidas. Tente novamente."
                 }
