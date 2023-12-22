@@ -7,12 +7,14 @@ import android.content.Context
 import androidx.lifecycle.LifecycleCoroutineScope
 import io.swagger.client.apis.AuthApi
 import io.swagger.client.apis.HouseApi
+import io.swagger.client.apis.ReservationApi
 import io.swagger.client.apis.UserApi
 import java.time.LocalDateTime
 import java.util.Date
 import io.swagger.client.infrastructure.ClientException
 import io.swagger.client.infrastructure.ServerException
 import io.swagger.client.infrastructure.ApiClient
+import io.swagger.client.models.EditProfile
 import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.Models.Image
 import ipca.utility.bookinghousesapp.Models.PostalCode
@@ -28,7 +30,7 @@ import java.util.Objects
 object Backend {
 
     internal const val BASE_API = "http://10.0.2.2:7105"
-    internal const val AUTHENTICATION_API = "http://10.0.2.2:5159"
+    internal const val AUTHENTICATION_API = "https://authenticationezbooking20231222152833.azurewebsites.net"
     //private const val PATH_HOUSES = "House"
 
     //private val client = OkHttpClient()
@@ -177,6 +179,43 @@ object Backend {
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
+    fun UpdateUserProfile(
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope,
+        newUserName: String,
+        newUserEmail: String,
+        newUserPhone: Int,
+        callback: (Boolean) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val userId = sharedPreferences.getInt("user_id", 0)
+
+            UserApi("${BASE_API}").apiUserUserIdProfilePut(userId, EditProfile(newUserName, newUserEmail, newUserPhone))
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(true)
+            }
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun CancelReservation(
+        lifecycleScope: LifecycleCoroutineScope,
+        reservationId: Int,
+        callback: (Boolean) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+
+            ReservationApi("${BASE_API}").apiReservationReservationIdDeactivatePut(reservationId)
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(true)
+            }
+        }
+    }
+
 
     @SuppressLint("SuspiciousIndentation")
     fun GetAllUsers(
@@ -207,6 +246,151 @@ object Backend {
             val userApi = UserApi("${BASE_API}").apiUserUserIdGet(userId)
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(userApi)
+            }
+
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun GetAllReservations(
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope,
+        callback: (Array<io.swagger.client.models.Reservation>) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val sharedPreferences =
+                context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", null)
+            val reservationsApi = ReservationApi("${BASE_API}").apiReservationGet(authToken)
+
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(reservationsApi)
+            }
+
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun GetAllHouses(
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope,
+        callback: (Array<io.swagger.client.models.House>) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val sharedPreferences =
+                context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", null)
+            val housesApi = HouseApi("${BASE_API}").apiHouseAllGet(authToken)
+
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(housesApi)
+            }
+
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun GetUserReservations(
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope,
+        callback: (Array<io.swagger.client.models.Reservation>) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val sharedPreferences =
+                context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authId = sharedPreferences.getInt("user_id", 0)
+            println(authId)
+            val reservationApi = UserApi("${BASE_API}").apiUserReservationsIdGet(authId)
+
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(reservationApi)
+            }
+
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun GetUserHouses(
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope,
+        callback: (Array<io.swagger.client.models.House>) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val sharedPreferences =
+                context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authId = sharedPreferences.getInt("user_id", 0)
+            println(authId)
+            val houseApi = UserApi("${BASE_API}").apiUserHousesIdGet(authId)
+
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(houseApi)
+            }
+
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun DeleteHouse(
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope,
+        houseId: Int,
+        callback: (Boolean) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val sharedPreferences =
+                context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", null)
+            HouseApi("${BASE_API}").apiHouseIdDelete(houseId)
+
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(true)
+            }
+
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun DeleteUser(
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope,
+        userId: Int,
+        callback: (Boolean) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val sharedPreferences =
+                context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", null)
+            UserApi("${BASE_API}").apiUserUserIdDelete(userId)
+
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(true)
+            }
+
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun DeactivateUser(
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope,
+        userId: Int,
+        callback: (Boolean) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val sharedPreferences =
+                context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", null)
+            UserApi("${BASE_API}").apiUserUserIdDeactivatePut(userId)
+
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(true)
             }
 
         }

@@ -9,8 +9,10 @@
         android:id="@+id/imageViewHouse"
         android:layout_width="113dp"
         android:layout_height="110dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:cropToPadding="false"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icons8_person_64" />
@@ -20,7 +22,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="64dp"
         android:text="Nome"
         android:textColor="@color/black"
@@ -33,13 +34,27 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="64dp"
-        android:layout_marginBottom="24dp"
-        android:text="Email"
+        android:text="Localidade"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewHouse"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewHouse" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageViewHouse"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewNomeHouse" />
+
+    <TextView
+        android:id="@+id/textViewHouseCodPostal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="64dp"
+        android:text="Código Postal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewHouse"
+        app:layout_constraintTop_toBottomOf="@+id/TextViewLocalidadeHouse" />
+
 
     <View
         android:id="@+id/line2"
@@ -61,6 +76,20 @@
         android:background="@drawable/icons8_remove_50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/TextViewEmailUser"
+        app:layout_constraintStart_toEndOf="@+id/TextViewLocalidadeHouse"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewHouseStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="64dp"
+        android:text="Estado"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewHouse"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHouseCodPostal" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

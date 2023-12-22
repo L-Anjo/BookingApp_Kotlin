@@ -4,26 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserHousesList"
+    tools:context=".UserReservationsList"
     android:background="@color/white">
 
+
     <ListView
-        android:id="@+id/listViewHouses"
+        android:id="@+id/listViewReservations"
         android:layout_width="409dp"
         android:layout_height="729dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line" />
+        app:layout_constraintTop_toBottomOf="@+id/lineReservations" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/imageViewBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icons8_back_50" />
 
@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Casas e Quartos"
+        android:text="Reservas"
         android:textColor="#FA5F5F"
         android:textSize="32dp"
         android:textStyle="bold"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/line"
+        android:id="@+id/lineReservations"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:layout_marginStart="8dp"
@@ -52,7 +52,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

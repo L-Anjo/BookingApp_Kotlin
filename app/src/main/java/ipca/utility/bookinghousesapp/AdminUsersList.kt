@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
@@ -55,6 +56,11 @@ class AdminUsersList : AppCompatActivity() {
             rootView.findViewById<TextView>(R.id.TextViewNomeUser).text = users[position].name
             rootView.findViewById<TextView>(R.id.TextViewEmailUser).text = users[position].email
             rootView.findViewById<TextView>(R.id.TextViewPhoneUser).text = users[position].phone.toString()
+            if(users[position].status==true){
+                rootView.findViewById<TextView>(R.id.TextViewStateUser).text = "Ativo"
+            }
+            else if(users[position].status==false)
+                rootView.findViewById<TextView>(R.id.TextViewStateUser).text = "Desativo"
             val avatar = rootView.findViewById<ImageView>(R.id.imageView7)
             val imageUrl = "${Backend.BASE_API}/Users/${users[position].image}${users[position].imageFormat}"
             Glide.with(this@AdminUsersList)
@@ -63,6 +69,17 @@ class AdminUsersList : AppCompatActivity() {
                 .transition(BitmapTransitionOptions.withCrossFade())
                 .transform(CircleCrop())
                 .into(avatar)
+
+            rootView.findViewById<Button>(R.id.buttonRemove).setOnClickListener{
+                val userIdToRemove = users[position].id_user
+                Backend.DeactivateUser(this@AdminUsersList, lifecycleScope,userIdToRemove.toString().toInt()) { isSuccess ->
+                    if (isSuccess) {
+                        notifyDataSetChanged()
+                    }
+                }
+            }
+
+
             return rootView
         }
     }
