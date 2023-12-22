@@ -7,6 +7,7 @@ import android.content.Context
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import io.jsonwebtoken.io.IOException
 import io.swagger.client.apis.AuthApi
 import io.swagger.client.apis.HouseApi
 import io.swagger.client.apis.ReservationApi
@@ -16,6 +17,9 @@ import java.util.Date
 import io.swagger.client.infrastructure.ClientException
 import io.swagger.client.infrastructure.ServerException
 import io.swagger.client.infrastructure.ApiClient
+import io.swagger.client.models.EditProfile
+import ipca.utility.bookinghousesapp.Backend.AUTHENTICATION_API
+import ipca.utility.bookinghousesapp.Backend.BASE_API
 import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.Models.Image
 import ipca.utility.bookinghousesapp.Models.PostalCode
@@ -86,7 +90,7 @@ object Backend {
         liveData(Dispatchers.IO) {
             emit( wrap { HouseApi(BASE_API).apiHouseFilteredGet(location,guestsNumber,checkedV,startDate,endDate) })
         }
-    }
+
 
 
 
