@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import io.jsonwebtoken.io.IOException
 import io.swagger.client.apis.AuthApi
+import io.swagger.client.apis.FeedbackApi
 import io.swagger.client.apis.HouseApi
 import io.swagger.client.apis.ReservationApi
 import io.swagger.client.apis.UserApi
@@ -18,6 +19,7 @@ import io.swagger.client.infrastructure.ClientException
 import io.swagger.client.infrastructure.ServerException
 import io.swagger.client.infrastructure.ApiClient
 import io.swagger.client.models.EditProfile
+import io.swagger.client.models.Feedback
 import ipca.utility.bookinghousesapp.Backend.AUTHENTICATION_API
 import ipca.utility.bookinghousesapp.Backend.BASE_API
 import ipca.utility.bookinghousesapp.Models.House
@@ -57,8 +59,8 @@ sealed class ResultWrapper<out T> {
 
 object Backend {
 
-    internal const val BASE_API = "https://bookapih.azurewebsites.net"
-    internal const val AUTHENTICATION_API = "https://authenticationezbooking20231222152833.azurewebsites.net"
+    internal const val BASE_API = "http://10.0.2.2:7105"
+    internal const val AUTHENTICATION_API = "http://10.0.2.2:5159"
     //private const val PATH_HOUSES = "House"
 
     suspend fun <T> wrap(apiCall: suspend () -> T): ResultWrapper<T> {
@@ -183,6 +185,30 @@ object Backend {
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
+    fun CreateFeedback(
+        lifecycleScope:
+        LifecycleCoroutineScope,
+        newClassification: Int,
+        newComment: String,
+        newReservation : Int,
+        callback: (Boolean) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            println(newClassification)
+            println(newComment)
+            println(newReservation)
+            //val reservation = ReservationApi("${BASE_API}").apiReservationIdGet(newReservation)
+
+            FeedbackApi("${BASE_API}").apiFeedbackPost(Feedback(comment = newComment, classification = newClassification),newReservation)
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(true)
+            }
+
+
+        }
+    }
+
 
     @SuppressLint("SuspiciousIndentation")
     fun UpdateUser(
@@ -222,6 +248,23 @@ object Backend {
             val userId = sharedPreferences.getInt("user_id", 0)
 
             UserApi("${BASE_API}").apiUserUserIdProfilePut(userId, EditProfile(newUserName, newUserEmail, newUserPhone))
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(true)
+            }
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun UpdateUserAvatar(
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope,
+        callback: (Boolean) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", "")
+            UserApi("${BASE_API}").apiUserAvatarPut(authToken)
 
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(true)
@@ -373,7 +416,7 @@ object Backend {
             val sharedPreferences =
                 context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
             val authToken = sharedPreferences.getString("access_token", null)
-            HouseApi("${BASE_API}").apiHouseIdDelete(houseId)
+            HouseApi("${BASE_API}").apiHouseStateDeleteIdPut(houseId)
 
 
             lifecycleScope.launch(Dispatchers.Main) {
@@ -424,6 +467,8 @@ object Backend {
 
         }
     }
+
+
 
 }
 

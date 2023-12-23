@@ -1,5 +1,7 @@
 package ipca.utility.bookinghousesapp
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,6 +10,7 @@ import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
@@ -18,18 +21,22 @@ import ipca.utility.bookinghousesapp.databinding.ActivityUserReservationsListBin
 class UserReservationsList : AppCompatActivity() {
     private lateinit var binding : ActivityUserReservationsListBinding
     var reservations = arrayListOf<io.swagger.client.models.Reservation>()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserReservationsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.imageViewBack.setOnClickListener {
+            onBackPressed()
+        }
+
         Backend.GetUserReservations(this, lifecycleScope) { fetchedReservations ->
-            try {
-                reservations.addAll(fetchedReservations)
+            reservations.addAll(fetchedReservations)
+            if(!reservations.isEmpty()){
+                binding.textViewNoReservations.visibility = View.GONE
                 setupListView()
-            } catch (e: Exception) {
-                println("entrou no catch")
-                e.printStackTrace()
             }
         }
     }
@@ -74,8 +81,22 @@ class UserReservationsList : AppCompatActivity() {
                         .into(avatar)
                 }
             }
+            val buttonCancel = rootView.findViewById<Button>(R.id.buttonCancelReservation)
+            val buttonReact = rootView.findViewById<TextView>(R.id.textViewFeedback)
 
-            rootView.findViewById<Button>(R.id.buttonCancelReservation).setOnClickListener {
+            if(reservations[position].reservationStates?.id == 1 || reservations[position].reservationStates?.id == 2){
+                buttonCancel.visibility = View.VISIBLE
+            }
+            else
+                buttonCancel.visibility = View.GONE
+
+            if(reservations[position].reservationStates?.id == 3){
+                buttonReact.visibility = View.VISIBLE
+            }
+            else
+                buttonReact.visibility = View.GONE
+
+            buttonCancel.setOnClickListener {
                 val reservationToCancel = reservations[position].id_reservation
                 Backend.CancelReservation(lifecycleScope,reservationToCancel.toString().toInt()) { isSuccess ->
                     if (isSuccess) {
@@ -84,6 +105,13 @@ class UserReservationsList : AppCompatActivity() {
                 }
             }
 
+            val feedbackButton = rootView.findViewById<TextView>(R.id.textViewFeedback)
+            feedbackButton.setOnClickListener {
+
+                val intent = Intent(this@UserReservationsList,FeedbackActivity::class.java )
+                intent.putExtra(FeedbackActivity.DATA_RESERVATION, reservations[position].id_reservation)
+                startActivity(intent)
+            }
 
             return rootView
         }

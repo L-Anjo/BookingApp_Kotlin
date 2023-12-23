@@ -19,11 +19,27 @@ import ipca.utility.bookinghousesapp.databinding.ActivityLoginBinding
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityLoginBinding
-
+    private var isPasswordVisible = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.imageViewShowPassword.setOnClickListener{
+            isPasswordVisible = !isPasswordVisible
+
+            val editTextPassword: EditText = binding.editTextPassword
+
+            if (isPasswordVisible) {
+                editTextPassword.transformationMethod = null
+                binding.imageViewShowPassword.setImageResource(R.drawable.icons8_blind_52)
+            } else {
+                editTextPassword.transformationMethod = android.text.method.PasswordTransformationMethod.getInstance()
+                binding.imageViewShowPassword.setImageResource(R.drawable.icons8_eye_52)
+            }
+
+            editTextPassword.setSelection(editTextPassword.text.length)
+        }
 
         binding.buttonLogin.setOnClickListener{
             val email = binding.editTextEmail.text.toString()

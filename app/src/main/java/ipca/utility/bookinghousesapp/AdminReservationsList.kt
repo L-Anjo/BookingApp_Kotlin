@@ -16,7 +16,6 @@ import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.Models.Reservation
 import ipca.utility.bookinghousesapp.Models.User
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminReservationsListBinding
-import ipca.utility.bookinghousesapp.databinding.ActivityAdminUsersListBinding
 import java.time.LocalDateTime
 import java.util.Date
 import java.text.SimpleDateFormat
@@ -35,6 +34,10 @@ class AdminReservationsList : AppCompatActivity() {
         Backend.GetAllReservations(this, lifecycleScope) { fetchedReservations ->
             reservations.addAll(fetchedReservations)
             setupListView()
+        }
+
+        binding.imageViewBack.setOnClickListener{
+            onBackPressed()
         }
     }
 

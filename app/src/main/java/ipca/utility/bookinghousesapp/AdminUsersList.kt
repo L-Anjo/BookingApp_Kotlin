@@ -30,6 +30,10 @@ class AdminUsersList : AppCompatActivity() {
             setupListView()
         }
 
+        binding.imageViewBack.setOnClickListener {
+            onBackPressed()
+        }
+
     }
 
     private fun setupListView() {
@@ -62,15 +66,33 @@ class AdminUsersList : AppCompatActivity() {
             else if(users[position].status==false)
                 rootView.findViewById<TextView>(R.id.TextViewStateUser).text = "Desativo"
             val avatar = rootView.findViewById<ImageView>(R.id.imageView7)
-            val imageUrl = "${Backend.BASE_API}/Users/${users[position].image}${users[position].imageFormat}"
-            Glide.with(this@AdminUsersList)
-                .asBitmap()
-                .load(imageUrl)
-                .transition(BitmapTransitionOptions.withCrossFade())
-                .transform(CircleCrop())
-                .into(avatar)
 
-            rootView.findViewById<Button>(R.id.buttonRemove).setOnClickListener{
+            if(users[position].image != null || users[position].imageFormat != null){
+                val imageUrl = "${Backend.BASE_API}/Users/${users[position].image}${users[position].imageFormat}"
+                Glide.with(this@AdminUsersList)
+                    .asBitmap()
+                    .load(imageUrl)
+                    .transition(BitmapTransitionOptions.withCrossFade())
+                    .transform(CircleCrop())
+                    .into(avatar)
+            }
+            else{
+                Glide.with(this@AdminUsersList)
+                    .asBitmap()
+                    .load(R.drawable.icons8_person_64)
+                    .transition(BitmapTransitionOptions.withCrossFade())
+                    .transform(CircleCrop())
+                    .into(avatar)
+            }
+
+
+            val buttonDeactivate = rootView.findViewById<Button>(R.id.buttonRemove)
+            if(users[position].status==true){
+                buttonDeactivate.visibility = View.VISIBLE
+            }
+            else
+                buttonDeactivate.visibility = View.GONE
+            buttonDeactivate.setOnClickListener{
                 val userIdToRemove = users[position].id_user
                 Backend.DeactivateUser(this@AdminUsersList, lifecycleScope,userIdToRemove.toString().toInt()) { isSuccess ->
                     if (isSuccess) {

@@ -1,23 +1,36 @@
 package ipca.utility.bookinghousesapp
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import ipca.utility.bookinghousesapp.databinding.ActivityLoginBinding
 import ipca.utility.bookinghousesapp.databinding.ActivityProfilePageBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 
 class ProfilePageActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityProfilePageBinding
 
+    private val PICK_IMAGE_REQUEST = 1
+    private lateinit var imageView: ImageView
+
+    private lateinit var binding : ActivityProfilePageBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfilePageBinding.inflate(layoutInflater)
@@ -43,6 +56,10 @@ class ProfilePageActivity : AppCompatActivity() {
                     .transform(CircleCrop())
                     .into(binding.imageView11)
             }
+        }
+
+        binding.imageViewBack.setOnClickListener {
+            onBackPressed()
         }
 
         binding.constraintLayoutEditProfile.setOnClickListener{
@@ -73,5 +90,9 @@ class ProfilePageActivity : AppCompatActivity() {
             val intent = Intent(this,AdminProfilePage::class.java )
             startActivity(intent)
         }
+
+
+
+
     }
 }

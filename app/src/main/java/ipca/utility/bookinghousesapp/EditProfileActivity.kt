@@ -55,6 +55,10 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
 
+        binding.imageViewBack.setOnClickListener{
+            onBackPressed()
+        }
+
         binding.buttonUpdateUser.setOnClickListener {
             val newUserName = binding.EditTextUserEditName.text.toString()
             val newUserEmail = binding.EditTextUserEditEmail.text.toString()

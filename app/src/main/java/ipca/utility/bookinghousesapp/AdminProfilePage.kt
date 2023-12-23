@@ -33,6 +33,10 @@ class AdminProfilePage : AppCompatActivity() {
             }
         }
 
+        binding.imageViewBack.setOnClickListener{
+            onBackPressed()
+        }
+
         binding.constraintLayoutAllReservations.setOnClickListener{
             val intent = Intent(this,AdminReservationsList::class.java )
             startActivity(intent)
