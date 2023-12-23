@@ -89,7 +89,7 @@ class CreateHouse : AppCompatActivity() {
         val id_user = sharedPreferences.getInt("user_id", 0)
         //val id_user = 2 // ou qualquer outra maneira de obter o ID do usuário
 
-        Backend.fetchUserDetail(lifecycleScope, id_user) { user ->
+        Backend.fetchUserDetail(this, lifecycleScope, id_user) { user ->
             // ... Seus dados anteriores ...
             println("USER:")
             println(id_user)

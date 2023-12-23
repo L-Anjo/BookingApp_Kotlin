@@ -29,7 +29,6 @@ import ipca.utility.bookinghousesapp.Models.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-import java.io.IOException
 import java.util.Objects
 
 sealed class ResultWrapper<out T> {
@@ -382,12 +381,15 @@ object Backend {
     }
 
     fun fetchUserDetail(
+        context : Context,
         lifecycleScope: LifecycleCoroutineScope,
         id_user: Int,
         callback: (io.swagger.client.models.User) -> Unit
     ) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val userApi = UserApi("${BASE_API}").apiUserUserIdGet(id_user)
+            val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", "")
+            val userApi = UserApi("${BASE_API}").apiUserUserIdGet(authToken, id_user)
             lifecycleScope.launch(Dispatchers.Main) {
                 println("USER Backend:")
                 println(id_user)

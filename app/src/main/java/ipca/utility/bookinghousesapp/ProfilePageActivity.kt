@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import ipca.utility.bookinghousesapp.databinding.ActivityLoginBinding
 import ipca.utility.bookinghousesapp.databinding.ActivityProfilePageBinding
 import kotlinx.coroutines.Dispatchers
