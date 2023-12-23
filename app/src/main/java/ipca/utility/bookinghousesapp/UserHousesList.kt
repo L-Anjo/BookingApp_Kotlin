@@ -24,9 +24,16 @@ class UserHousesList : AppCompatActivity() {
         binding = ActivityUserHousesListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.imageView5.setOnClickListener {
+            onBackPressed()
+        }
+
         Backend.GetUserHouses(this, lifecycleScope) { fetchedHouses ->
             houses.addAll(fetchedHouses)
-            setupListView()
+            if (!houses.isEmpty()) {
+                binding.textViewNoHouses.visibility = View.GONE
+                setupListView()
+            }
         }
     }
 
@@ -67,8 +74,9 @@ class UserHousesList : AppCompatActivity() {
                 textViewStatusHouse.text = houses[position].statusHouse?.name ?: ""
 
             }
+            val avatar = rootView.findViewById<ImageView>(R.id.imageViewHouse)
             if (houses[position].images != null ) {
-                val avatar = rootView.findViewById<ImageView>(R.id.imageViewHouse)
+
 
                 val firstImage = houses[position].images?.firstOrNull()
                 if (firstImage != null) {
@@ -87,12 +95,16 @@ class UserHousesList : AppCompatActivity() {
             //    val intent = Intent(this@AdminHousesList, HouseDetailActivity::class.java)
             //    startActivity(intent)
             //}
+            val buttonRemove = rootView.findViewById<Button>(R.id.buttonRemove)
 
-            rootView.findViewById<Button>(R.id.buttonRemove).setOnClickListener{
+            if(houses[position].statusHouse?.id==1 || houses[position].statusHouse?.id==2)
+                buttonRemove.visibility = View.VISIBLE
+            else
+                buttonRemove.visibility = View.GONE
+            buttonRemove.setOnClickListener{
                 val houseIdToRemove = houses[position].id_house
                 Backend.DeleteHouse(this@UserHousesList, lifecycleScope,houseIdToRemove.toString().toInt()) { isSuccess ->
                     if (isSuccess) {
-                        houses.removeAt(position)
                         notifyDataSetChanged()
                     }
                 }

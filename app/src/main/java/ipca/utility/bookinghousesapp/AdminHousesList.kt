@@ -16,7 +16,6 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminHousesListBinding
-import ipca.utility.bookinghousesapp.databinding.ActivityAdminUsersListBinding
 
 class AdminHousesList : AppCompatActivity() {
 
@@ -27,6 +26,10 @@ class AdminHousesList : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAdminHousesListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.imageViewBack.setOnClickListener{
+            onBackPressed()
+        }
 
         Backend.GetAllHouses(this, lifecycleScope) { fetchedHouses ->
             houses.addAll(fetchedHouses)
@@ -91,12 +94,15 @@ class AdminHousesList : AppCompatActivity() {
             //    val intent = Intent(this@AdminHousesList, HouseDetailActivity::class.java)
             //    startActivity(intent)
             //}
-
-            rootView.findViewById<Button>(R.id.buttonRemove).setOnClickListener{
+            val buttonRemoveHouse = rootView.findViewById<Button>(R.id.buttonRemove)
+            if(houses[position].statusHouse?.id==1 || houses[position].statusHouse?.id==2)
+                buttonRemoveHouse.visibility = View.VISIBLE
+            else
+                buttonRemoveHouse.visibility = View.GONE
+            buttonRemoveHouse.setOnClickListener{
                 val houseIdToRemove = houses[position].id_house
                 Backend.DeleteHouse(this@AdminHousesList, lifecycleScope,houseIdToRemove.toString().toInt()) { isSuccess ->
                     if (isSuccess) {
-                        houses.removeAt(position)
                         notifyDataSetChanged()
                     }
                 }

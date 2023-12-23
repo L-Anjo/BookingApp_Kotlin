@@ -99,4 +99,16 @@
         android:text="Estado"
         app:layout_constraintStart_toEndOf="@+id/textViewReservationGuestsNumber"
         app:layout_constraintTop_toBottomOf="@+id/textViewReservationFinalDate" />
+
+    <TextView
+        android:id="@+id/textViewFeedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="Reagir"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewReservationState"
+        app:layout_constraintTop_toBottomOf="@+id/textViewReservationFinalDate" />
 </androidx.constraintlayout.widget.ConstraintLayout>

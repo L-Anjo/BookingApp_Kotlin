@@ -23,14 +23,30 @@ import ipca.utility.bookinghousesapp.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityLoginBinding
-
+    private lateinit var binding : ActivityLoginBinding
+    private var isPasswordVisible = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.buttonLogin.setOnClickListener {
+        binding.imageViewShowPassword.setOnClickListener{
+            isPasswordVisible = !isPasswordVisible
+
+            val editTextPassword: EditText = binding.editTextPassword
+
+            if (isPasswordVisible) {
+                editTextPassword.transformationMethod = null
+                binding.imageViewShowPassword.setImageResource(R.drawable.icons8_blind_52)
+            } else {
+                editTextPassword.transformationMethod = android.text.method.PasswordTransformationMethod.getInstance()
+                binding.imageViewShowPassword.setImageResource(R.drawable.icons8_eye_52)
+            }
+
+            editTextPassword.setSelection(editTextPassword.text.length)
+        }
+
+        binding.buttonLogin.setOnClickListener{
             val email = binding.editTextEmail.text.toString()
             val password = binding.editTextPassword.text.toString()
 
@@ -39,15 +55,16 @@ class LoginActivity : AppCompatActivity() {
                 if (loginSuccessful) {
 
                     val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
-                    val token = sharedPreferences.getString("access_token", null)
                     val userId = sharedPreferences.getInt("user_id", 0)
-                    val userType = sharedPreferences.getInt("user_type", 0)
-                    val intent = Intent(this, ProfilePageActivity::class.java)
+                    val userStatus = sharedPreferences.getBoolean("user_status", false)
+
+                    if(!userStatus){
+                        binding.textViewError.text = "O utilizador está desativado, contacte o suporte"
+                        return@login
+                    }
+                    val intent = Intent(this, ProfilePageActivity::class.java )
                     startActivity(intent)
-                    Log.d("LoginActivity", "Login bem-sucedido!")
-                    Log.d("token do login", token.toString())
-                    Log.d("id do utilizador", userId.toString())
-                    Log.d("id do tipo de utilizador", userType.toString())
+
 
                     FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                         if (!task.isSuccessful) {
@@ -74,8 +91,8 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        binding.textViewRegister.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
+        binding.textViewRegister.setOnClickListener{
+            val intent = Intent(this, RegisterActivity::class.java )
             startActivity(intent)
         }
     }
