@@ -23,6 +23,11 @@ class ProfilePageActivity : AppCompatActivity() {
         binding = ActivityProfilePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.buttonCreateHouseP.setOnClickListener {
+            val intent = Intent(this, CreateHouse::class.java)
+            startActivity(intent)
+        }
+
         val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
         val userType = sharedPreferences.getInt("user_type", 0)
         if (userType == 3) {

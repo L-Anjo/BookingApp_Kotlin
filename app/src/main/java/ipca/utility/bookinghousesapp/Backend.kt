@@ -18,6 +18,7 @@ import ipca.utility.bookinghousesapp.Backend.AUTHENTICATION_API
 import ipca.utility.bookinghousesapp.Backend.BASE_API
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 import java.io.IOException
 import java.util.Objects
@@ -273,21 +274,35 @@ object Backend {
         }
     }
 
-    fun createHouse(house: io.swagger.client.models.House, lifecycleScope: LifecycleCoroutineScope, callback: (Boolean) -> Unit) {
+    fun createHouse(body: io.swagger.client.models.House, lifecycleScope: LifecycleCoroutineScope, callback: () -> Unit) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val houseApi = HouseApi("${BASE_API}").apiHousePost(house)
+                HouseApi("${BASE_API}").apiHousePost(body)
                 // Se a criação for bem-sucedida, você pode retornar true
                 lifecycleScope.launch(Dispatchers.Main) {
-                    callback(true)
+                    callback()
                 }
             } catch (e: Exception) {
                 // Em caso de erro, retorne false ou trate conforme necessário
                 // Aqui você pode imprimir uma mensagem de erro simplesmente assim:
                 println("Erro ao criar a casa: ${e.message}")
-                lifecycleScope.launch(Dispatchers.Main) {
-                    callback(false)
-                }
+            }
+        }
+    }
+
+    fun fetchUserDetail(
+        lifecycleScope: LifecycleCoroutineScope,
+        id_user: Int,
+        callback: (io.swagger.client.models.User) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val userApi = UserApi("${BASE_API}").apiUserUserIdGet(id_user)
+            lifecycleScope.launch(Dispatchers.Main) {
+                println("USER Backend:")
+                println(id_user)
+                println(userApi)
+                println(userApi.id_user)
+                callback(userApi)
             }
         }
     }
