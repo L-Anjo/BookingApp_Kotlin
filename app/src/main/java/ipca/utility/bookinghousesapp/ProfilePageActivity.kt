@@ -11,18 +11,31 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import ipca.utility.bookinghousesapp.databinding.ActivityLoginBinding
 import ipca.utility.bookinghousesapp.databinding.ActivityProfilePageBinding
 
 class ProfilePageActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityProfilePageBinding
+    private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfilePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bottomNavigationView.menu.findItem(R.id.profile).isChecked = true
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> startActivity(Intent(this, MainActivity::class.java))
+                R.id.notifications -> startActivity(Intent(this, NotificationsActivity::class.java))
+                R.id.profile -> startActivity(Intent(this, ProfilePageActivity::class.java))
+            }
+            true
+        }
         val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
         val userType = sharedPreferences.getInt("user_type", 0)
         if (userType == 3) {

@@ -7,7 +7,12 @@ import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import android.util.Log
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import android.Manifest
 import android.widget.EditText
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,14 +23,14 @@ import ipca.utility.bookinghousesapp.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityLoginBinding
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.buttonLogin.setOnClickListener{
+        binding.buttonLogin.setOnClickListener {
             val email = binding.editTextEmail.text.toString()
             val password = binding.editTextPassword.text.toString()
 
@@ -37,7 +42,7 @@ class LoginActivity : AppCompatActivity() {
                     val token = sharedPreferences.getString("access_token", null)
                     val userId = sharedPreferences.getInt("user_id", 0)
                     val userType = sharedPreferences.getInt("user_type", 0)
-                    val intent = Intent(this, ProfilePageActivity::class.java )
+                    val intent = Intent(this, ProfilePageActivity::class.java)
                     startActivity(intent)
                     Log.d("LoginActivity", "Login bem-sucedido!")
                     Log.d("token do login", token.toString())
@@ -62,18 +67,19 @@ class LoginActivity : AppCompatActivity() {
                             .addOnFailureListener { e ->
                                 Log.w("Teste", "Erro ao salvar token no Firestore", e)
                             }
-                    })*/
+                    })
                 } else {
                     binding.textViewError.text = "Credenciais inválidas. Tente novamente."
                 }
             }
         }
 
-        binding.textViewRegister.setOnClickListener{
-            val intent = Intent(this, RegisterActivity::class.java )
+        binding.textViewRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
     }
+
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission(),
     ) { isGranted: Boolean ->
@@ -83,6 +89,7 @@ class LoginActivity : AppCompatActivity() {
 
         }
     }
+
     private fun askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -93,5 +100,7 @@ class LoginActivity : AppCompatActivity() {
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
 
 
-
+            }
+        }
+    }
 }

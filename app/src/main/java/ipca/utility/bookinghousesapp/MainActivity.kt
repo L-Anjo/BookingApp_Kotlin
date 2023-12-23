@@ -51,10 +51,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bottomNavigationView.menu.findItem(R.id.home).isChecked = true
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> startActivity(Intent(this, MainActivity::class.java))
-                R.id.notifications -> startActivity(Intent(this, HouseDetailActivity::class.java))
+                R.id.notifications -> startActivity(Intent(this, NotificationsActivity::class.java))
                 R.id.profile -> startActivity(Intent(this, ProfilePageActivity::class.java))
             }
             true
@@ -179,7 +180,6 @@ class MainActivity : AppCompatActivity() {
             val priceTextView: TextView = itemView.findViewById(R.id.textViewPNY)
             val viewPager: ViewPager2 = itemView.findViewById(R.id.viewPager)
             val tabLayout : TabLayout = itemView.findViewById(R.id.tabLayout)
-
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

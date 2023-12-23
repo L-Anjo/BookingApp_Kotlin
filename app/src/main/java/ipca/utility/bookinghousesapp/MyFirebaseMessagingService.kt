@@ -34,6 +34,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             } else {
                 // Handle message within 10 seconds
+
                 sendNotification(remoteMessage.data.toString())
             }
         }
@@ -41,6 +42,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // Check if message contains a notification payload.
         remoteMessage.notification?.let {
             Log.d(TAG, "Message Notification Body: ${it.body}")
+            saveNotificationToStorage(remoteMessage)
             Handler(Looper.getMainLooper()).post {
                 Toast.makeText(baseContext, it.body, Toast.LENGTH_LONG).show()
             }
@@ -48,6 +50,21 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
+    }
+
+    private fun saveNotificationToStorage(remoteMessage: RemoteMessage) {
+
+        val sharedPreferences = applicationContext.getSharedPreferences("notifications", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val notificationTitle = remoteMessage.notification?.title ?: ""
+        val notificationBody = remoteMessage.notification?.body ?: ""
+        val notification = "$notificationTitle - $notificationBody"
+        val notificationCount = sharedPreferences.getInt("notification_count", 0) + 1
+
+        editor.putString("notification_$notificationCount", notification)
+        editor.putInt("notification_count", notificationCount)
+        editor.apply()
+
     }
     // [END receive_message]
 
