@@ -75,9 +75,9 @@ object Backend {
         }
     }
 
-    fun fetchHouseDetail(): LiveData<ResultWrapper<io.swagger.client.models.House>> =
+    fun fetchHouseDetail(idhouse: Int): LiveData<ResultWrapper<io.swagger.client.models.House>> =
     liveData(Dispatchers.IO) {
-        emit( wrap { HouseApi(BASE_API).apiHouseIdGet(1) })
+        emit( wrap { HouseApi(BASE_API).apiHouseIdGet(idhouse) })
     }
 
     fun fetchAllHouses(): LiveData<ResultWrapper<Array<io.swagger.client.models.House>>> =

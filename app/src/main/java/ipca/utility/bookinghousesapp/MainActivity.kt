@@ -180,6 +180,18 @@ class MainActivity : AppCompatActivity() {
             val priceTextView: TextView = itemView.findViewById(R.id.textViewPNY)
             val viewPager: ViewPager2 = itemView.findViewById(R.id.viewPager)
             val tabLayout : TabLayout = itemView.findViewById(R.id.tabLayout)
+
+            init {
+                itemView.setOnClickListener {
+                    val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        val clickedHouse = houses[position]
+                        val intent = Intent(itemView.context, HouseDetailActivity::class.java)
+                        intent.putExtra("HOUSE_ID", clickedHouse.id_house)
+                        itemView.context.startActivity(intent)
+                    }
+                }
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -42,11 +42,13 @@ class HouseDetailActivity : AppCompatActivity() {
         binding = ActivityHousedetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         progressDialog = ProgressDialog(this)
         progressDialog.setMessage("A carregar...")
         progressDialog.setCancelable(false)
         progressDialog.show()
 
+        val houseId = intent.extras?.getInt("HOUSE_ID")?:-1
         binding.listViewFeebackDetails.adapter = feedbackAdapter
 
         var totalClassification = 0.0
@@ -57,8 +59,11 @@ class HouseDetailActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
         }.attach()
 
+        binding.buttonBack.setOnClickListener {
+            onBackPressed()
+        }
 
-        Backend.fetchHouseDetail().observe(this){
+        Backend.fetchHouseDetail(houseId).observe(this){
             it.onError {error ->
                 Toast.makeText(
                     this@HouseDetailActivity,
@@ -124,6 +129,9 @@ class HouseDetailActivity : AppCompatActivity() {
                     }
                     if (feedbacks.isNotEmpty()) {
                         totalClassification = totalClassification.toDouble() / feedbacks.size.toDouble()
+                    }
+                    else{
+                        binding.textViewFBDetail.visibility =View.INVISIBLE
                     }
                     binding.textViewClassificationDetail.text = totalClassification.toString()
                 }
