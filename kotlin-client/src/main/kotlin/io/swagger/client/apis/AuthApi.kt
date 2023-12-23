@@ -9,6 +9,7 @@ class AuthApi(basePath: String = "/") : ApiClient(basePath) {
     var authToken: String? = null
     var authUserId: Int? = 0
     var authUserType: Int? = 0
+    var authStatus: Boolean? = false
 
     /**
      * Login
@@ -40,8 +41,7 @@ class AuthApi(basePath: String = "/") : ApiClient(basePath) {
                         authToken = loginResponse["token"]?.toString() ?: ""
                         authUserId = loginResponse["userId"].toString().toDoubleOrNull()?.toInt() ?: 0
                         authUserType = loginResponse["userType"].toString().toDoubleOrNull()?.toInt() ?: 0
-
-
+                        authStatus = loginResponse["status"].toString().toBoolean()
                     }
                 }
             }

@@ -49,15 +49,17 @@ class LoginActivity : AppCompatActivity() {
                 if (loginSuccessful) {
 
                     val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
-                    val token = sharedPreferences.getString("access_token", null)
                     val userId = sharedPreferences.getInt("user_id", 0)
-                    val userType = sharedPreferences.getInt("user_type", 0)
+                    val userStatus = sharedPreferences.getBoolean("user_status", false)
+
+                    if(!userStatus){
+                        binding.textViewError.text = "O utilizador está desativado, contacte o suporte"
+                        return@login
+                    }
                     val intent = Intent(this, ProfilePageActivity::class.java )
                     startActivity(intent)
-                    Log.d("LoginActivity", "Login bem-sucedido!")
-                    Log.d("token do login", token.toString())
-                    Log.d("id do utilizador", userId.toString())
-                    Log.d("id do tipo de utilizador", userType.toString())
+
+
                     FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                         if (!task.isSuccessful) {
                             Log.w("Teste", "Fetching FCM registration token failed", task.exception)

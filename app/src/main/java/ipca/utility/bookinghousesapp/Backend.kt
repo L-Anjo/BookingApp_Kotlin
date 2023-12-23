@@ -111,6 +111,7 @@ object Backend {
                 var token = authApi.authToken
                 var userId = authApi.authUserId
                 var userType = authApi.authUserType
+                var userStatus = authApi.authStatus
 
                 val sharedPreferences =
                     context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
@@ -118,6 +119,7 @@ object Backend {
                 editor.putString("access_token", token)
                 editor.putInt("user_id", userId ?: -1)
                 editor.putInt("user_type", userType ?: -1)
+                editor.putBoolean("user_status", userStatus ?: false)
                 editor.apply()
 
                 lifecycleScope.launch(Dispatchers.Main) {
@@ -145,8 +147,7 @@ object Backend {
     ) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val sharedPreferences =
-                    context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+                val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
                 val authToken = sharedPreferences.getString("access_token", null)
                 if (authToken != null) {
                     AuthApi("${AUTHENTICATION_API}").apiAuthPostLogout(authToken)
@@ -225,7 +226,8 @@ object Backend {
         lifecycleScope.launch(Dispatchers.IO) {
             val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
             val userId = sharedPreferences.getInt("user_id", 0)
-            UserApi("${BASE_API}").apiUserUserIdPut(userId)
+            val authToken = sharedPreferences.getString("access_token", null)
+            UserApi("${BASE_API}").apiUserUserIdPut(authToken,userId)
 
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(true)
@@ -246,8 +248,9 @@ object Backend {
         lifecycleScope.launch(Dispatchers.IO) {
             val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
             val userId = sharedPreferences.getInt("user_id", 0)
+            val authToken = sharedPreferences.getString("access_token", "")
 
-            UserApi("${BASE_API}").apiUserUserIdProfilePut(userId, EditProfile(newUserName, newUserEmail, newUserPhone))
+            UserApi("${BASE_API}").apiUserUserIdProfilePut(authToken, userId, EditProfile(newUserName, newUserEmail, newUserPhone))
 
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(true)
@@ -315,7 +318,8 @@ object Backend {
         lifecycleScope.launch(Dispatchers.IO) {
             val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
             val userId = sharedPreferences.getInt("user_id", 0)
-            val userApi = UserApi("${BASE_API}").apiUserUserIdGet(userId)
+            val authToken = sharedPreferences.getString("access_token", null)
+            val userApi = UserApi("${BASE_API}").apiUserUserIdGet(authToken, userId)
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(userApi)
             }
@@ -373,8 +377,9 @@ object Backend {
             val sharedPreferences =
                 context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
             val authId = sharedPreferences.getInt("user_id", 0)
-            println(authId)
-            val reservationApi = UserApi("${BASE_API}").apiUserReservationsIdGet(authId)
+            val authToken = sharedPreferences.getString("access_token", null)
+
+            val reservationApi = UserApi("${BASE_API}").apiUserReservationsIdGet(authToken, authId)
 
 
             lifecycleScope.launch(Dispatchers.Main) {
@@ -394,8 +399,9 @@ object Backend {
             val sharedPreferences =
                 context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
             val authId = sharedPreferences.getInt("user_id", 0)
+            val authToken = sharedPreferences.getString("access_token", null)
             println(authId)
-            val houseApi = UserApi("${BASE_API}").apiUserHousesIdGet(authId)
+            val houseApi = UserApi("${BASE_API}").apiUserHousesIdGet(authToken, authId)
 
 
             lifecycleScope.launch(Dispatchers.Main) {
@@ -458,7 +464,7 @@ object Backend {
             val sharedPreferences =
                 context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
             val authToken = sharedPreferences.getString("access_token", null)
-            UserApi("${BASE_API}").apiUserUserIdDeactivatePut(userId)
+            UserApi("${BASE_API}").apiUserUserIdDeactivatePut(authToken, userId)
 
 
             lifecycleScope.launch(Dispatchers.Main) {
