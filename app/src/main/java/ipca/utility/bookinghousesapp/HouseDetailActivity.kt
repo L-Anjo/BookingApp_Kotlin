@@ -1,6 +1,7 @@
 package ipca.utility.bookinghousesapp
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -139,6 +140,11 @@ class HouseDetailActivity : AppCompatActivity() {
                 feedbackAdapter.notifyDataSetChanged()
             }
             progressDialog.dismiss()
+        }
+        binding.buttonReservationDetail.setOnClickListener {
+            val intent = Intent(this, ReservationDetailsActivity::class.java)
+            intent.putExtra("HOUSE_ID", house?.id_house)
+            startActivity(intent)
         }
 
     }

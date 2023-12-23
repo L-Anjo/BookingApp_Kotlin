@@ -10,12 +10,15 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:roundIcon="@drawable/ezhouselogo_removebg_preview"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@drawable/ezhouselogo_removebg_preview"
         android:supportsRtl="true"
         android:theme="@style/Theme.BookingHousesApp"
         tools:targetApi="31">
+        <activity
+            android:name=".ReservationDetailsActivity"
+            android:exported="false" />
         <activity
             android:name=".NotificationsActivity"
             android:exported="false" />
