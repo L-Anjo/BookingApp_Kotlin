@@ -26,10 +26,8 @@ import ipca.utility.bookinghousesapp.Models.PostalCode
 import ipca.utility.bookinghousesapp.Models.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import org.json.JSONArray
-import org.json.JSONObject
+
+import java.io.IOException
 import java.util.Objects
 
 sealed class ResultWrapper<out T> {
@@ -90,8 +88,6 @@ object Backend {
         liveData(Dispatchers.IO) {
             emit( wrap { HouseApi(BASE_API).apiHouseFilteredGet(location,guestsNumber,checkedV,startDate,endDate) })
         }
-
-
 
 
     @SuppressLint("SuspiciousIndentation")
@@ -277,6 +273,81 @@ object Backend {
                 callback(userApi)
             }
 
+        }
+    }
+
+
+    fun fetchAllHousesSusp(lifecycleScope: LifecycleCoroutineScope, callback: (Array<io.swagger.client.models.House>) -> Unit) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val housesApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseSuspGet()
+            //val housesApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseGet()
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(housesApi)
+                // log para verificar os ids
+                housesApi.forEach { house ->
+                    println("House ID: ${house.id_house}")
+                }
+            }
+
+        }
+    }
+
+    fun updateHouseStateApproved(id: Int, lifecycleScope: LifecycleCoroutineScope, callback: () -> Unit) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            HouseApi("${BASE_API}").apiHouseStateIdPut(id)
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback()
+            }
+
+        }
+    }
+
+
+    fun deleteHouseById(id: Int, lifecycleScope: LifecycleCoroutineScope, callback: () -> Unit) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                HouseApi("${BASE_API}").apiHouseIdDelete(id)
+                lifecycleScope.launch(Dispatchers.Main) {
+                    callback()
+                }
+            } catch (e: Exception) {
+                // Tratar erros, como por exemplo, notificar o utilizador ou registar o erro
+                // Podes imprimir uma mensagem de erro simplesmente assim:
+                println("Erro ao apagar a casa: ${e.message}")
+            }
+        }
+    }
+
+    fun createHouse(body: io.swagger.client.models.House, lifecycleScope: LifecycleCoroutineScope, callback: () -> Unit) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                HouseApi("${BASE_API}").apiHousePost(body)
+                // Se a criação for bem-sucedida, você pode retornar true
+                lifecycleScope.launch(Dispatchers.Main) {
+                    callback()
+                }
+            } catch (e: Exception) {
+                // Em caso de erro, retorne false ou trate conforme necessário
+                // Aqui você pode imprimir uma mensagem de erro simplesmente assim:
+                println("Erro ao criar a casa: ${e.message}")
+            }
+        }
+    }
+
+    fun fetchUserDetail(
+        lifecycleScope: LifecycleCoroutineScope,
+        id_user: Int,
+        callback: (io.swagger.client.models.User) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val userApi = UserApi("${BASE_API}").apiUserUserIdGet(id_user)
+            lifecycleScope.launch(Dispatchers.Main) {
+                println("USER Backend:")
+                println(id_user)
+                println(userApi)
+                println(userApi.id_user)
+                callback(userApi)
+            }
         }
     }
 
