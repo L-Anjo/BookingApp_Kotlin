@@ -61,9 +61,6 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        // Define o layout inicial
-        //inflateLayout(R.layout.activity_main)
-
         progressDialog = ProgressDialog(this)
         progressDialog.setMessage("A carregar...")
         progressDialog.setCancelable(false)

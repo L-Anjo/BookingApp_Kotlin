@@ -52,6 +52,8 @@ class HouseDetailActivity : AppCompatActivity() {
         val houseId = intent.extras?.getInt("HOUSE_ID")?:-1
         binding.listViewFeebackDetails.adapter = feedbackAdapter
 
+        var displayText = ""
+        var valor = 0.0
         var totalClassification = 0.0
         val viewPager: ViewPager2 = binding.viewPager
         val tabLayout: TabLayout = binding.tabLayout
@@ -82,10 +84,13 @@ class HouseDetailActivity : AppCompatActivity() {
             it.onSuccess {
                     house ->
                 house?.let {
-                    val displayText = if (it.priceyear != null) {
-                        "${it.priceyear}€ / Ano"
+
+                     if (it.priceyear != null) {
+                        displayText = "${it.priceyear}€ / Ano"
+                        valor = it.priceyear.toString().toDouble()
                     } else {
-                        "${it.price}€ / Noite"
+                        displayText ="${it.price}€ / Noite"
+                        valor = it.price.toString().toDouble()
                     }
                     binding.textViewNameDetail.text = it.name
                     binding.textViewGuestsDetail.text = "${it.guestsNumber}  Pessoas"
@@ -144,6 +149,11 @@ class HouseDetailActivity : AppCompatActivity() {
         binding.buttonReservationDetail.setOnClickListener {
             val intent = Intent(this, ReservationDetailsActivity::class.java)
             intent.putExtra("HOUSE_ID", house?.id_house)
+            Log.d("testeee",binding.textViewNameDetail.text.toString())
+            intent.putExtra("HOUSE_NAME", binding.textViewNameDetail.text!!)
+            intent.putExtra("HOUSE_FEEDM", totalClassification)
+            intent.putExtra("HOUSE_PRICE", valor)
+            intent.putExtra("HOUSE_IMAGE", imageUrls[0])
             startActivity(intent)
         }
 
