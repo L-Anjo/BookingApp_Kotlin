@@ -259,6 +259,62 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutCreateHouse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp">
+
+                <!-- Replace background_oval_6 with your desired background drawable -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout6"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/background_oval_1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <!-- Replace icons8_add_50 with your desired add icon -->
+                    <ImageView
+                        android:id="@+id/imageViewAddHouse"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/icons8_house_50" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/textViewCreateHouse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Criar Casa"
+                    android:textColor="#FA5F5F"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/constraintLayout6"
+                    app:layout_constraintStart_toEndOf="@+id/constraintLayout6"
+                    app:layout_constraintTop_toTopOf="@+id/constraintLayout6" />
+
+                <!-- Replace icons8_arrow_50 with your desired arrow icon -->
+                <ImageView
+                    android:id="@+id/imageViewArrowCreateHouse"
+                    android:layout_width="35dp"
+                    android:layout_height="33dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/icons8_arrow_50" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayoutAdminProfile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -353,12 +409,6 @@
                     app:layout_constraintTop_toTopOf="@+id/constraintLayout4" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <Button
-                android:id="@+id/buttonCreateHouseP"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="CreateHouse" />
 
         </LinearLayout>
     </ScrollView>

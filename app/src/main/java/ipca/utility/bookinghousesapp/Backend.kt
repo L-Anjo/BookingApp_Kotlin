@@ -364,10 +364,12 @@ object Backend {
         }
     }
 
-    fun createHouse(body: io.swagger.client.models.House, lifecycleScope: LifecycleCoroutineScope, callback: () -> Unit) {
+    fun createHouse(context: Context, body: io.swagger.client.models.House, lifecycleScope: LifecycleCoroutineScope, callback: () -> Unit) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                HouseApi("${BASE_API}").apiHousePost(body)
+                val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+                val token = sharedPreferences.getString("access_token", "")
+                HouseApi("${BASE_API}").apiHousePost(token, body)
                 // Se a criação for bem-sucedida, você pode retornar true
                 lifecycleScope.launch(Dispatchers.Main) {
                     callback()

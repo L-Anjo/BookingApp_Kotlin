@@ -51,5 +51,10 @@ class AdminProfilePage : AppCompatActivity() {
             val intent = Intent(this,AdminHousesList::class.java )
             startActivity(intent)
         }
+
+        binding.constraintLayoutApproveHouses.setOnClickListener {
+            val intent = Intent(this,AdminHousesListApprove::class.java)
+            startActivity(intent)
+        }
     }
 }
