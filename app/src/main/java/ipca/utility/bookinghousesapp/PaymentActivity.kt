@@ -14,7 +14,7 @@ class PaymentActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
         val userId = sharedPreferences.getInt("user_id", 0)
 
-        Backend.fetchReservationPayment(userId).observe(this) {
+        Backend.fetchReservationPayment(userId,this).observe(this) {
             it.onError { error ->
                 Toast.makeText(
                     this@PaymentActivity,

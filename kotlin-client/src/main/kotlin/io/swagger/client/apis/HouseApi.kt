@@ -15,6 +15,7 @@ import io.swagger.client.models.House
 import io.swagger.client.models.ProblemDetails
 
 import io.swagger.client.infrastructure.*
+import io.swagger.client.models.Reservation
 
 class HouseApi(basePath: kotlin.String = "/") : ApiClient(basePath) {
 
@@ -110,6 +111,35 @@ class HouseApi(basePath: kotlin.String = "/") : ApiClient(basePath) {
 
         return when (response.responseType) {
             ResponseType.Success -> (response as Success<*>).data as kotlin.Array<House>
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
+
+    /**
+     * Obtem Reservas de uma Casa
+     *
+     * @param id O ID da Casa
+     * @return kotlin.Array<Reservation>
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun apiHouseReservationsIdGet(token : String?,id: kotlin.Int): kotlin.Array<Reservation> {
+        val headers = mutableMapOf(
+            "Authorization" to "Bearer ${token}"
+        )
+        val localVariableConfig = RequestConfig(
+            RequestMethod.GET,
+            "/api/House/Reservations/{id}".replace("{" + "id" + "}", "$id"),
+            headers = headers
+        )
+        val response = request<kotlin.Array<Reservation>>(
+            localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as kotlin.Array<Reservation>
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")

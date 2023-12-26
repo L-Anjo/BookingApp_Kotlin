@@ -42,6 +42,31 @@ class FeedbackApi(basePath: kotlin.String = "/") : ApiClient(basePath) {
             ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
         }
     }
+
+    /**
+     * Verifica se a reserva tem feedbacks
+     *
+     * @param reservationId ID da reserva
+     * @return kotlin.Boolean
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun apiFeedbackReservationIdFeedbacksGet(reservationId: kotlin.Int): kotlin.Boolean {
+        val localVariableConfig = RequestConfig(
+            RequestMethod.GET,
+            "/api/Feedback/{reservationId}/Feedbacks".replace("{" + "reservationId" + "}", "$reservationId")
+        )
+        val response = request<kotlin.Boolean>(
+            localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as kotlin.Boolean
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
     /**
      * Obtém um feedback
      * 

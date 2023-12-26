@@ -100,9 +100,11 @@ object Backend {
             emit( wrap { ReservationApi(BASE_API).apiReservationPost(reservation, houseId,userId,authToken) })
         }
 
-    fun fetchReservationPayment(userId: Int): LiveData<ResultWrapper<io.swagger.client.models.Reservation>> =
+    fun fetchReservationPayment(userId: Int,context: Context): LiveData<ResultWrapper<io.swagger.client.models.Reservation>> =
         liveData(Dispatchers.IO) {
-            emit( wrap { ReservationApi(BASE_API).paymentGet(userId) })
+            val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", null)
+            emit( wrap { ReservationApi(BASE_API).paymentGet(userId,authToken) })
         }
 
     @SuppressLint("SuspiciousIndentation")
