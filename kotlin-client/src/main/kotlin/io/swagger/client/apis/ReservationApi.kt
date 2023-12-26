@@ -104,8 +104,11 @@ class ReservationApi(basePath: kotlin.String = "/") : ApiClient(basePath) {
      * @return kotlin.Array<Reservation>
      */
     @Suppress("UNCHECKED_CAST")
-    fun paymentGet(userId: kotlin.Int? = null): Reservation {
+    fun paymentGet(userId: kotlin.Int? = null,token: String?): Reservation {
         val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
+            val headers = mutableMapOf(
+                "Authorization" to "Bearer ${token}"
+            )
             if (userId != null) {
                 put("userId", listOf(userId.toString()))
             }
