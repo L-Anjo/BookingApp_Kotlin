@@ -16,6 +16,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminHousesListBinding
+import org.w3c.dom.Text
 
 class AdminHousesList : AppCompatActivity() {
 
@@ -88,6 +89,7 @@ class AdminHousesList : AppCompatActivity() {
                         .into(avatar)
                 }
             }
+            rootView.findViewById<TextView>(R.id.textViewSeeReservations).visibility = View.GONE
 
 
             //rootView.setOnClickListener {

@@ -62,7 +62,7 @@ class LoginActivity : AppCompatActivity() {
                         binding.textViewError.text = "O utilizador está desativado, contacte o suporte"
                         return@login
                     }
-                    val intent = Intent(this, ProfilePageActivity::class.java )
+                    val intent = Intent(this, MainActivity::class.java )
                     startActivity(intent)
 
 
