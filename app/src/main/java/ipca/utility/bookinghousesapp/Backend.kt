@@ -20,6 +20,7 @@ import io.swagger.client.infrastructure.ServerException
 import io.swagger.client.infrastructure.ApiClient
 import io.swagger.client.models.EditProfile
 import io.swagger.client.models.Feedback
+import io.swagger.client.models.Reservation
 import ipca.utility.bookinghousesapp.Backend.AUTHENTICATION_API
 import ipca.utility.bookinghousesapp.Backend.BASE_API
 import ipca.utility.bookinghousesapp.Models.House
@@ -90,6 +91,18 @@ object Backend {
             emit( wrap { HouseApi(BASE_API).apiHouseFilteredGet(location,guestsNumber,checkedV,startDate,endDate) })
         }
 
+    fun CreateReservation(reservation: io.swagger.client.models.Reservation?,houseId: Int,userId: Int,context: Context,):
+            LiveData<ResultWrapper<Unit>> =
+        liveData(Dispatchers.IO) {
+            val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", null)
+            emit( wrap { ReservationApi(BASE_API).apiReservationPost(reservation, houseId,userId,authToken) })
+        }
+
+    fun fetchReservationPayment(userId: Int): LiveData<ResultWrapper<io.swagger.client.models.Reservation>> =
+        liveData(Dispatchers.IO) {
+            emit( wrap { ReservationApi(BASE_API).paymentGet(userId) })
+        }
 
     @SuppressLint("SuspiciousIndentation")
     fun login(
@@ -368,13 +381,11 @@ object Backend {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 HouseApi("${BASE_API}").apiHousePost(body)
-                // Se a criação for bem-sucedida, você pode retornar true
+
                 lifecycleScope.launch(Dispatchers.Main) {
                     callback()
                 }
             } catch (e: Exception) {
-                // Em caso de erro, retorne false ou trate conforme necessário
-                // Aqui você pode imprimir uma mensagem de erro simplesmente assim:
                 println("Erro ao criar a casa: ${e.message}")
             }
         }

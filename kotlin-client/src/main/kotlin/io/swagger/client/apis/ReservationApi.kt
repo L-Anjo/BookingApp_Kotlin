@@ -15,6 +15,7 @@ import io.swagger.client.models.ProblemDetails
 import io.swagger.client.models.Reservation
 
 import io.swagger.client.infrastructure.*
+import io.swagger.client.models.House
 
 class ReservationApi(basePath: kotlin.String = "/") : ApiClient(basePath) {
 
@@ -95,6 +96,37 @@ class ReservationApi(basePath: kotlin.String = "/") : ApiClient(basePath) {
             ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
         }
     }
+
+    /**
+     * Obtém Ultima Reserva para Pagar.
+     *
+     * @param userId  (optional)
+     * @return kotlin.Array<Reservation>
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun paymentGet(userId: kotlin.Int? = null): Reservation {
+        val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
+            if (userId != null) {
+                put("userId", listOf(userId.toString()))
+            }
+        }
+        val localVariableConfig = RequestConfig(
+            RequestMethod.GET,
+            "/Payment", query = localVariableQuery
+        )
+        val response = request<Reservation>(
+            localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as Reservation
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
+
     /**
      * Atualiza uma Reserva
      * 
@@ -126,10 +158,13 @@ class ReservationApi(basePath: kotlin.String = "/") : ApiClient(basePath) {
      * @param body  (optional)
      * @param houseId  (optional)
      * @param userId  (optional)
-     * @return void
+     * @return Reservation
      */
-    fun apiReservationPost(body: Reservation? = null, houseId: kotlin.Int? = null, userId: kotlin.Int? = null): Unit {
+    fun apiReservationPost(body: Reservation? = null, houseId: kotlin.Int? = null, userId: kotlin.Int? = null,token: String?): Unit {
         val localVariableBody: kotlin.Any? = body
+        val headers = mutableMapOf(
+            "Authorization" to "Bearer ${token}"
+        )
         val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
             if (houseId != null) {
                 put("houseId", listOf(houseId.toString()))
@@ -140,7 +175,7 @@ class ReservationApi(basePath: kotlin.String = "/") : ApiClient(basePath) {
         }
         val localVariableConfig = RequestConfig(
                 RequestMethod.POST,
-                "/api/Reservation", query = localVariableQuery
+                "/api/Reservation", query = localVariableQuery,headers = headers
         )
         val response = request<Any?>(
                 localVariableConfig, localVariableBody

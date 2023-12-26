@@ -1,15 +1,21 @@
 package ipca.utility.bookinghousesapp
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.core.util.Pair
 import androidx.core.widget.addTextChangedListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.datepicker.MaterialDatePicker
+import io.swagger.client.models.House
+import io.swagger.client.models.Reservation
 import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
 import ipca.utility.bookinghousesapp.databinding.ActivityReservationDetailsBinding
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.time.Duration
 import java.time.Instant
@@ -24,17 +30,21 @@ class ReservationDetailsActivity : AppCompatActivity() {
     private lateinit var binding : ActivityReservationDetailsBinding
     private var startDate: LocalDateTime? = null
     private var endDate: LocalDateTime? = null
+    var valortotalReserva = 0.0
+    var reservationId = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityReservationDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getInt("user_id", 0)
 
         val houseId = intent.extras?.getInt("HOUSE_ID")?:-1
         val houseName = intent.extras?.getString("HOUSE_NAME")?:""
 
         val medclass = intent.extras?.getDouble("HOUSE_FEEDM")?:0.0
         val price = intent.extras?.getDouble("HOUSE_PRICE")?:null
-        Log.d("teste" ,price.toString())
         val imagelink = intent.extras?.getString("HOUSE_IMAGE")?:""
 
         //var startDate: LocalDateTime? = null
@@ -81,6 +91,32 @@ class ReservationDetailsActivity : AppCompatActivity() {
         }
 
         binding.buttonConfirmtoPay.setOnClickListener {
+            var reservation = Reservation(guestsNumber = binding.editTextNumber.text.toString().toInt(),init_date = startDate, end_date = endDate)
+            Backend.CreateReservation(reservation, houseId = houseId, userId = userId,this ).observe(this){
+                it.onError {error ->
+                    Toast.makeText(
+                        this@ReservationDetailsActivity,
+                        "Erro:${error.error}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                it.onNetworkError {
+                    Toast.makeText(
+                        this@ReservationDetailsActivity,
+                        "Sem Ligação à Internet",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                it.onSuccess {
+                    val intent = Intent(this, PaymentActivity::class.java)
+                    intent.putExtra("HOUSE_PRICET", valortotalReserva)
+                    startActivity(intent)
+                }
+
+
+                }
+
+
 
         }
 
@@ -112,7 +148,7 @@ class ReservationDetailsActivity : AppCompatActivity() {
         }
         val totalPrice = pricePerNight * days
         val totalTaxa = totalPrice * 0.05
-        val valortotalReserva = totalPrice+totalTaxa
+        valortotalReserva = totalPrice+totalTaxa
 
         binding.textViewValorReserva.text = totalPrice.toString()
         binding.textViewTaxaEz.text = totalTaxa.toString()

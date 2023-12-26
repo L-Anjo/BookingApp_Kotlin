@@ -148,8 +148,7 @@ class HouseDetailActivity : AppCompatActivity() {
         }
         binding.buttonReservationDetail.setOnClickListener {
             val intent = Intent(this, ReservationDetailsActivity::class.java)
-            intent.putExtra("HOUSE_ID", house?.id_house)
-            Log.d("testeee",binding.textViewNameDetail.text.toString())
+            intent.putExtra("HOUSE_ID", houseId)
             intent.putExtra("HOUSE_NAME", binding.textViewNameDetail.text!!)
             intent.putExtra("HOUSE_FEEDM", totalClassification)
             intent.putExtra("HOUSE_PRICE", valor)
