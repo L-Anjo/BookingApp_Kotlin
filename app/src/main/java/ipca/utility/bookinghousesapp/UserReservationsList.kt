@@ -15,6 +15,8 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import io.swagger.client.apis.FeedbackApi
+import ipca.utility.bookinghousesapp.Backend.BASE_API
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminReservationsListBinding
 import ipca.utility.bookinghousesapp.databinding.ActivityUserReservationsListBinding
 
@@ -90,11 +92,23 @@ class UserReservationsList : AppCompatActivity() {
             else
                 buttonCancel.visibility = View.GONE
 
-            if(reservations[position].reservationStates?.id == 3){
-                buttonReact.visibility = View.VISIBLE
-            }
-            else
+
+
+            if (reservations[position].reservationStates?.id == 3) {
+                val reservationId = reservations[position].id_reservation
+                Backend.GetReservationFeedbacks(lifecycleScope, reservationId.toString().toInt()) { feedbacks ->
+                    println(feedbacks)
+                    if (feedbacks) {
+                        // A reserva já possui feedback
+                        buttonReact.visibility = View.GONE
+                    } else {
+                        // A reserva ainda não possui feedback
+                        buttonReact.visibility = View.VISIBLE
+                    }
+                }
+            } else {
                 buttonReact.visibility = View.GONE
+            }
 
             buttonCancel.setOnClickListener {
                 val reservationToCancel = reservations[position].id_reservation

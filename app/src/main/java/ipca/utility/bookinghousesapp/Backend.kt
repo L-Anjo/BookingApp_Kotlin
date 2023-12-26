@@ -11,6 +11,7 @@ import io.jsonwebtoken.io.IOException
 import io.swagger.client.apis.AuthApi
 import io.swagger.client.apis.FeedbackApi
 import io.swagger.client.apis.HouseApi
+import io.swagger.client.apis.PaymentApi
 import io.swagger.client.apis.ReservationApi
 import io.swagger.client.apis.UserApi
 import java.time.LocalDateTime
@@ -305,6 +306,45 @@ object Backend {
     }
 
     @SuppressLint("SuspiciousIndentation")
+    fun GetAllPayments(
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope,
+        callback: (Array<io.swagger.client.models.Payment>) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", "")
+            val paymentApi = PaymentApi("${BASE_API}").apiPaymentGet(authToken)
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(paymentApi)
+            }
+
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun GetHouseReservations(
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope,
+        houseId: Int,
+        callback: (Array<io.swagger.client.models.Reservation>) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val sharedPreferences =
+                context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", null)
+
+            val houseApi = HouseApi("${BASE_API}").apiHouseReservationsIdGet(authToken, houseId)
+
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(houseApi)
+            }
+
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
     fun fetchUserDetail(
         context: Context,
         lifecycleScope: LifecycleCoroutineScope,
@@ -317,6 +357,21 @@ object Backend {
             val userApi = UserApi("${BASE_API}").apiUserUserIdGet(authToken, userId)
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(userApi)
+            }
+
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun GetReservationFeedbacks(
+        lifecycleScope: LifecycleCoroutineScope,
+        reservationId: Int,
+        callback: (Boolean) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val feedbackApi = FeedbackApi("${BASE_API}").apiFeedbackReservationIdFeedbacksGet(reservationId)
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(feedbackApi)
             }
 
         }

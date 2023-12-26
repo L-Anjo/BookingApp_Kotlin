@@ -1,5 +1,6 @@
 package ipca.utility.bookinghousesapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -13,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminHousesListBinding
 import ipca.utility.bookinghousesapp.databinding.ActivityUserHousesListBinding
+import org.w3c.dom.Text
 
 class UserHousesList : AppCompatActivity() {
 
@@ -108,6 +110,13 @@ class UserHousesList : AppCompatActivity() {
                         notifyDataSetChanged()
                     }
                 }
+            }
+
+            val seeReservationsButton = rootView.findViewById<TextView>(R.id.textViewSeeReservations)
+            seeReservationsButton.setOnClickListener {
+                val intent = Intent(this@UserHousesList,HouseReservationsLIst::class.java )
+                intent.putExtra(HouseReservationsLIst.DATA_HOUSE, houses[position].id_house)
+                startActivity(intent)
             }
 
 
