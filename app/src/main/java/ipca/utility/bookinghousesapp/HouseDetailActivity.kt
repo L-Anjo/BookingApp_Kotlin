@@ -85,7 +85,7 @@ class HouseDetailActivity : AppCompatActivity() {
             it.onSuccess {
                     house ->
                 house?.let {
-                    shared = house.sharedRoom
+                    shared = house.sharedRoom!!
                      if (it.priceyear != null) {
                         displayText = "${it.priceyear}€ / Ano"
                         valor = it.priceyear.toString().toDouble()
