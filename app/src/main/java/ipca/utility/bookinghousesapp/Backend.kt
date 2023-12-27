@@ -116,6 +116,12 @@ object Backend {
             val authToken = sharedPreferences.getString("access_token", null)
             emit( wrap { ReservationApi(BASE_API).apiReservationPost(reservation, houseId,userId,authToken) })
         }
+    @SuppressLint("SuspiciousIndentation")
+    fun CreateUser(user: io.swagger.client.models.User?,context: Context):
+        LiveData<ResultWrapper<Unit>> =
+            liveData(Dispatchers.IO) {
+                emit( wrap { UserApi(BASE_API).apiUserPost(user?.name.toString(), user?.email.toString(), user?.password.toString(), user?.phone!! ) })
+    }
 
     fun fetchReservationPayment(userId: Int,context: Context): LiveData<ResultWrapper<io.swagger.client.models.Reservation>> =
         liveData(Dispatchers.IO) {
@@ -263,25 +269,7 @@ object Backend {
         }
     }
 
-    @SuppressLint("SuspiciousIndentation")
-    fun CreateUser(
-        lifecycleScope:
-        LifecycleCoroutineScope,
-        name: String,
-        email: String,
-        password: String,
-        phone: Int,
-        callback: (Boolean) -> Unit
-    ) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            UserApi("${BASE_API}").apiUserPost(name, email, password, phone)
-            lifecycleScope.launch(Dispatchers.Main) {
-                callback(true)
-            }
 
-
-        }
-    }
 
     @SuppressLint("SuspiciousIndentation")
     fun CreateFeedback(

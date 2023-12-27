@@ -3,7 +3,9 @@ package ipca.utility.bookinghousesapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import io.swagger.client.models.User
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import ipca.utility.bookinghousesapp.databinding.ActivityLoginBinding
 import ipca.utility.bookinghousesapp.databinding.ActivityRegisterBinding
@@ -23,14 +25,26 @@ class RegisterActivity : AppCompatActivity() {
             val editTextPassword = binding.editTextPassword.text.toString()
             val editTextPhone = binding.editTextPhone.text.toString().toInt()
 
-            Backend.CreateUser(lifecycleScope, editTextName, editTextEmail, editTextPassword, editTextPhone) { createSuccessful ->
-                if (createSuccessful) {
-                    val intent = Intent(this, LoginActivity::class.java )
-                    startActivity(intent)
-                    Log.d("CreateUserActivity", "Criação bem-sucedido!")
+            var user = User(name = editTextName, email = editTextEmail, password = editTextPassword, phone = editTextPhone)
 
-                } else {
-                    binding.textViewErrorRegister.text = "Credenciais inválidas. Tente novamente."
+            Backend.CreateUser(user, this).observe(this){
+                it.onError {error ->
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "${error.error}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                it.onNetworkError {
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "Sem Ligação à Internet",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                it.onSuccess {
+                    val intent = Intent(this,LoginActivity::class.java)
+                    startActivity(intent)
                 }
             }
         }
