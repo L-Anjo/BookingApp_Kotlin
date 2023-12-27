@@ -98,21 +98,38 @@ class UserHousesList : AppCompatActivity() {
             //    startActivity(intent)
             //}
             val buttonRemove = rootView.findViewById<Button>(R.id.buttonRemove)
+            val seeReservationsButton = rootView.findViewById<TextView>(R.id.textViewSeeReservations)
+            if(houses[position].statusHouse?.id==1 || houses[position].statusHouse?.id==2){
 
-            if(houses[position].statusHouse?.id==1 || houses[position].statusHouse?.id==2)
+
                 buttonRemove.visibility = View.VISIBLE
-            else
+                seeReservationsButton.visibility = View.VISIBLE
+            }
+            else{
                 buttonRemove.visibility = View.GONE
+                seeReservationsButton.visibility = View.GONE
+            }
+
+
+
             buttonRemove.setOnClickListener{
                 val houseIdToRemove = houses[position].id_house
                 Backend.DeleteHouse(this@UserHousesList, lifecycleScope,houseIdToRemove.toString().toInt()) { isSuccess ->
                     if (isSuccess) {
-                        notifyDataSetChanged()
+                        houses.clear()
+
+                        // Recarregar os dados atualizados da base de dados
+                        Backend.GetUserHouses(this@UserHousesList, lifecycleScope) { fetchedHouses ->
+                            houses.addAll(fetchedHouses)
+                            if (!houses.isEmpty()) {
+                                binding.textViewNoHouses.visibility = View.GONE
+                                notifyDataSetChanged()
+                            }
+                        }
                     }
                 }
             }
 
-            val seeReservationsButton = rootView.findViewById<TextView>(R.id.textViewSeeReservations)
             seeReservationsButton.setOnClickListener {
                 val intent = Intent(this@UserHousesList,HouseReservationsLIst::class.java )
                 intent.putExtra(HouseReservationsLIst.DATA_HOUSE, houses[position].id_house)

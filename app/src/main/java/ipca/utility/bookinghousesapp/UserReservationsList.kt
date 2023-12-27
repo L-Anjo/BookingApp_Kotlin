@@ -114,7 +114,17 @@ class UserReservationsList : AppCompatActivity() {
                 val reservationToCancel = reservations[position].id_reservation
                 Backend.CancelReservation(this@UserReservationsList, lifecycleScope,reservationToCancel.toString().toInt()) { isSuccess ->
                     if (isSuccess) {
-                        notifyDataSetChanged()
+                        // Limpar a lista existente
+                        reservations.clear()
+
+                        // Recarregar os dados atualizados da base de dados
+                        Backend.GetUserReservations(this@UserReservationsList, lifecycleScope) { fetchedReservations ->
+                            reservations.addAll(fetchedReservations)
+                            if(!reservations.isEmpty()){
+                                binding.textViewNoReservations.visibility = View.GONE
+                                notifyDataSetChanged()
+                            }
+                        }
                     }
                 }
             }

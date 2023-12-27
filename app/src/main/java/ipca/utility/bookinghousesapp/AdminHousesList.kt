@@ -105,7 +105,14 @@ class AdminHousesList : AppCompatActivity() {
                 val houseIdToRemove = houses[position].id_house
                 Backend.DeleteHouse(this@AdminHousesList, lifecycleScope,houseIdToRemove.toString().toInt()) { isSuccess ->
                     if (isSuccess) {
-                        notifyDataSetChanged()
+                        // Limpar a lista existente
+                        houses.clear()
+
+                        // Recarregar os dados atualizados da base de dados
+                        Backend.GetAllHouses(this@AdminHousesList, lifecycleScope) { fetchedHouses ->
+                            houses.addAll(fetchedHouses)
+                            notifyDataSetChanged()
+                        }
                     }
                 }
             }

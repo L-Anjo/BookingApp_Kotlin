@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PaymentActivity">
+    tools:context=".PaymentActivity"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/textView22"
@@ -102,6 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
+            android:backgroundTint="#FA5F5F"
             android:text="Pagar" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.util.Log
 import android.content.Context
+import android.widget.ImageView
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
@@ -19,6 +20,8 @@ import java.util.Date
 import io.swagger.client.infrastructure.ClientException
 import io.swagger.client.infrastructure.ServerException
 import io.swagger.client.infrastructure.ApiClient
+import io.swagger.client.infrastructure.RequestConfig
+import io.swagger.client.infrastructure.RequestMethod
 import io.swagger.client.models.EditProfile
 import io.swagger.client.models.Feedback
 import io.swagger.client.models.Payment
@@ -34,10 +37,14 @@ import kotlinx.coroutines.launch
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import java.io.File
 
 import java.util.Objects
 
@@ -152,6 +159,39 @@ object Backend {
                 }
             })
         }}
+
+    @SuppressLint("SuspiciousIndentation")
+    fun UpdateUserAvatar(token: String?, imageFile: File, fileExtension: String, callback: (Boolean) -> Unit) {
+        try {
+            val mediaType = "multipart/form-data".toMediaTypeOrNull()
+
+            val requestBody = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart(
+                    "ImageFile",
+                    "avatar.$fileExtension",
+                    imageFile.asRequestBody(mediaType)
+                )
+                .build()
+
+            val request = Request.Builder()
+                .url(BASE_API + "/api/User/avatar")
+                .header("Authorization", "Bearer $token")
+                .put(requestBody)
+                .build()
+
+            val client = OkHttpClient()
+            val response = client.newCall(request).execute()
+
+            if (response.isSuccessful) {
+                callback(true)
+            } else {
+                callback(false)
+            }
+        } catch (e: IOException) {
+            callback(false)
+        }
+    }
 
     @SuppressLint("SuspiciousIndentation")
     fun login(
@@ -315,22 +355,7 @@ object Backend {
         }
     }
 
-    @SuppressLint("SuspiciousIndentation")
-    fun UpdateUserAvatar(
-        context: Context,
-        lifecycleScope: LifecycleCoroutineScope,
-        callback: (Boolean) -> Unit
-    ) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
-            val authToken = sharedPreferences.getString("access_token", "")
-            UserApi("${BASE_API}").apiUserAvatarPut(authToken)
 
-            lifecycleScope.launch(Dispatchers.Main) {
-                callback(true)
-            }
-        }
-    }
 
     @SuppressLint("SuspiciousIndentation")
     fun CancelReservation(
