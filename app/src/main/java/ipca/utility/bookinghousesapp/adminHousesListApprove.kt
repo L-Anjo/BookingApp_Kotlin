@@ -1,7 +1,9 @@
 package ipca.utility.bookinghousesapp
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
@@ -14,6 +16,7 @@ import ipca.utility.bookinghousesapp.Models.User
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminUsersListBinding
 import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
 import android.widget.Button
+import com.google.firebase.firestore.FirebaseFirestore
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminHousesApproveListBinding
 
 
@@ -21,6 +24,7 @@ class AdminHousesListApprove : AppCompatActivity() {
 
     private lateinit var binding:ActivityAdminHousesApproveListBinding
     private var houses = arrayListOf<io.swagger.client.models.House>()
+    var token = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +36,7 @@ class AdminHousesListApprove : AppCompatActivity() {
             houses.addAll(fetchedHouses)
             setupListView()
         }
+
     }
 
     private fun setupListView() {
@@ -61,35 +66,48 @@ class AdminHousesListApprove : AppCompatActivity() {
 
             val approveButton = rootView.findViewById<Button>(R.id.buttonAproveHouse)
             approveButton.setOnClickListener {
-                val id_house = houses[position].id_house ?: -1 // Assuming -1 as default ID if null
+                val id_house = houses[position].id_house ?: -1
 
                 print("ID DA HOUSE:")
                 println(houses[position].id_house)
                 println(id_house)
 
-                // Perform the action to approve the house here
+/*
+                val db = FirebaseFirestore.getInstance()
+                val tokenRef = db.collection("tokens").document(houses[position].user?.id_user.toString())
+                tokenRef.get()
+                    .addOnSuccessListener { documentSnapshot ->
+                        if (documentSnapshot.exists()) {
+                            token = documentSnapshot.getString("token")!!
+                            Log.d("testeeee",token.toString())
+                        }
+                    }
+
+                Backend.sendNotitication(token, "Alojamento",
+                    "Alojamento - O seu alojamento ${houses[position].name} foi Aprovado para Alugueres",lifecycleScope){
+                }
+*/
                 Backend.updateHouseStateApproved(id_house, lifecycleScope) {
-                    // Remove the house from the list upon successful approval
+
                     houses.removeAt(position)
-                    notifyDataSetChanged() // Notify adapter that data set has changed
+                    notifyDataSetChanged()
                 }
             }
 
             val declineButton = rootView.findViewById<Button>(R.id.buttonDecHouse)
             declineButton.setOnClickListener {
-                val id_house = houses[position].id_house ?: -1 // Assuming -1 as default ID if null
+                val id_house = houses[position].id_house ?: -1
 
-                // Perform the action to decline (delete) the house here
                 Backend.deleteHouseById(id_house, lifecycleScope) {
-                    // Remove the house from the list upon successful deletion
+
                     houses.removeAt(position)
-                    notifyDataSetChanged() // Notify adapter that data set has changed
+                    notifyDataSetChanged()
                 }
             }
 
             val seeMoreButton = rootView.findViewById<Button>(R.id.buttonSeeMoreHouse)
             seeMoreButton.setOnClickListener {
-                val houseId = houses[position].id_house ?: -1 // Assuming -1 as default ID if null
+                val houseId = houses[position].id_house ?: -1
 
                 val intent = Intent(rootView.context, HouseDetailActivity::class.java)
                 intent.putExtra("HOUSE_ID", houseId)

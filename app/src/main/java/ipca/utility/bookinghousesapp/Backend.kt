@@ -30,6 +30,13 @@ import ipca.utility.bookinghousesapp.Models.PostalCode
 import ipca.utility.bookinghousesapp.Models.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 
 import java.util.Objects
 
@@ -60,6 +67,8 @@ object Backend {
 
     internal const val BASE_API = "http://10.0.2.2:7105"
     internal const val AUTHENTICATION_API = "http://10.0.2.2:5159"
+    internal const val NOTIFICATION_API = "https://fcm.googleapis.com/fcm/send"
+    private val client = OkHttpClient()
     //private const val PATH_HOUSES = "House"
 
     suspend fun <T> wrap(apiCall: suspend () -> T): ResultWrapper<T> {
@@ -106,6 +115,42 @@ object Backend {
             val authToken = sharedPreferences.getString("access_token", null)
             emit( wrap { ReservationApi(BASE_API).paymentGet(userId,authToken) })
         }
+
+    fun sendNotitication(token: String, notificationTitle: String, notificationBody: String,lifecycleScope: LifecycleCoroutineScope,  callback: (Boolean) -> Unit
+    ){
+    lifecycleScope.launch(Dispatchers.IO) {
+            val mediaTypeJson = "application/json; charset=utf-8".toMediaType()
+            val okHttpClient = OkHttpClient()
+
+            val body = """
+            {
+                "to": "$token",
+                "notification": {
+                    "body": "$notificationBody",
+                    "title": "$notificationTitle"
+                }
+            }
+        """.trimIndent()
+
+            val requestBody = body.toRequestBody(mediaTypeJson)
+            val request = Request.Builder()
+                .post(requestBody)
+                .url("${NOTIFICATION_API}")
+                .addHeader("Authorization", "key=AAAAAaa-bNg:APA91bEoqBLabyCti11X_Wf9AfQy6Im3QsoH98W2cnNx0DT_ucS83HqZi5q1YQW5bbZQXqhSwJt39aHtwsf1B_lcAHz5QxaAoLA1tZ1dnvLVZo63hOYuOS9HRJxCcPyjw-rEopT-ka8t")
+                .build()
+
+            okHttpClient.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: java.io.IOException) {
+                    // Handle this
+                    Log.d("shoppinglist", e.message.toString())
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    // Handle this
+                    Log.d("shoppinglist", response.toString())
+                }
+            })
+        }}
 
     @SuppressLint("SuspiciousIndentation")
     fun login(

@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import androidx.lifecycle.lifecycleScope
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.core.util.Pair
@@ -11,6 +14,9 @@ import androidx.core.widget.addTextChangedListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.RemoteMessage
+import com.google.firebase.messaging.FirebaseMessaging
 import io.swagger.client.models.House
 import io.swagger.client.models.Reservation
 import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
@@ -32,6 +38,7 @@ class ReservationDetailsActivity : AppCompatActivity() {
     private var endDate: LocalDateTime? = null
     var valortotalReserva = 0.0
     var reservationId = 0
+    var token = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityReservationDetailsBinding.inflate(layoutInflater)
@@ -52,6 +59,16 @@ class ReservationDetailsActivity : AppCompatActivity() {
         val image = binding.imageViewHouse
         val date = binding.textViewCheckInOut2
 
+
+        val db = FirebaseFirestore.getInstance()
+        val tokenRef = db.collection("tokens").document(userId.toString())
+        tokenRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    token = documentSnapshot.getString("token")!!
+                    Log.d("testeeee",token.toString())
+                }
+            }
 
         binding.textViewName.text = houseName
         binding.textViewMFeed.text = "☆${medclass}"
@@ -108,9 +125,15 @@ class ReservationDetailsActivity : AppCompatActivity() {
                     ).show()
                 }
                 it.onSuccess {
+
+                    //sendNotification(token, "teste", "teste")
+                    Backend.sendNotitication(token, "Reserva", "Reserva - O utilizador ${userId} efetuou uma reserva no seu alojamento",lifecycleScope){
+                    }
+
                     val intent = Intent(this, PaymentActivity::class.java)
                     intent.putExtra("HOUSE_PRICET", valortotalReserva)
                     startActivity(intent)
+
                 }
 
 
@@ -122,7 +145,18 @@ class ReservationDetailsActivity : AppCompatActivity() {
 
 
     }
-
+    /*
+    fun sendNotification(deviceToken: String, notificationTitle: String, notificationBody: String) {
+        val message = RemoteMessage.Builder(deviceToken)
+            .setMessageId(java.lang.Integer.toString(1))
+            .setData(
+                mapOf(
+                    "title" to notificationTitle,
+                    "body" to notificationBody
+                )
+            )
+            .build()
+    }*/
     private fun convertTimeToDate(time: Long): String{
         val utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
         utc.timeInMillis = time
