@@ -96,7 +96,14 @@ class AdminUsersList : AppCompatActivity() {
                 val userIdToRemove = users[position].id_user
                 Backend.DeactivateUser(this@AdminUsersList, lifecycleScope,userIdToRemove.toString().toInt()) { isSuccess ->
                     if (isSuccess) {
-                        notifyDataSetChanged()
+                        // Limpar a lista existente
+                        users.clear()
+
+                        // Recarregar os dados atualizados da base de dados
+                        Backend.GetAllUsers(this@AdminUsersList, lifecycleScope) { fetchedUsers ->
+                            users.addAll(fetchedUsers)
+                            notifyDataSetChanged()
+                        }
                     }
                 }
             }

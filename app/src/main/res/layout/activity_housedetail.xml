@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00FFFFFF"
+    android:background="@color/white"
+    android:backgroundTint="@color/white"
     tools:context=".HouseDetailActivity">
 
     <ScrollView
@@ -16,12 +17,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/white">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -494,14 +497,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2">
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/textViewPrecoNoiteDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.8
-"
+"           android:textColor="@color/black"
             android:text="100$ / noite" />
 
         <Button
@@ -510,6 +514,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:backgroundTint="#FF5722"
+            android:textColor="@color/white"
             android:text="Reservar" />
 
     </LinearLayout>

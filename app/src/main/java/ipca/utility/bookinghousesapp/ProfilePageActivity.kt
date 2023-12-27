@@ -12,6 +12,7 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.util.Log
 import android.view.View
+import android.webkit.MimeTypeMap
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
@@ -25,11 +26,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 class ProfilePageActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityProfilePageBinding
     private lateinit var bottomNavigationView: BottomNavigationView
+    private val GALLERY_REQUEST_CODE = 123
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,5 +104,66 @@ class ProfilePageActivity : AppCompatActivity() {
             val intent = Intent(this,AdminProfilePage::class.java )
             startActivity(intent)
         }
+
+        binding.imageView11.setOnClickListener {
+            val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            val selectedImageUri: Uri? = data.data
+
+            if (selectedImageUri != null) {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val imageBytes = getBytesFromUri(selectedImageUri)
+                    val sharedPreferences =
+                        getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+                    val authToken = sharedPreferences.getString("access_token", null)
+                    val tempImageFile = createTempImageFile(imageBytes)
+
+                    Backend.UpdateUserAvatar(authToken, tempImageFile, getFileExtensionFromUri(selectedImageUri)) { success ->
+                        if (success) {
+                            val intent = Intent(this@ProfilePageActivity, ProfilePageActivity::class.java)
+                            startActivity(intent)
+                        } else {
+                            println("Erro na escolha de imagem")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun getBytesFromUri(uri: Uri): ByteArray {
+        return withContext(Dispatchers.IO) {
+            val inputStream = contentResolver.openInputStream(uri)
+            val outputStream = ByteArrayOutputStream()
+
+            inputStream?.use { input ->
+                val buffer = ByteArray(4 * 1024) // buffer size
+                var read: Int
+                while (input.read(buffer).also { read = it } != -1) {
+                    outputStream.write(buffer, 0, read)
+                }
+            }
+
+            outputStream.toByteArray()
+        }
+    }
+
+    private fun getFileExtensionFromUri(uri: Uri): String {
+        val contentResolver = contentResolver ?: return "png" // Extensão padrão, se não puder obter o content resolver
+        val mimeTypeMap = MimeTypeMap.getSingleton()
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri)) ?: "png"
+    }
+
+    private fun createTempImageFile(imageBytes: ByteArray): File {
+        val tempFile = File.createTempFile("temp_avatar", null, cacheDir)
+        tempFile.writeBytes(imageBytes)
+        return tempFile
     }
 }

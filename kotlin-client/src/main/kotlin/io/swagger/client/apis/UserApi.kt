@@ -23,23 +23,24 @@ class UserApi(basePath: kotlin.String = "/") : ApiClient(basePath) {
 
     /**
      * Altera avatar do utilizador
-     * 
+     *
      * @param imageFile  (optional)
      * @return void
      */
-    fun apiUserAvatarPut(token: String?, imageFile: kotlin.Array<kotlin.Byte>? = null): Unit {
-        val localVariableBody: kotlin.Any? = mapOf("ImageFile" to "$imageFile")
-        val localVariableHeaders: MutableMap<String, String> = mutableMapOf("Content-Type" to "multipart/form-data")
+    fun apiUserAvatarPut(token : String?, imageFile: kotlin.Array<kotlin.Byte>? = null): Unit {
         val headers = mutableMapOf(
             "Authorization" to "Bearer ${token}"
         )
+        println(imageFile)
+        val localVariableBody: kotlin.Any? = mapOf("ImageFile" to "$imageFile")
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf("Content-Type" to "multipart/form-data")
         localVariableHeaders["Accept"] = "text/plain, application/json, text/json"
         val localVariableConfig = RequestConfig(
-                RequestMethod.PUT,
-                "/api/User/avatar", headers = headers
+            RequestMethod.PUT,
+            "/api/User/avatar", headers = headers
         )
         val response = request<Any?>(
-                localVariableConfig, localVariableBody
+            localVariableConfig, localVariableBody
         )
 
         return when (response.responseType) {

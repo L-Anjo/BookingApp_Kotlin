@@ -12,11 +12,13 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -88,9 +90,11 @@
             <TextView
                 android:id="@+id/textViewUserName"
                 android:layout_width="match_parent"
+                android:background="@color/white"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Name"
+                android:textColor="@color/black"
                 android:textAlignment="center"
                 android:textSize="26sp"
                 android:textStyle="bold" />
@@ -99,6 +103,7 @@
                 android:id="@+id/textViewUserEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="Email"
                 android:textAlignment="center" />
 
