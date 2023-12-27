@@ -77,7 +77,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/TextViewLocalidadeHouse"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonEdit" />
 
     <TextView
         android:id="@+id/textViewHouseStatus"
@@ -90,6 +90,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewHouse"
         app:layout_constraintTop_toBottomOf="@+id/textViewHouseCodPostal" />
+
+    <ImageView
+        android:id="@+id/buttonEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/TextViewNomeHouse"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icons8_edit_text_file_50" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,6 +26,7 @@ import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.Models.Image
 import ipca.utility.bookinghousesapp.Models.PostalCode
 import ipca.utility.bookinghousesapp.Models.User
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -546,6 +547,25 @@ object Backend {
                 callback(true)
             }
 
+        }
+    }
+
+    fun editHouse(id: Int, house: io.swagger.client.models.House): ResultWrapper<Unit> {
+        return try {
+            // Executa a operação em um contexto de Coroutines
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    HouseApi(BASE_API).apiHouseIdPut(id, house)
+                } catch (e: Exception) {
+                    // Lida com exceções dentro da Coroutine
+                    println("Erro ao Editar a casa: $e")
+                }
+            }
+            ResultWrapper.Success(Unit)
+        } catch (e: Exception) {
+            // Trata erros gerais aqui
+            println("Erro ao Editar a casa: $e")
+            ResultWrapper.Error()
         }
     }
 

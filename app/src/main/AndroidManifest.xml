@@ -69,6 +69,9 @@
             android:name=".CreateHouse"
             android:exported="false" />
         <activity
+            android:name="EditHouseActivity"
+            android:exported="false" />
+        <activity
             android:name=".AdminHousesListApprove"
             android:exported="false" />
         <activity

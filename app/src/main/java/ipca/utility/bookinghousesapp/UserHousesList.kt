@@ -1,5 +1,6 @@
 package ipca.utility.bookinghousesapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -108,6 +109,15 @@ class UserHousesList : AppCompatActivity() {
                         notifyDataSetChanged()
                     }
                 }
+            }
+
+            val buttonEdit = rootView.findViewById<ImageView>(R.id.buttonEdit)
+            buttonEdit.setOnClickListener{
+                val intent = Intent(this@UserHousesList, EditHouseActivity::class.java)
+                val houseId = houses[position].id_house ?: -1 // Assuming -1 as default ID if null
+                intent.putExtra("HOUSE_ID", houseId)
+
+                startActivity(intent)
             }
 
 
