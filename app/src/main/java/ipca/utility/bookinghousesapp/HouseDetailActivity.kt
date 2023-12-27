@@ -38,6 +38,7 @@ class HouseDetailActivity : AppCompatActivity() {
     var feedbacks = arrayListOf<io.swagger.client.models.Feedback?>()
     val feedbackAdapter = FeedbackAdapter()
     val imageUrls = mutableListOf<String>()
+    var shared = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHousedetailBinding.inflate(layoutInflater)
@@ -84,7 +85,7 @@ class HouseDetailActivity : AppCompatActivity() {
             it.onSuccess {
                     house ->
                 house?.let {
-
+                    shared = house.sharedRoom
                      if (it.priceyear != null) {
                         displayText = "${it.priceyear}€ / Ano"
                         valor = it.priceyear.toString().toDouble()
@@ -152,7 +153,9 @@ class HouseDetailActivity : AppCompatActivity() {
             intent.putExtra("HOUSE_NAME", binding.textViewNameDetail.text!!)
             intent.putExtra("HOUSE_FEEDM", totalClassification)
             intent.putExtra("HOUSE_PRICE", valor)
+            intent.putExtra("HOUSE_SHARED", shared)
             intent.putExtra("HOUSE_IMAGE", imageUrls[0])
+
             startActivity(intent)
         }
 

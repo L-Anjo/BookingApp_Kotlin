@@ -49,7 +49,6 @@ class ReservationDetailsActivity : AppCompatActivity() {
 
         val houseId = intent.extras?.getInt("HOUSE_ID")?:-1
         val houseName = intent.extras?.getString("HOUSE_NAME")?:""
-
         val medclass = intent.extras?.getDouble("HOUSE_FEEDM")?:0.0
         val price = intent.extras?.getDouble("HOUSE_PRICE")?:null
         val imagelink = intent.extras?.getString("HOUSE_IMAGE")?:""
@@ -66,7 +65,6 @@ class ReservationDetailsActivity : AppCompatActivity() {
             .addOnSuccessListener { documentSnapshot ->
                 if (documentSnapshot.exists()) {
                     token = documentSnapshot.getString("token")!!
-                    Log.d("testeeee",token.toString())
                 }
             }
 
@@ -126,10 +124,6 @@ class ReservationDetailsActivity : AppCompatActivity() {
                 }
                 it.onSuccess {
 
-                    //sendNotification(token, "teste", "teste")
-                    Backend.sendNotitication(token, "Reserva", "Reserva - O utilizador ${userId} efetuou uma reserva no seu alojamento",lifecycleScope){
-                    }
-
                     val intent = Intent(this, PaymentActivity::class.java)
                     intent.putExtra("HOUSE_PRICET", valortotalReserva)
                     intent.putExtra("PAYMENT_CREATIONDATE", LocalDateTime.now().toString())
@@ -140,24 +134,11 @@ class ReservationDetailsActivity : AppCompatActivity() {
 
                 }
 
-
-
         }
 
 
     }
-    /*
-    fun sendNotification(deviceToken: String, notificationTitle: String, notificationBody: String) {
-        val message = RemoteMessage.Builder(deviceToken)
-            .setMessageId(java.lang.Integer.toString(1))
-            .setData(
-                mapOf(
-                    "title" to notificationTitle,
-                    "body" to notificationBody
-                )
-            )
-            .build()
-    }*/
+
     private fun convertTimeToDate(time: Long): String{
         val utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
         utc.timeInMillis = time
@@ -171,9 +152,10 @@ class ReservationDetailsActivity : AppCompatActivity() {
 
     private fun updateReservationPrice() {
         val pricePerNight = intent.extras?.getDouble("HOUSE_PRICE") ?: 0.0
-
+        val sharedRoom = intent.extras?.getBoolean("HOUSE_SHARED")?:false
         val startDate = startDate
         val endDate = endDate
+        var totalPrice = 0.0
         Log.d("tested",startDate.toString())
         val numGuests = binding.editTextNumber.text.toString().toIntOrNull() ?: 0
         var days = Duration.between(startDate, endDate).toDays()
@@ -181,8 +163,13 @@ class ReservationDetailsActivity : AppCompatActivity() {
         if (startDate == null || endDate == null) {
             days = 0
         }
-        val totalPrice = pricePerNight * days
-        val totalTaxa = totalPrice * 0.05
+        if (sharedRoom){
+            totalPrice = pricePerNight * (numGuests) * days
+        }
+        else {
+            totalPrice = pricePerNight * days
+        }
+        var totalTaxa = totalPrice * 0.05
         valortotalReserva = totalPrice+totalTaxa
 
         binding.textViewValorReserva.text = totalPrice.toString()

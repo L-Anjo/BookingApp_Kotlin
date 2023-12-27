@@ -10,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.firestore.FirebaseFirestore
 import io.swagger.client.models.Payment
 import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
 import ipca.utility.bookinghousesapp.databinding.ActivityPaymentBinding
@@ -21,6 +22,7 @@ import java.util.Locale
 class PaymentActivity : AppCompatActivity() {
     private lateinit var binding : ActivityPaymentBinding
     private var selectedPaymentMethod: String = ""
+    var token = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPaymentBinding.inflate(layoutInflater)
@@ -29,6 +31,8 @@ class PaymentActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
         val userId = sharedPreferences.getInt("user_id", 0)
         var idReservation = 0
+
+
 
         val metodosPagamento = resources.getStringArray(R.array.metodos_pagamento)
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, metodosPagamento)
@@ -81,11 +85,19 @@ class PaymentActivity : AppCompatActivity() {
                     reservation ->
                 reservation?.let {
                     idReservation = reservation.id_reservation!!
-                    Log.d("testeeeep", idReservation.toString())
+                    Log.d("testeeeeu",idReservation.toString())
+                    val db = FirebaseFirestore.getInstance()
+                    val tokenRef = db.collection("tokens").document(reservation.house?.user?.id_user.toString())
+                    tokenRef.get()
+                        .addOnSuccessListener { documentSnapshot ->
+                            if (documentSnapshot.exists()) {
+                                token = documentSnapshot.getString("token")!!
+                            }
+                        }
                 }
             }
-
         }
+
 
         binding.buttonPayment.setOnClickListener {
 
@@ -98,6 +110,8 @@ class PaymentActivity : AppCompatActivity() {
 
                 Backend.UpdatePayment(paymentId, lifecycleScope) { updateSuccessful ->
                     if (updateSuccessful) {
+                        Backend.sendNotitication(token, "Reserva", "Reserva - O utilizador ${userId} efetuou uma reserva no seu alojamento",lifecycleScope){
+                        }
                         val intent = Intent(this, UserReservationsList::class.java)
                         startActivity(intent)
                     }

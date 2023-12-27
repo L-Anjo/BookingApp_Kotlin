@@ -72,7 +72,7 @@ class AdminHousesListApprove : AppCompatActivity() {
                 println(houses[position].id_house)
                 println(id_house)
 
-/*
+
                 val db = FirebaseFirestore.getInstance()
                 val tokenRef = db.collection("tokens").document(houses[position].user?.id_user.toString())
                 tokenRef.get()
@@ -86,7 +86,7 @@ class AdminHousesListApprove : AppCompatActivity() {
                 Backend.sendNotitication(token, "Alojamento",
                     "Alojamento - O seu alojamento ${houses[position].name} foi Aprovado para Alugueres",lifecycleScope){
                 }
-*/
+
                 Backend.updateHouseStateApproved(id_house, lifecycleScope) {
 
                     houses.removeAt(position)
