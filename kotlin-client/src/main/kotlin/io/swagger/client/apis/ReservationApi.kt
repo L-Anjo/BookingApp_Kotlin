@@ -199,10 +199,14 @@ class ReservationApi(basePath: kotlin.String = "/") : ApiClient(basePath) {
      * @param reservationId ID da Reserva 
      * @return void
      */
-    fun apiReservationReservationIdDeactivatePut(reservationId: kotlin.Int): Unit {
+    fun apiReservationReservationIdDeactivatePut(token : String?, reservationId: kotlin.Int): Unit {
+        val headers = mutableMapOf(
+            "Authorization" to "Bearer ${token}"
+        )
         val localVariableConfig = RequestConfig(
                 RequestMethod.PUT,
-                "/api/Reservation/{reservationId}/Deactivate".replace("{" + "reservationId" + "}", "$reservationId")
+                "/api/Reservation/{reservationId}/Deactivate".replace("{" + "reservationId" + "}", "$reservationId"),
+            headers = headers
         )
         val response = request<Any?>(
                 localVariableConfig

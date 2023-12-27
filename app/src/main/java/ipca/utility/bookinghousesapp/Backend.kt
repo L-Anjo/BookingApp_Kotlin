@@ -21,6 +21,7 @@ import io.swagger.client.infrastructure.ServerException
 import io.swagger.client.infrastructure.ApiClient
 import io.swagger.client.models.EditProfile
 import io.swagger.client.models.Feedback
+import io.swagger.client.models.Payment
 import io.swagger.client.models.Reservation
 import ipca.utility.bookinghousesapp.Backend.AUTHENTICATION_API
 import ipca.utility.bookinghousesapp.Backend.BASE_API
@@ -333,13 +334,15 @@ object Backend {
 
     @SuppressLint("SuspiciousIndentation")
     fun CancelReservation(
+        context : Context,
         lifecycleScope: LifecycleCoroutineScope,
         reservationId: Int,
         callback: (Boolean) -> Unit
     ) {
         lifecycleScope.launch(Dispatchers.IO) {
-
-            ReservationApi("${BASE_API}").apiReservationReservationIdDeactivatePut(reservationId)
+            val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", "")
+            ReservationApi("${BASE_API}").apiReservationReservationIdDeactivatePut(authToken, reservationId)
 
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(true)
@@ -360,6 +363,38 @@ object Backend {
             val userApi = UserApi("${BASE_API}").apiUserGet(authToken)
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(userApi)
+            }
+
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun GetLastPayment(
+        lifecycleScope: LifecycleCoroutineScope,
+        userId: Int,
+        callback: (Payment) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val paymentApi = PaymentApi("${BASE_API}").paymentConfirmGet(userId)
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(paymentApi)
+            }
+
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun UpdatePayment(
+        paymentId : Int,
+        lifecycleScope: LifecycleCoroutineScope,
+
+        callback: (Boolean) -> Unit
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            PaymentApi("${BASE_API}").apiPaymentPaymentIdStatePut(paymentId)
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                callback(true)
             }
 
         }

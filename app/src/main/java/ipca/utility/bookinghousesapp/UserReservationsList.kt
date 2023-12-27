@@ -112,7 +112,7 @@ class UserReservationsList : AppCompatActivity() {
 
             buttonCancel.setOnClickListener {
                 val reservationToCancel = reservations[position].id_reservation
-                Backend.CancelReservation(lifecycleScope,reservationToCancel.toString().toInt()) { isSuccess ->
+                Backend.CancelReservation(this@UserReservationsList, lifecycleScope,reservationToCancel.toString().toInt()) { isSuccess ->
                     if (isSuccess) {
                         notifyDataSetChanged()
                     }

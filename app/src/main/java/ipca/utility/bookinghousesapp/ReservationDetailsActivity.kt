@@ -132,6 +132,7 @@ class ReservationDetailsActivity : AppCompatActivity() {
 
                     val intent = Intent(this, PaymentActivity::class.java)
                     intent.putExtra("HOUSE_PRICET", valortotalReserva)
+                    intent.putExtra("PAYMENT_CREATIONDATE", LocalDateTime.now().toString())
                     startActivity(intent)
 
                 }

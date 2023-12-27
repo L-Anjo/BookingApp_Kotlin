@@ -1,18 +1,66 @@
 package ipca.utility.bookinghousesapp
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import io.swagger.client.models.Payment
+import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
+import ipca.utility.bookinghousesapp.databinding.ActivityPaymentBinding
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.util.Date
+import java.util.Locale
 
 class PaymentActivity : AppCompatActivity() {
+    private lateinit var binding : ActivityPaymentBinding
+    private var selectedPaymentMethod: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_payment)
+        binding = ActivityPaymentBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
         val userId = sharedPreferences.getInt("user_id", 0)
+        var idReservation = 0
+
+        val metodosPagamento = resources.getStringArray(R.array.metodos_pagamento)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, metodosPagamento)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinner.adapter = adapter
+
+        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View?, position: Int, id: Long) {
+                selectedPaymentMethod = parentView.getItemAtPosition(position).toString()
+
+                // Esconda todos os EditTexts
+                binding.editTextEmail.visibility = View.GONE
+                binding.editTextCardNumber.visibility = View.GONE
+                binding.editTextCardExpiry.visibility = View.GONE
+                binding.editTextCardCVV.visibility = View.GONE
+
+                // Mostre apenas os EditTexts relevantes com base na seleção do Spinner
+                when (selectedPaymentMethod) {
+                    "Paypal" -> {
+                        binding.editTextEmail.visibility = View.VISIBLE
+                    }
+                    "Multibanco" -> {
+                        binding.editTextCardNumber.visibility = View.VISIBLE
+                        binding.editTextCardExpiry.visibility = View.VISIBLE
+                        binding.editTextCardCVV.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>) {
+            }
+        }
 
         Backend.fetchReservationPayment(userId,this).observe(this) {
             it.onError { error ->
@@ -32,11 +80,33 @@ class PaymentActivity : AppCompatActivity() {
             it.onSuccess {
                     reservation ->
                 reservation?.let {
-                    var idReservation = reservation.id_reservation
+                    idReservation = reservation.id_reservation!!
                     Log.d("testeeeep", idReservation.toString())
                 }
             }
 
+        }
+
+        binding.buttonPayment.setOnClickListener {
+
+            val sharedPreferences = this.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val userId = sharedPreferences.getInt("user_id", 0)
+
+            Backend.GetLastPayment(lifecycleScope, userId) { payment ->
+                println(payment)
+                val paymentId = payment.id_payment.toString().toInt()
+
+                Backend.UpdatePayment(paymentId, lifecycleScope) { updateSuccessful ->
+                    if (updateSuccessful) {
+                        val intent = Intent(this, UserReservationsList::class.java)
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+
+        binding.buttonBack3.setOnClickListener {
+            onBackPressed()
         }
     }
 }
