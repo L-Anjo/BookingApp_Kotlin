@@ -1,5 +1,6 @@
 package ipca.utility.bookinghousesapp
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -61,6 +62,11 @@ class AdminHousesList : AppCompatActivity() {
             val rootView = layoutInflater.inflate(R.layout.row_housesadmin,parent, false)
             rootView.findViewById<TextView>(R.id.TextViewNomeHouse).text = houses[position].name
 
+            val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val userType = sharedPreferences.getInt("user_type", 0)
+            if (userType == 3) {
+                rootView.findViewById<ImageView>(R.id.buttonEdit).visibility = View.GONE
+            }
 
             if (houses[position].postalCode != null) {
                 val textViewLocalidade = rootView.findViewById<TextView>(R.id.TextViewLocalidadeHouse)
