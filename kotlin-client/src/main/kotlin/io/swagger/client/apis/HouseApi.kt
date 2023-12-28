@@ -222,19 +222,19 @@ class HouseApi(basePath: kotlin.String = "/") : ApiClient(basePath) {
     }
     /**
      * Altera Dados de uma casa.
-     * 
-     * @param id O ID da Casa 
+     *
+     * @param id O ID da Casa
      * @param body  (optional)
      * @return void
      */
     fun apiHouseIdPut(id: kotlin.Int, body: House? = null): Unit {
         val localVariableBody: kotlin.Any? = body
         val localVariableConfig = RequestConfig(
-                RequestMethod.PUT,
-                "/api/House/{id}".replace("{" + "id" + "}", "$id")
+            RequestMethod.PUT,
+            "/api/House/{id}".replace("{" + "id" + "}", "$id")
         )
         val response = request<Any?>(
-                localVariableConfig, localVariableBody
+            localVariableConfig, localVariableBody
         )
 
         return when (response.responseType) {
@@ -247,18 +247,21 @@ class HouseApi(basePath: kotlin.String = "/") : ApiClient(basePath) {
     }
     /**
      * Cria uma Casa
-     * 
+     *
      * @param body  (optional)
      * @return void
      */
-    fun apiHousePost(body: House? = null): Unit {
+    fun apiHousePost(token: String?, body: House? = null): Unit {
+        val headers = mutableMapOf(
+            "Authorization" to "Bearer ${token}"
+        )
         val localVariableBody: kotlin.Any? = body
         val localVariableConfig = RequestConfig(
-                RequestMethod.POST,
-                "/api/House"
+            RequestMethod.POST,
+            "/api/House",headers = headers
         )
         val response = request<Any?>(
-                localVariableConfig, localVariableBody
+            localVariableConfig, localVariableBody
         )
 
         return when (response.responseType) {

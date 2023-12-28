@@ -32,6 +32,7 @@ import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.Models.Image
 import ipca.utility.bookinghousesapp.Models.PostalCode
 import ipca.utility.bookinghousesapp.Models.User
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.Call
@@ -527,20 +528,6 @@ object Backend {
         }
     }
 
-    fun createHouse(body: io.swagger.client.models.House, lifecycleScope: LifecycleCoroutineScope, callback: () -> Unit) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                HouseApi("${BASE_API}").apiHousePost(body)
-
-                lifecycleScope.launch(Dispatchers.Main) {
-                    callback()
-                }
-            } catch (e: Exception) {
-                println("Erro ao criar a casa: ${e.message}")
-            }
-        }
-    }
-
     fun fetchUserDetail(
         context : Context,
         lifecycleScope: LifecycleCoroutineScope,
@@ -705,6 +692,42 @@ object Backend {
                 callback(true)
             }
 
+        }
+    }
+
+    fun editHouse(id: Int, house: io.swagger.client.models.House): ResultWrapper<Unit> {
+        return try {
+            // Executa a operação em um contexto de Coroutines
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    HouseApi(BASE_API).apiHouseIdPut(id, house)
+                } catch (e: Exception) {
+                    // Lida com exceções dentro da Coroutine
+                    println("Erro ao Editar a casa: $e")
+                }
+            }
+            ResultWrapper.Success(Unit)
+        } catch (e: Exception) {
+            // Trata erros gerais aqui
+            println("Erro ao Editar a casa: $e")
+            ResultWrapper.Error()
+        }
+    }
+
+
+    fun createHouse(context: Context, body: io.swagger.client.models.House, lifecycleScope: LifecycleCoroutineScope, callback: () -> Unit) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+                val token = sharedPreferences.getString("access_token", "")
+                HouseApi("${BASE_API}").apiHousePost(token, body)
+                // Se a criação for bem-sucedida, você pode retornar true
+                lifecycleScope.launch(Dispatchers.Main) {
+                    callback()
+                }
+            } catch (e: Exception) {
+                println("Erro ao criar a casa: ${e.message}")
+            }
         }
     }
 
