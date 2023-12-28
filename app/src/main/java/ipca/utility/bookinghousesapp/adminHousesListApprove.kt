@@ -17,6 +17,8 @@ import ipca.utility.bookinghousesapp.databinding.ActivityAdminUsersListBinding
 import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
 import android.widget.Button
 import com.google.firebase.firestore.FirebaseFirestore
+import android.widget.ImageView
+import ipca.utility.bookinghousesapp.Models.Image
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminHousesApproveListBinding
 
 
@@ -31,12 +33,15 @@ class AdminHousesListApprove : AppCompatActivity() {
         binding = ActivityAdminHousesApproveListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.imageViewBack.setOnClickListener{
+            onBackPressed()
+        }
+
         // Chamada para buscar todas as casas ativas
         Backend.fetchAllHousesSusp(lifecycleScope) { fetchedHouses ->
             houses.addAll(fetchedHouses)
             setupListView()
         }
-
     }
 
     private fun setupListView() {
@@ -64,7 +69,7 @@ class AdminHousesListApprove : AppCompatActivity() {
             rootView.findViewById<TextView>(R.id.textViewRuaHouse).text = houses[position].road
             rootView.findViewById<TextView>(R.id.textViewNumbP).text = "${houses[position].guestsNumber.toString()}  Pessoas"
 
-            val approveButton = rootView.findViewById<Button>(R.id.buttonAproveHouse)
+            val approveButton = rootView.findViewById<ImageView>(R.id.buttonAproveHouse)
             approveButton.setOnClickListener {
                 val id_house = houses[position].id_house ?: -1
 
@@ -94,7 +99,7 @@ class AdminHousesListApprove : AppCompatActivity() {
                 }
             }
 
-            val declineButton = rootView.findViewById<Button>(R.id.buttonDecHouse)
+            val declineButton = rootView.findViewById<ImageView>(R.id.buttonDecHouse)
             declineButton.setOnClickListener {
                 val id_house = houses[position].id_house ?: -1
 

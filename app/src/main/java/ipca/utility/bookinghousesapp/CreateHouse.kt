@@ -15,9 +15,11 @@ import ipca.utility.bookinghousesapp.Models.User
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminUsersListBinding
 import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
 import android.widget.Button
+import android.widget.CheckBox
 import androidx.lifecycle.LifecycleCoroutineScope
 import ipca.utility.bookinghousesapp.Backend
 import ipca.utility.bookinghousesapp.databinding.ActivityCreateHouseBinding
+
 
 
 class CreateHouse : AppCompatActivity() {
@@ -29,6 +31,10 @@ class CreateHouse : AppCompatActivity() {
         binding = ActivityCreateHouseBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.imageViewBackH2.setOnClickListener{
+            onBackPressed()
+        }
+
         val buttonCreateHouse =
             binding.buttonCreateHouse // Supondo que o botão esteja definido no layout
 
@@ -39,13 +45,16 @@ class CreateHouse : AppCompatActivity() {
     fun setupCreateHouseButton(buttonCreateHouse: Button, lifecycleScope: LifecycleCoroutineScope) {
         buttonCreateHouse.setOnClickListener {
             createHouseObjectFromUI { body ->
-                Backend.createHouse(body, lifecycleScope) {
+                Backend.createHouse(this,body, lifecycleScope) {
                     // Callback chamado ao concluir a criação da casa
                     // Se você chegou aqui, significa que a casa foi criada com sucesso
                     // Adicione aqui a lógica para lidar com o sucesso da criação
                 }
+                val intent = Intent(this,UserHousesList::class.java)
+                startActivity(intent)
             }
         }
+
     }
 
 
@@ -72,6 +81,7 @@ class CreateHouse : AppCompatActivity() {
         val numbFloor = binding.editTextNumberFloorHouse.text.toString().toInt()
         val doorNumber = binding.editTextNumberDoorHouse.text.toString().toInt()
         val price = binding.editTextNumberPriceHouse.text.toString().toDouble()
+        val propertyAssessment = binding.editTextpropertyAssessment.text.toString()
 
         println(houseName)
         println(numbPessoas)
@@ -84,6 +94,9 @@ class CreateHouse : AppCompatActivity() {
         println(doorNumber)
         println(price)
 
+        // Verifique se a CheckBox está marcada para preço anual
+        val isAnnualPrice = binding.checkBoxAnualPrice.isChecked
+        val isSharedRoom = binding.checkBoxSharedRoom.isChecked
 
         val sharedPreferences = this.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
         val id_user = sharedPreferences.getInt("user_id", 0)
@@ -103,15 +116,16 @@ class CreateHouse : AppCompatActivity() {
                 guestsNumber = numbPessoas,
                 postalCode = postalCode,
                 floorNumber = numbFloor,
-                price = price,
                 rooms = numbRooms,
                 road = street,
                 user = user,
+                propertyAssessment = propertyAssessment,
 
-                sharedRoom = false,
-                propertyAssessment = "dlakda",
-                priceyear = 10.00,
-                // Preencha outros campos conforme necessário
+                sharedRoom = isSharedRoom,
+
+                // Decida qual campo de preço atualizar com base no estado da CheckBox
+                price = if (isAnnualPrice) null else price,
+                priceyear = if (isAnnualPrice) price else null,
             )
 
             println(body)

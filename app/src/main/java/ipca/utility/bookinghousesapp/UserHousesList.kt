@@ -136,6 +136,15 @@ class UserHousesList : AppCompatActivity() {
                 startActivity(intent)
             }
 
+            val buttonEdit = rootView.findViewById<ImageView>(R.id.buttonEdit)
+            buttonEdit.setOnClickListener{
+                val intent = Intent(this@UserHousesList, EditHouseActivity::class.java)
+                val houseId = houses[position].id_house ?: -1 // Assuming -1 as default ID if null
+                intent.putExtra("HOUSE_ID", houseId)
+
+                startActivity(intent)
+            }
+
 
             return rootView
         }

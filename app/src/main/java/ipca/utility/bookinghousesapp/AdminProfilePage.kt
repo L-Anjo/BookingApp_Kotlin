@@ -52,6 +52,11 @@ class AdminProfilePage : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.constraintLayoutApproveHouses.setOnClickListener {
+            val intent = Intent(this,AdminHousesListApprove::class.java)
+            startActivity(intent)
+        }
+
         binding.constraintLayoutAllPayments.setOnClickListener {
             val intent = Intent(this,AdminPaymentsList::class.java )
             startActivity(intent)

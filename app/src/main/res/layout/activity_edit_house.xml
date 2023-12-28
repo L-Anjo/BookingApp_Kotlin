@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Criar Casa"
+        android:text="Editar Casa"
         android:textColor="#FA5F5F"
         android:textSize="32dp"
         android:textStyle="bold"
@@ -36,12 +36,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:text="Adicionar Imagens"
+        android:text="Editar Imagens"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <EditText
-        android:id="@+id/editTextNameHouse"
+        android:id="@+id/editTextEditNameHouse"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -71,7 +71,7 @@
         android:layout_marginTop="8dp"
         android:text="Nº de Pessoas"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxSharedRoom" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxEditSharedRoom" />
 
     <TextView
         android:id="@+id/textView9"
@@ -80,8 +80,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:text="Nº Quartos"
-        app:layout_constraintEnd_toStartOf="@+id/editTextNumberRoomsHouse"
-        app:layout_constraintTop_toBottomOf="@+id/editTextStreetHouse" />
+        app:layout_constraintEnd_toStartOf="@+id/editTextEditNumberRoomsHouse"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditStreetHouse" />
 
     <TextView
         android:id="@+id/textView6"
@@ -91,7 +91,7 @@
         android:layout_marginTop="8dp"
         android:text="Rua"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextConcelhoHouse" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditConcelhoHouse" />
 
     <TextView
         android:id="@+id/textView11"
@@ -101,7 +101,7 @@
         android:layout_marginTop="8dp"
         android:text="Código Postal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextStreetHouse" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditStreetHouse" />
 
     <TextView
         android:id="@+id/textView4"
@@ -111,7 +111,7 @@
         android:layout_marginTop="8dp"
         android:text="Distrito"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNameHouse" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditNameHouse" />
 
     <TextView
         android:id="@+id/textView12"
@@ -121,10 +121,10 @@
         android:layout_marginTop="8dp"
         android:text="Concelho"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDistrictHouse" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditDistrictHouse" />
 
     <EditText
-        android:id="@+id/editTextDistrictHouse"
+        android:id="@+id/editTextEditDistrictHouse"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -137,7 +137,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <EditText
-        android:id="@+id/editTextConcelhoHouse"
+        android:id="@+id/editTextEditConcelhoHouse"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -150,7 +150,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <EditText
-        android:id="@+id/editTextStreetHouse"
+        android:id="@+id/editTextEditStreetHouse"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -169,8 +169,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:text="Nº Porta"
-        app:layout_constraintEnd_toStartOf="@+id/editTextNumberDoorHouse"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumberRoomsHouse" />
+        app:layout_constraintEnd_toStartOf="@+id/editTextEditNumberDoorHouse"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditNumberRoomsHouse" />
 
     <TextView
         android:id="@+id/textView7"
@@ -180,28 +180,28 @@
         android:layout_marginTop="8dp"
         android:text="Nº Piso"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPostalCodeHouse" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditPostalCodeHouse" />
 
     <Button
-        android:id="@+id/buttonCreateHouse"
+        android:id="@+id/buttonEditHouse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="#F95F5F"
-        android:text="Criar Casa"
+        android:text="Editar Casa"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxSharedRoom" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxEditSharedRoom" />
 
     <EditText
-        android:id="@+id/editTextNumberPHouse"
+        android:id="@+id/editTextEditNumberPHouse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="4"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/editTextpropertyAssessment"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxSharedRoom" />
+        app:layout_constraintStart_toStartOf="@+id/editTextEditpropertyAssessment"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxEditSharedRoom" />
 
     <TextView
         android:id="@+id/textView14"
@@ -211,41 +211,30 @@
         android:layout_marginTop="8dp"
         android:text="Preço"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumberFloorHouse" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditNumberFloorHouse" />
 
     <EditText
-        android:id="@+id/editTextNumberPriceHouse"
+        android:id="@+id/editTextEditNumberPriceHouse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="4"
         android:inputType="numberDecimal"
-        app:layout_constraintStart_toStartOf="@+id/editTextNumberFloorHouse"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumberFloorHouse" />
+        app:layout_constraintStart_toStartOf="@+id/editTextEditNumberFloorHouse"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditNumberFloorHouse" />
 
     <EditText
-        android:id="@+id/editTextNumberFloorHouse"
+        android:id="@+id/editTextEditNumberFloorHouse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="4"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/editTextPostalCodeHouse"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPostalCodeHouse" />
+        app:layout_constraintStart_toStartOf="@+id/editTextEditPostalCodeHouse"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditPostalCodeHouse" />
 
     <EditText
-        android:id="@+id/editTextNumberRoomsHouse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:ems="4"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextStreetHouse" />
-
-    <EditText
-        android:id="@+id/editTextNumberDoorHouse"
+        android:id="@+id/editTextEditNumberRoomsHouse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -253,28 +242,39 @@
         android:ems="4"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/editTextNumberRoomsHouse"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumberRoomsHouse" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditStreetHouse" />
+
+    <EditText
+        android:id="@+id/editTextEditNumberDoorHouse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:ems="4"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editTextEditNumberRoomsHouse"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditNumberRoomsHouse" />
 
     <CheckBox
-        android:id="@+id/checkBoxAnualPrice"
+        android:id="@+id/checkBoxEditAnualPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:text="Preço Anual?"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumberDoorHouse" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditNumberDoorHouse" />
 
     <CheckBox
-        android:id="@+id/checkBoxSharedRoom"
+        android:id="@+id/checkBoxEditSharedRoom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:text="Quarto Partilhado?"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxAnualPrice" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxEditAnualPrice" />
 
     <TextView
         android:id="@+id/textViewpropertyAssessment"
@@ -284,20 +284,20 @@
         android:layout_marginTop="8dp"
         android:text="Código Matricial"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumberPriceHouse" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditNumberPriceHouse" />
 
     <EditText
-        android:id="@+id/editTextpropertyAssessment"
+        android:id="@+id/editTextEditpropertyAssessment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="4"
         android:inputType="text"
-        app:layout_constraintStart_toStartOf="@+id/editTextNumberPriceHouse"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumberPriceHouse" />
+        app:layout_constraintStart_toStartOf="@+id/editTextEditNumberPriceHouse"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditNumberPriceHouse" />
 
     <EditText
-        android:id="@+id/editTextPostalCodeHouse"
+        android:id="@+id/editTextEditPostalCodeHouse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -305,6 +305,6 @@
         android:ems="4"
         android:inputType="number"
         app:layout_constraintStart_toEndOf="@+id/textView11"
-        app:layout_constraintTop_toBottomOf="@+id/editTextStreetHouse" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditStreetHouse" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

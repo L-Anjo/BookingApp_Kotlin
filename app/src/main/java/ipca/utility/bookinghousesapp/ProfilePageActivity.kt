@@ -95,6 +95,12 @@ class ProfilePageActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.constraintLayoutCreateHouse.setOnClickListener {
+            val intent = Intent(this, CreateHouse::class.java)
+            startActivity(intent)
+        }
+
+
         binding.constraintLayoutUserReservations.setOnClickListener{
             val intent = Intent(this,UserReservationsList::class.java )
             startActivity(intent)
