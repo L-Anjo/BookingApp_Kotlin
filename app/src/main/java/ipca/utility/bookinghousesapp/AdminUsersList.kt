@@ -87,19 +87,21 @@ class AdminUsersList : AppCompatActivity() {
 
 
             val buttonDeactivate = rootView.findViewById<Button>(R.id.buttonRemove)
-            if(users[position].status==true){
+            if (users[position].status == true) {
                 buttonDeactivate.visibility = View.VISIBLE
+                buttonDeactivate.setBackgroundResource(R.drawable.icons8_scroll_down_50)
+            } else {
+                buttonDeactivate.setBackgroundResource(R.drawable.icons8_scroll_up_50)
             }
-            else
-                buttonDeactivate.visibility = View.GONE
+
+
+
             buttonDeactivate.setOnClickListener{
                 val userIdToRemove = users[position].id_user
                 Backend.DeactivateUser(this@AdminUsersList, lifecycleScope,userIdToRemove.toString().toInt()) { isSuccess ->
                     if (isSuccess) {
-                        // Limpar a lista existente
                         users.clear()
 
-                        // Recarregar os dados atualizados da base de dados
                         Backend.GetAllUsers(this@AdminUsersList, lifecycleScope) { fetchedUsers ->
                             users.addAll(fetchedUsers)
                             notifyDataSetChanged()

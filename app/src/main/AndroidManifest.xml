@@ -84,7 +84,10 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"/>
+            android:exported="false"/>
+        <activity
+            android:name=".AdminUsersList"
+            android:exported="false"/>
 
         <activity
             android:name=".HouseDetailActivity"
