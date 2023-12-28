@@ -282,10 +282,7 @@ object Backend {
         callback: (Boolean) -> Unit
     ) {
         lifecycleScope.launch(Dispatchers.IO) {
-            println(newClassification)
-            println(newComment)
-            println(newReservation)
-            //val reservation = ReservationApi("${BASE_API}").apiReservationIdGet(newReservation)
+
 
             FeedbackApi("${BASE_API}").apiFeedbackPost(Feedback(comment = newComment, classification = newClassification),newReservation)
             lifecycleScope.launch(Dispatchers.Main) {
@@ -490,10 +487,10 @@ object Backend {
     fun fetchAllHousesSusp(lifecycleScope: LifecycleCoroutineScope, callback: (Array<io.swagger.client.models.House>) -> Unit) {
         lifecycleScope.launch(Dispatchers.IO) {
             val housesApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseSuspGet()
-            //val housesApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseGet()
+
             lifecycleScope.launch(Dispatchers.Main) {
                 callback(housesApi)
-                // log para verificar os ids
+
                 housesApi.forEach { house ->
                     println("House ID: ${house.id_house}")
                 }
@@ -521,8 +518,7 @@ object Backend {
                     callback()
                 }
             } catch (e: Exception) {
-                // Tratar erros, como por exemplo, notificar o utilizador ou registar o erro
-                // Podes imprimir uma mensagem de erro simplesmente assim:
+
                 println("Erro ao apagar a casa: ${e.message}")
             }
         }
@@ -697,18 +693,18 @@ object Backend {
 
     fun editHouse(id: Int, house: io.swagger.client.models.House): ResultWrapper<Unit> {
         return try {
-            // Executa a operação em um contexto de Coroutines
+
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     HouseApi(BASE_API).apiHouseIdPut(id, house)
                 } catch (e: Exception) {
-                    // Lida com exceções dentro da Coroutine
+
                     println("Erro ao Editar a casa: $e")
                 }
             }
             ResultWrapper.Success(Unit)
         } catch (e: Exception) {
-            // Trata erros gerais aqui
+
             println("Erro ao Editar a casa: $e")
             ResultWrapper.Error()
         }
@@ -721,7 +717,7 @@ object Backend {
                 val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
                 val token = sharedPreferences.getString("access_token", "")
                 HouseApi("${BASE_API}").apiHousePost(token, body)
-                // Se a criação for bem-sucedida, você pode retornar true
+
                 lifecycleScope.launch(Dispatchers.Main) {
                     callback()
                 }
