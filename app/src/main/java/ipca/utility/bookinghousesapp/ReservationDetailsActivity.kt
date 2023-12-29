@@ -104,7 +104,7 @@ class ReservationDetailsActivity : AppCompatActivity() {
         }
 
         binding.buttonConfirmtoPay.setOnClickListener {
-            var reservation = Reservation(guestsNumber = binding.editTextNumber.text.toString().toInt(),init_date = startDate, end_date = endDate)
+            var reservation = Reservation(guestsNumber = binding.editTextNumber.text.toString().toInt(),init_date = startDate!!, end_date = endDate!!)
             Backend.CreateReservation(reservation, houseId = houseId, userId = userId,this ).observe(this){
                 it.onError {error ->
                     Toast.makeText(

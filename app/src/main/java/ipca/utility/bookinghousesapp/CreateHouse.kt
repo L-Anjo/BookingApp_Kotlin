@@ -16,6 +16,7 @@ import ipca.utility.bookinghousesapp.databinding.ActivityAdminUsersListBinding
 import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.Toast
 import androidx.lifecycle.LifecycleCoroutineScope
 import ipca.utility.bookinghousesapp.Backend
 import ipca.utility.bookinghousesapp.databinding.ActivityCreateHouseBinding
@@ -41,22 +42,37 @@ class CreateHouse : AppCompatActivity() {
         setupCreateHouseButton(buttonCreateHouse, lifecycleScope)
     }
 
-    fun setupCreateHouseButton(buttonCreateHouse: Button, lifecycleScope: LifecycleCoroutineScope) {
+    fun setupCreateHouseButton(buttonCreateHouse :Button, lifecycleScope: LifecycleCoroutineScope) {
         buttonCreateHouse.setOnClickListener {
             createHouseObjectFromUI { body ->
-                Backend.createHouse(this,body, lifecycleScope) {
+                Backend.CreateHouse(body, this).observe(this) {
+                    it.onError { error ->
+                        Toast.makeText(
+                            this@CreateHouse,
+                            "${error.error}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    it.onNetworkError {
+                        Toast.makeText(
+                            this@CreateHouse,
+                            "Sem Ligação à Internet",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    it.onSuccess {
+                        val intent = Intent(this, UserHousesList::class.java)
+                        startActivity(intent)
+                    }
                 }
-                val intent = Intent(this,UserHousesList::class.java)
-                startActivity(intent)
-                finish()
             }
         }
-
     }
 
 
 
-    private fun createHouseObjectFromUI(onHouseCreated: (io.swagger.client.models.House) -> Unit) {
+
+    private fun createHouseObjectFromUI(callback: (house: io.swagger.client.models.House) -> Unit) {
 
 
         val houseName = binding.editTextNameHouse.text.toString()
@@ -101,7 +117,8 @@ class CreateHouse : AppCompatActivity() {
                 priceyear = if (isAnnualPrice) price else null,
             )
 
-            onHouseCreated(body)
+            println(body)
+            callback(body)
         }
     }
 }
