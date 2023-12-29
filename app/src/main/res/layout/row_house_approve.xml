@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/constraintLayoutApprove">
 
     <ImageView
         android:id="@+id/imageViewHouse"
@@ -66,16 +67,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonAproveHouse"
         app:srcCompat="@drawable/icons8_close_window_96" />
-
-    <Button
-        android:id="@+id/buttonSeeMoreHouse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="#F95F5F"
-        android:text="Ver Casa"
-        app:layout_constraintEnd_toStartOf="@+id/buttonAproveHouse"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHouseName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

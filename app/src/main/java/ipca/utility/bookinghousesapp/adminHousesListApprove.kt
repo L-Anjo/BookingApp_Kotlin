@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
@@ -18,6 +19,7 @@ import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
 import android.widget.Button
 import com.google.firebase.firestore.FirebaseFirestore
 import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import ipca.utility.bookinghousesapp.Models.Image
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminHousesApproveListBinding
 
@@ -39,7 +41,10 @@ class AdminHousesListApprove : AppCompatActivity() {
 
         Backend.fetchAllHousesSusp(lifecycleScope) { fetchedHouses ->
             houses.addAll(fetchedHouses)
-            setupListView()
+            if (!houses.isEmpty()) {
+                binding.textViewHousesNotFound.visibility = View.GONE
+                setupListView()
+            }
         }
     }
 
@@ -109,14 +114,17 @@ class AdminHousesListApprove : AppCompatActivity() {
                 }
             }
 
-            val seeMoreButton = rootView.findViewById<Button>(R.id.buttonSeeMoreHouse)
-            seeMoreButton.setOnClickListener {
+            val constraintLayout = rootView.findViewById<ConstraintLayout>(R.id.constraintLayoutApprove)
+            constraintLayout.setOnClickListener {
                 val houseId = houses[position].id_house ?: -1
 
                 val intent = Intent(rootView.context, HouseDetailActivity::class.java)
                 intent.putExtra("HOUSE_ID", houseId)
                 rootView.context.startActivity(intent)
             }
+
+
+
 
             return rootView
         }

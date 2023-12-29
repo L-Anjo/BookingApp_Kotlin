@@ -486,18 +486,26 @@ object Backend {
 
     fun fetchAllHousesSusp(lifecycleScope: LifecycleCoroutineScope, callback: (Array<io.swagger.client.models.House>) -> Unit) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val housesApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseSuspGet()
+            try {
+                val housesApi: Array<io.swagger.client.models.House> = HouseApi("${BASE_API}").apiHouseSuspGet()
 
-            lifecycleScope.launch(Dispatchers.Main) {
-                callback(housesApi)
+                lifecycleScope.launch(Dispatchers.Main) {
+                    if (housesApi.isEmpty()) {
+                        println("Nenhuma casa encontrada")
+                    } else {
+                        callback(housesApi)
 
-                housesApi.forEach { house ->
-                    println("House ID: ${house.id_house}")
+                        housesApi.forEach { house ->
+                            println("House ID: ${house.id_house}")
+                        }
+                    }
                 }
+            } catch (e: io.swagger.client.infrastructure.ClientException) {
+                println("Erro ao buscar casas: ${e.message}")
             }
-
         }
     }
+
 
     fun updateHouseStateApproved(id: Int, lifecycleScope: LifecycleCoroutineScope, callback: () -> Unit) {
         lifecycleScope.launch(Dispatchers.IO) {
@@ -711,22 +719,14 @@ object Backend {
     }
 
 
-    fun createHouse(context: Context, body: io.swagger.client.models.House, lifecycleScope: LifecycleCoroutineScope, callback: () -> Unit) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
-                val token = sharedPreferences.getString("access_token", "")
-                HouseApi("${BASE_API}").apiHousePost(token, body)
-
-                lifecycleScope.launch(Dispatchers.Main) {
-                    callback()
-                }
-            } catch (e: Exception) {
-                println("Erro ao criar a casa: ${e.message}")
-            }
+    @SuppressLint("SuspiciousIndentation")
+    fun CreateHouse(body: io.swagger.client.models.House,context: Context):
+            LiveData<ResultWrapper<Unit>> =
+        liveData(Dispatchers.IO) {
+            val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val token = sharedPreferences.getString("access_token", "")
+            emit( wrap { HouseApi(BASE_API).apiHousePost(token, body) })
         }
-    }
-
 
 
 }
