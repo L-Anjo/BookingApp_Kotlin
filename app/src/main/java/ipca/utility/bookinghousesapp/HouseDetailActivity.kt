@@ -212,8 +212,6 @@ class HouseDetailActivity : AppCompatActivity() {
             val view = inflater.inflate(R.layout.image_view_carrousel, container, false)
             val imageView = view.findViewById<ImageView>(R.id.idIVImage)
 
-
-            // Carregar a imagem usando Glide a partir da URL
             Glide.with(this)
                 .load(imageUrl)
                 .transition(DrawableTransitionOptions.withCrossFade())

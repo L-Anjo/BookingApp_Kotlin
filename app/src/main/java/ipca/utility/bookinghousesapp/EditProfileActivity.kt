@@ -39,7 +39,6 @@ class EditProfileActivity : AppCompatActivity() {
                 binding.EditTextUserEditEmail.text = emailEditable
                 binding.EditTextUserEditPhone.text = phoneEditable
 
-                // Obtenha a senha aqui
                 password = it.password.toString()
                 token = it.token.toString()
                 status = it.status.toString().toBoolean()
@@ -64,7 +63,6 @@ class EditProfileActivity : AppCompatActivity() {
             val newUserEmail = binding.EditTextUserEditEmail.text.toString()
             val newUserPhone = binding.EditTextUserEditPhone.text.toString().toIntOrNull() ?: 0
 
-            // Agora, você precisa passar esses valores para a API
             Backend.UpdateUserProfile(this, lifecycleScope, newUserName, newUserEmail, newUserPhone) { updateSuccessful ->
                 if (updateSuccessful) {
                     val intent = Intent(this, ProfilePageActivity::class.java)

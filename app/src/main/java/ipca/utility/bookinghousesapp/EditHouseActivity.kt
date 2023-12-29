@@ -25,9 +25,8 @@ class EditHouseActivity : AppCompatActivity() {
         binding = ActivityEditHouseBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val houseId = intent.extras?.getInt("HOUSE_ID")?:-1 // Assuming you pass house ID via Intent
+        val houseId = intent.extras?.getInt("HOUSE_ID")?:-1
 
-        // Fetch house details
         fetchHouseDetails(houseId)
 
         binding.imageViewBackH2.setOnClickListener {
@@ -43,9 +42,7 @@ class EditHouseActivity : AppCompatActivity() {
             val postalCodeValue = binding.editTextEditPostalCodeHouse.text.toString().toInt()
 
 
-            // Crie um objeto PostalCode do tipo io.swagger.client.models.PostalCode
             val postalCode = io.swagger.client.models.PostalCode(
-                // Preencha os campos do PostalCode
                 postalCode = postalCodeValue,
                 concelho = concelho,
                 district = district,
@@ -56,23 +53,13 @@ class EditHouseActivity : AppCompatActivity() {
             val doorNumber = binding.editTextEditNumberDoorHouse.text.toString().toInt()
             val price = binding.editTextEditNumberPriceHouse.text.toString().toDouble()
             val propertyAssessment = binding.editTextEditpropertyAssessment.text.toString()
-
-            // Verifique se a CheckBox está marcada para preço anual
             val isAnnualPrice = binding.checkBoxEditAnualPrice.isChecked
             val isSharedRoom = binding.checkBoxEditSharedRoom.isChecked
-
             val sharedPreferences = this.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
             val id_user = sharedPreferences.getInt("user_id", 0)
-            //val id_user = 2 // ou qualquer outra maneira de obter o ID do usuário
 
             Backend.fetchUserDetail(this, lifecycleScope, id_user) { user ->
-                // ... Seus dados anteriores ...
-                println("USER:")
-                println(id_user)
-                println(user)
-                println(user.id_user)
 
-                // Crie um objeto House com os dados coletados da UI e o usuário obtido
                 val houseEdited = io.swagger.client.models.House(
                     name = houseName,
                     doorNumber = doorNumber,
@@ -83,27 +70,22 @@ class EditHouseActivity : AppCompatActivity() {
                     road = street,
                     user = user,
                     propertyAssessment = propertyAssessment,
-
                     sharedRoom = isSharedRoom,
-
-                    // Decida qual campo de preço atualizar com base no estado da CheckBox
                     price = if (isAnnualPrice) null else price,
                     priceyear = if (isAnnualPrice) price else null,
                 )
 
-                println(houseEdited)
-                // Agora, você precisa passar esses valores para a API
                 lifecycleScope.launch {
                     try {
                         Backend.editHouse(houseId, houseEdited)
                     } catch (e: Exception) {
-                        // Tratar exceções aqui
                         Log.e("EditHouseActivity", "Erro ao editar a casa: ${e.message}")
                     }
                 }
 
                 val intent = Intent(this,UserHousesList::class.java)
                 startActivity(intent)
+                finish()
             }
         }
     }
@@ -116,17 +98,16 @@ class EditHouseActivity : AppCompatActivity() {
                 is ResultWrapper.Success -> {
                     val houseDetails = result.value
 
-                    // Fill EditText fields with house details
                     fillEditTextFields(houseDetails)
                 }
                 is Error -> {
 
                 }
                 is ResultWrapper.Error -> {
-                    // Handle error case if needed
+
                 }
                 is ResultWrapper.NetworkError -> {
-                    // Lidar com erros de rede, se necessário
+
                 }
             }
         }

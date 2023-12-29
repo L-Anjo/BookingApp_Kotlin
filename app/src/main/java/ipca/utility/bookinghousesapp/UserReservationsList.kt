@@ -99,10 +99,8 @@ class UserReservationsList : AppCompatActivity() {
                 Backend.GetReservationFeedbacks(lifecycleScope, reservationId.toString().toInt()) { feedbacks ->
                     println(feedbacks)
                     if (feedbacks) {
-                        // A reserva já possui feedback
                         buttonReact.visibility = View.GONE
                     } else {
-                        // A reserva ainda não possui feedback
                         buttonReact.visibility = View.VISIBLE
                     }
                 }
@@ -114,10 +112,8 @@ class UserReservationsList : AppCompatActivity() {
                 val reservationToCancel = reservations[position].id_reservation
                 Backend.CancelReservation(this@UserReservationsList, lifecycleScope,reservationToCancel.toString().toInt()) { isSuccess ->
                     if (isSuccess) {
-                        // Limpar a lista existente
                         reservations.clear()
 
-                        // Recarregar os dados atualizados da base de dados
                         Backend.GetUserReservations(this@UserReservationsList, lifecycleScope) { fetchedReservations ->
                             reservations.addAll(fetchedReservations)
                             if(!reservations.isEmpty()){

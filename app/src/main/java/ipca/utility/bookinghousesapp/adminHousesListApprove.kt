@@ -37,7 +37,6 @@ class AdminHousesListApprove : AppCompatActivity() {
             onBackPressed()
         }
 
-        // Chamada para buscar todas as casas ativas
         Backend.fetchAllHousesSusp(lifecycleScope) { fetchedHouses ->
             houses.addAll(fetchedHouses)
             setupListView()

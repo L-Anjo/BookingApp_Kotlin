@@ -31,7 +31,7 @@ class FeedbackActivity : AppCompatActivity() {
                 if (createSuccessful) {
                     val intent = Intent(this,UserReservationsList::class.java )
                     startActivity(intent)
-
+                    finish()
                 }
             }
         }

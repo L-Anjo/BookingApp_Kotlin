@@ -43,13 +43,11 @@ class PaymentActivity : AppCompatActivity() {
             override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View?, position: Int, id: Long) {
                 selectedPaymentMethod = parentView.getItemAtPosition(position).toString()
 
-                // Esconda todos os EditTexts
                 binding.editTextEmail.visibility = View.GONE
                 binding.editTextCardNumber.visibility = View.GONE
                 binding.editTextCardExpiry.visibility = View.GONE
                 binding.editTextCardCVV.visibility = View.GONE
 
-                // Mostre apenas os EditTexts relevantes com base na seleção do Spinner
                 when (selectedPaymentMethod) {
                     "Paypal" -> {
                         binding.editTextEmail.visibility = View.VISIBLE
@@ -114,6 +112,7 @@ class PaymentActivity : AppCompatActivity() {
                         }
                         val intent = Intent(this, UserReservationsList::class.java)
                         startActivity(intent)
+                        finish()
                     }
                 }
             }

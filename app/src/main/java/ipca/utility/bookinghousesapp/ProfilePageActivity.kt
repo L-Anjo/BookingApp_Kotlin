@@ -150,7 +150,7 @@ class ProfilePageActivity : AppCompatActivity() {
             val outputStream = ByteArrayOutputStream()
 
             inputStream?.use { input ->
-                val buffer = ByteArray(4 * 1024) // buffer size
+                val buffer = ByteArray(4 * 1024)
                 var read: Int
                 while (input.read(buffer).also { read = it } != -1) {
                     outputStream.write(buffer, 0, read)
@@ -162,7 +162,7 @@ class ProfilePageActivity : AppCompatActivity() {
     }
 
     private fun getFileExtensionFromUri(uri: Uri): String {
-        val contentResolver = contentResolver ?: return "png" // Extensão padrão, se não puder obter o content resolver
+        val contentResolver = contentResolver ?: return "png"
         val mimeTypeMap = MimeTypeMap.getSingleton()
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri)) ?: "png"
     }

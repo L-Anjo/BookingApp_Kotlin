@@ -98,10 +98,6 @@ class AdminHousesList : AppCompatActivity() {
             rootView.findViewById<TextView>(R.id.textViewSeeReservations).visibility = View.GONE
 
 
-            //rootView.setOnClickListener {
-            //    val intent = Intent(this@AdminHousesList, HouseDetailActivity::class.java)
-            //    startActivity(intent)
-            //}
             val buttonRemoveHouse = rootView.findViewById<Button>(R.id.buttonRemove)
             if(houses[position].statusHouse?.id==1 || houses[position].statusHouse?.id==2)
                 buttonRemoveHouse.visibility = View.VISIBLE
@@ -111,10 +107,8 @@ class AdminHousesList : AppCompatActivity() {
                 val houseIdToRemove = houses[position].id_house
                 Backend.DeleteHouse(this@AdminHousesList, lifecycleScope,houseIdToRemove.toString().toInt()) { isSuccess ->
                     if (isSuccess) {
-                        // Limpar a lista existente
                         houses.clear()
 
-                        // Recarregar os dados atualizados da base de dados
                         Backend.GetAllHouses(this@AdminHousesList, lifecycleScope) { fetchedHouses ->
                             houses.addAll(fetchedHouses)
                             notifyDataSetChanged()

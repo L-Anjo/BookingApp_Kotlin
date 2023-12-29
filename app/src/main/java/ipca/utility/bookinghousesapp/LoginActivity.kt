@@ -73,7 +73,6 @@ class LoginActivity : AppCompatActivity() {
                         }
                         val token = task.result
 
-                        //FirebaseApp.initializeApp(this)
                         val db = FirebaseFirestore.getInstance()
                         val tokenData = hashMapOf("token" to token)
                         db.collection("tokens").document(userId.toString())
@@ -101,19 +100,16 @@ class LoginActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission(),
     ) { isGranted: Boolean ->
         if (isGranted) {
-            // FCM SDK (and your app) can post notifications.
         } else {
 
         }
     }
 
     private fun askNotificationPermission() {
-        // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
                 PackageManager.PERMISSION_GRANTED
             ) {
-                // FCM SDK (and your app) can post notifications.
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
 
 

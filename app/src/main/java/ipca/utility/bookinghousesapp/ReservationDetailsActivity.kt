@@ -53,8 +53,6 @@ class ReservationDetailsActivity : AppCompatActivity() {
         val price = intent.extras?.getDouble("HOUSE_PRICE")?:null
         val imagelink = intent.extras?.getString("HOUSE_IMAGE")?:""
 
-        //var startDate: LocalDateTime? = null
-        //var endDate: LocalDateTime? = null
         val image = binding.imageViewHouse
         val date = binding.textViewCheckInOut2
 

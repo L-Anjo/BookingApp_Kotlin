@@ -18,28 +18,21 @@ import ipca.utility.bookinghousesapp.MainActivity
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
-    // [START receive_message]
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: ${remoteMessage.from}")
 
-        // Check if message contains a data payload.
         if (remoteMessage.data.isNotEmpty()) {
             Log.d(TAG, "Message data payload: ${remoteMessage.data}")
 
-            // Check if data needs to be processed by long running job
             if (needsToBeScheduled()) {
-                // For long-running tasks (10 seconds or more) use WorkManager.
 
             } else {
-                // Handle message within 10 seconds
 
                 sendNotification(remoteMessage.data.toString())
             }
         }
 
-        // Check if message contains a notification payload.
         remoteMessage.notification?.let {
             Log.d(TAG, "Message Notification Body: ${it.body}")
             saveNotificationToStorage(remoteMessage)
@@ -48,8 +41,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             }
         }
 
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
     }
 
     private fun saveNotificationToStorage(remoteMessage: RemoteMessage) {
@@ -66,20 +57,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         editor.apply()
 
     }
-    // [END receive_message]
 
     private fun needsToBeScheduled() = true
 
-    // [START on_new_token]
-    override fun onNewToken(token: String) {
-        Log.d(TAG, "Refreshed token: $token")
 
-        // If you want to send messages to this application instance or
-        // manage this apps subscriptions on the server side, send the
-        // FCM registration token to your app server.
+    override fun onNewToken(token: String) {
+
         sendRegistrationToServer(token)
     }
-    // [END on_new_token]
 
 
 
@@ -111,7 +96,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
