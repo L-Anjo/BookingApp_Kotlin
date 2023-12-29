@@ -8,6 +8,15 @@
     <style name="ThemeMaterialCalendar" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
         <item name="colorPrimary">#FF4848</item>
         <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorAccent">@color/black</item>
+    </style>
+
+
+    <!-- Defined a new style with three items of color. -->
+    <style name="StatusBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#FF4848</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorAccent">@color/black</item>
     </style>
 
     <style name="Theme.BookingHousesApp" parent="Base.Theme.BookingHousesApp" />
