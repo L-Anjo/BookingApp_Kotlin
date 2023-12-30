@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -42,7 +41,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var textShowData: TextView
     private lateinit var getData: TextView
     private lateinit var progressDialog: ProgressDialog
-
     var houses = arrayListOf<io.swagger.client.models.House>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -235,18 +233,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         fun calculateAverageFeedback(reservations: Array<io.swagger.client.models.Reservation>?): Double {
+            var cont = 0
             if (reservations.isNullOrEmpty()) {
                 return 0.0
             }
 
             var totalFeedback = 0.0
             reservations.forEach { reservation ->
+                Log.d("teste",  reservation.toString())
                 reservation.feedback?.let {
                     totalFeedback += it.classification!!
+                    cont++
                 }
             }
 
-            return totalFeedback.toDouble() / reservations.size
+            return totalFeedback.toDouble() / cont
         }
     }
 
