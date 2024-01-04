@@ -131,8 +131,13 @@ class ProfilePageActivity : AppCompatActivity() {
                     val authToken = sharedPreferences.getString("access_token", null)
                     val tempImageFile = createTempImageFile(imageBytes)
 
+                    runOnUiThread {
+                        Glide.with(this@ProfilePageActivity).clear(binding.imageView11)
+                    }
                     Backend.UpdateUserAvatar(authToken, tempImageFile, getFileExtensionFromUri(selectedImageUri)) { success ->
                         if (success) {
+
+
                             val intent = Intent(this@ProfilePageActivity, ProfilePageActivity::class.java)
                             startActivity(intent)
                         } else {
@@ -143,6 +148,7 @@ class ProfilePageActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private suspend fun getBytesFromUri(uri: Uri): ByteArray {
         return withContext(Dispatchers.IO) {

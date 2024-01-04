@@ -3,6 +3,7 @@ package ipca.utility.bookinghousesapp
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
@@ -25,7 +26,7 @@ import ipca.utility.bookinghousesapp.databinding.ActivityCreateHouseBinding
 
 class CreateHouse : AppCompatActivity() {
 
-    private lateinit var binding: ActivityCreateHouseBinding // Substitua pelo seu layout de criação de casas
+    private lateinit var binding: ActivityCreateHouseBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,16 +62,23 @@ class CreateHouse : AppCompatActivity() {
                         ).show()
                     }
                     it.onSuccess {
-                        val intent = Intent(this, UserHousesList::class.java)
-                        startActivity(intent)
+                        Backend.fetchUserDetail(this, lifecycleScope) { user ->
+                            Backend.logout(this, lifecycleScope) {
+                                val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+                                val userPassword = sharedPreferences.getString("password", "")
+                                Backend.login(this, lifecycleScope, user.email!!, userPassword!!) { loginSuccess ->
+                                    if (loginSuccess) {
+                                        val intent = Intent(this@CreateHouse, UserHousesList::class.java)
+                                        startActivity(intent)
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
     }
-
-
-
 
     private fun createHouseObjectFromUI(callback: (house: io.swagger.client.models.House) -> Unit) {
 

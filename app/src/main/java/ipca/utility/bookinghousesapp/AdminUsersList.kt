@@ -64,7 +64,7 @@ class AdminUsersList : AppCompatActivity() {
                 rootView.findViewById<TextView>(R.id.TextViewStateUser).text = "Ativo"
             }
             else if(users[position].status==false)
-                rootView.findViewById<TextView>(R.id.TextViewStateUser).text = "Desativo"
+                rootView.findViewById<TextView>(R.id.TextViewStateUser).text = "Inativo"
             val avatar = rootView.findViewById<ImageView>(R.id.imageView7)
 
             if(users[position].image != null || users[position].imageFormat != null){
