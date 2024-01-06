@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.util.Log
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
@@ -63,8 +64,29 @@ class EditProfileActivity : AppCompatActivity() {
             val newUserEmail = binding.EditTextUserEditEmail.text.toString()
             val newUserPhone = binding.EditTextUserEditPhone.text.toString().toIntOrNull() ?: 0
 
-            Backend.UpdateUserProfile(this, lifecycleScope, newUserName, newUserEmail, newUserPhone) { updateSuccessful ->
+            /*Backend.UpdateUserProfile(this, lifecycleScope, newUserName, newUserEmail, newUserPhone) { updateSuccessful ->
                 if (updateSuccessful) {
+                    val intent = Intent(this, ProfilePageActivity::class.java)
+                    startActivity(intent)
+                    Log.d("UpdateActivity", "Update bem-sucedido!")
+                }
+            }*/
+            Backend.UpdateUserProfile(this, newUserName, newUserEmail, newUserPhone).observe(this){
+                it.onError {error ->
+                    Toast.makeText(
+                        this@EditProfileActivity,
+                        "${error.error}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                it.onNetworkError {
+                    Toast.makeText(
+                        this@EditProfileActivity,
+                        "Sem Ligação à Internet",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                it.onSuccess {
                     val intent = Intent(this, ProfilePageActivity::class.java)
                     startActivity(intent)
                     Log.d("UpdateActivity", "Update bem-sucedido!")

@@ -20,6 +20,8 @@ import android.widget.Button
 import com.google.firebase.firestore.FirebaseFirestore
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import ipca.utility.bookinghousesapp.Models.Image
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminHousesApproveListBinding
 
@@ -72,6 +74,20 @@ class AdminHousesListApprove : AppCompatActivity() {
             rootView.findViewById<TextView>(R.id.textViewHouseName).text = houses[position].name
             rootView.findViewById<TextView>(R.id.textViewRuaHouse).text = houses[position].road
             rootView.findViewById<TextView>(R.id.textViewNumbP).text = "${houses[position].guestsNumber.toString()}  Pessoas"
+            if (houses[position].images != null ) {
+                val avatar = rootView.findViewById<ImageView>(R.id.imageViewHouse)
+
+                val firstImage = houses[position].images?.firstOrNull()
+                if (firstImage != null) {
+                    val imageUrl = "${Backend.BASE_API}/Houses/${firstImage.image}${firstImage.formato}"
+
+                    Glide.with(this@AdminHousesListApprove)
+                        .asBitmap()
+                        .load(imageUrl)
+                        .transition(BitmapTransitionOptions.withCrossFade())
+                        .into(avatar)
+                }
+            }
 
             val approveButton = rootView.findViewById<ImageView>(R.id.buttonAproveHouse)
             approveButton.setOnClickListener {

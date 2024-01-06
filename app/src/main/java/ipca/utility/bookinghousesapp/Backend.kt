@@ -417,7 +417,7 @@ object Backend {
         }
     }
 
-    @SuppressLint("SuspiciousIndentation")
+    /*@SuppressLint("SuspiciousIndentation")
     fun UpdateUserProfile(
         context: Context,
         lifecycleScope: LifecycleCoroutineScope,
@@ -437,9 +437,17 @@ object Backend {
                 callback(true)
             }
         }
-    }
+    }*/
 
-
+    @SuppressLint("SuspiciousIndentation")
+    fun UpdateUserProfile(context: Context,newUserName: String,newUserEmail: String,newUserPhone: Int):
+            LiveData<ResultWrapper<Unit>> =
+        liveData(Dispatchers.IO) {
+            val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+            val authToken = sharedPreferences.getString("access_token", "")
+            val userId = sharedPreferences.getInt("user_id", 0)
+            emit( wrap { UserApi("${BASE_API}").apiUserUserIdProfilePut(authToken, userId, EditProfile(newUserName, newUserEmail, newUserPhone)) })
+        }
 
     @SuppressLint("SuspiciousIndentation")
     fun CancelReservation(
