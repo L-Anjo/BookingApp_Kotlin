@@ -174,12 +174,13 @@ object Backend {
     fun UpdateUserAvatar(token: String?, imageFile: File, fileExtension: String, callback: (Boolean) -> Unit) {
         try {
             val mediaType = "multipart/form-data".toMediaTypeOrNull()
+            val imageName = "avatar_${System.currentTimeMillis()}"
 
             val requestBody = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart(
                     "ImageFile",
-                    "avatar.$fileExtension",
+                    "$imageName.$fileExtension",
                     imageFile.asRequestBody(mediaType)
                 )
                 .build()
