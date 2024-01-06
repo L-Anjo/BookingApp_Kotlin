@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -17,30 +17,32 @@
         android:theme="@style/Theme.BookingHousesApp"
         tools:targetApi="31">
         <activity
+            android:name=".HouseImagesActivity"
+            android:exported="false" />
+        <activity
             android:name=".HouseReservationsLIst"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".AdminPaymentsList"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".PaymentActivity"
             android:exported="true"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".FeedbackActivity"
             android:exported="false"
-            android:theme="@style/StatusBarTheme">
-        </activity>
+            android:theme="@style/StatusBarTheme"></activity>
         <activity
             android:name=".ReservationDetailsActivity"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".NotificationsActivity"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -55,77 +57,77 @@
         <activity
             android:name=".UserReservationsList"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".UserHousesList"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".AdminHousesList"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".AdminProfilePage"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".EditProfileActivity"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".ProfilePageActivity"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".IntroActivity"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".AdminReservationsList"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".CreateHouse"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
-            android:name="EditHouseActivity"
+            android:name=".EditHouseActivity"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".AdminHousesListApprove"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".AdminUsersList"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
-
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".HouseDetailActivity"
             android:exported="false"
-            android:theme="@style/StatusBarTheme"/>
+            android:theme="@style/StatusBarTheme" />
         <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:theme="@style/StatusBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".MyFirebaseMessagingService"
-            android:exported="false"
-            >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

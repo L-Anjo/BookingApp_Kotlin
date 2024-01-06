@@ -103,7 +103,6 @@ class PaymentActivity : AppCompatActivity() {
             val userId = sharedPreferences.getInt("user_id", 0)
 
             Backend.GetLastPayment(lifecycleScope, userId) { payment ->
-                println(payment)
                 val paymentId = payment.id_payment.toString().toInt()
 
                 Backend.UpdatePayment(paymentId, lifecycleScope) { updateSuccessful ->

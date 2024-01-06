@@ -61,8 +61,10 @@ class CreateHouse : AppCompatActivity() {
                         ).show()
                     }
                     it.onSuccess {
-                        val intent = Intent(this, UserHousesList::class.java)
+                        val intent = Intent(this, HouseImagesActivity::class.java)
+                        intent.putExtra("HOUSE_NAME", body.name)
                         startActivity(intent)
+                        finish()
                     }
                 }
             }
