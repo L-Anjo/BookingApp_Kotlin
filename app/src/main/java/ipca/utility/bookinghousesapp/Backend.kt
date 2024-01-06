@@ -171,12 +171,13 @@ object Backend {
     fun UpdateUserAvatar(token: String?, imageFile: File, fileExtension: String, callback: (Boolean) -> Unit) {
         try {
             val mediaType = "multipart/form-data".toMediaTypeOrNull()
+            val imageName = "avatar_${System.currentTimeMillis()}"
 
             val requestBody = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart(
                     "ImageFile",
-                    "avatar.$fileExtension",
+                    "$imageName.$fileExtension",
                     imageFile.asRequestBody(mediaType)
                 )
                 .build()
@@ -223,6 +224,8 @@ object Backend {
                 editor.putString("access_token", token)
                 editor.putInt("user_id", userId ?: -1)
                 editor.putInt("user_type", userType ?: -1)
+                editor.putString("password", password)
+
                 editor.putBoolean("user_status", userStatus ?: false)
                 editor.apply()
 
@@ -725,7 +728,10 @@ object Backend {
         liveData(Dispatchers.IO) {
             val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
             val token = sharedPreferences.getString("access_token", "")
-            emit( wrap { HouseApi(BASE_API).apiHousePost(token, body) })
+
+            emit( wrap {
+                HouseApi(BASE_API).apiHousePost(token, body)
+            })
         }
 
 
