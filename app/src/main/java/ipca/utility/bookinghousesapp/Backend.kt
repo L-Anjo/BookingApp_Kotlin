@@ -417,28 +417,6 @@ object Backend {
         }
     }
 
-    /*@SuppressLint("SuspiciousIndentation")
-    fun UpdateUserProfile(
-        context: Context,
-        lifecycleScope: LifecycleCoroutineScope,
-        newUserName: String,
-        newUserEmail: String,
-        newUserPhone: Int,
-        callback: (Boolean) -> Unit
-    ) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
-            val userId = sharedPreferences.getInt("user_id", 0)
-            val authToken = sharedPreferences.getString("access_token", "")
-
-            UserApi("${BASE_API}").apiUserUserIdProfilePut(authToken, userId, EditProfile(newUserName, newUserEmail, newUserPhone))
-
-            lifecycleScope.launch(Dispatchers.Main) {
-                callback(true)
-            }
-        }
-    }*/
-
     @SuppressLint("SuspiciousIndentation")
     fun UpdateUserProfile(context: Context,newUserName: String,newUserEmail: String,newUserPhone: Int):
             LiveData<ResultWrapper<Unit>> =
