@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.util.Log
 import android.content.Context
+import android.net.Uri
+import android.webkit.MimeTypeMap
 import android.widget.ImageView
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LiveData
@@ -35,6 +37,7 @@ import ipca.utility.bookinghousesapp.Models.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
@@ -201,6 +204,99 @@ object Backend {
         }
     }
 
+    private fun getFileExtensionFromFileName(fileName: String): String {
+        val lastDotIndex = fileName.lastIndexOf(".")
+        return if (lastDotIndex != -1) {
+            fileName.substring(lastDotIndex + 1)
+        } else {
+            "png"
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun CreateHouseImage(token: String?, idHouse : Int, imageFiles: ArrayList<File>, callback: (Boolean) -> Unit) {
+        try {
+            val mediaType = "multipart/form-data".toMediaTypeOrNull()
+
+            val requestBody = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("id_house", idHouse.toString())
+
+            for (imageFile in imageFiles) {
+                val extension = getFileExtensionFromFileName(imageFile.name)
+                val fileName = imageFile.nameWithoutExtension
+
+                requestBody.addFormDataPart(
+                    "imageFiles",
+                    "$fileName.$extension",
+                    imageFile.asRequestBody(mediaType)
+                )
+            }
+            val finalRequestBody = requestBody.build()
+
+            val request = Request.Builder()
+                .url(BASE_API + "/api/Image/$idHouse")
+                .header("Authorization", "Bearer $token")
+                .post(finalRequestBody)
+                .build()
+
+            val client = OkHttpClient()
+            val response = client.newCall(request).execute()
+
+            if (response.isSuccessful) {
+                callback(true)
+            } else {
+                callback(false)
+            }
+        } catch (e: IOException) {
+            callback(false)
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun EditHouseImage(token: String?, idHouse : Int, imageFiles: ArrayList<File>, callback: (Boolean) -> Unit) {
+        try {
+            val mediaType = "multipart/form-data".toMediaTypeOrNull()
+
+            val requestBody = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("update", idHouse.toString())
+
+            for ( imageFile in imageFiles) {
+                val extension = getFileExtensionFromFileName(imageFile.name)
+                val fileName = imageFile.nameWithoutExtension
+
+                requestBody.addFormDataPart(
+                    "imageFiles",
+                    "$fileName.$extension",
+                    imageFile.asRequestBody(mediaType)
+                )
+            }
+            val finalRequestBody = requestBody.build()
+
+            val request = Request.Builder()
+                .url(BASE_API + "/api/Image/update/$idHouse")
+                .header("Authorization", "Bearer $token")
+                .put(finalRequestBody)
+                .build()
+
+            val client = OkHttpClient()
+            val response = client.newCall(request).execute()
+
+            if (response.isSuccessful) {
+                callback(true)
+            } else {
+                Log.e("Erro na escolha de imagem", "Código de status: ${response.code}")
+                callback(false)
+            }
+        } catch (e: IOException) {
+            Log.e("Erro na escolha de imagem", "Exceção durante a chamada à API", e)
+            callback(false)
+        }
+    }
+
+
+
     @SuppressLint("SuspiciousIndentation")
     fun login(
         context: Context,
@@ -264,7 +360,6 @@ object Backend {
                     callback()
                 }
             } catch (e: Exception) {
-                // Handle exceptions more generically
                 Log.e("LogoutActivity", "Error during logout: ${e.message}")
                 lifecycleScope.launch(Dispatchers.Main) {
                     callback()
@@ -394,6 +489,13 @@ object Backend {
                 callback(paymentApi)
             }
 
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    suspend fun GetLastHouse(userId: Int): io.swagger.client.models.House {
+        return withContext(Dispatchers.IO) {
+            HouseApi("${BASE_API}").GetLastHouse(userId)
         }
     }
 

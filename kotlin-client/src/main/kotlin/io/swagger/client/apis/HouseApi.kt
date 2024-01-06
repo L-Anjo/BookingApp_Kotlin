@@ -15,6 +15,7 @@ import io.swagger.client.models.House
 import io.swagger.client.models.ProblemDetails
 
 import io.swagger.client.infrastructure.*
+import io.swagger.client.models.Payment
 import io.swagger.client.models.Reservation
 
 class HouseApi(basePath: kotlin.String = "/") : ApiClient(basePath) {
@@ -172,6 +173,35 @@ class HouseApi(basePath: kotlin.String = "/") : ApiClient(basePath) {
         }
     }
 
+    /**
+     * Obtém a ultima casa do utilizador por confirmar
+     *
+     * @param userId  (optional)
+     * @return House
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun GetLastHouse(userId: kotlin.Int? = null): House {
+        val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
+            if (userId != null) {
+                put("userId", listOf(userId.toString()))
+            }
+        }
+        val localVariableConfig = RequestConfig(
+            RequestMethod.GET,
+            "/House/last", query = localVariableQuery
+        )
+        val response = request<House>(
+            localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as House
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
 
     /**
      * Apaga uma Casa

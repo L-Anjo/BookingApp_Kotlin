@@ -30,16 +30,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icons8_back_50" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:text="Editar Imagens"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
     <EditText
         android:id="@+id/editTextEditNameHouse"
         android:layout_width="0dp"
@@ -58,10 +48,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Nome"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonEditImages" />/>
 
     <TextView
         android:id="@+id/textView3"
@@ -186,12 +176,12 @@
         android:id="@+id/buttonEditHouse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="#F95F5F"
         android:text="Editar Casa"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxEditSharedRoom" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
         android:id="@+id/editTextEditNumberPHouse"
@@ -306,5 +296,22 @@
         android:inputType="number"
         app:layout_constraintStart_toEndOf="@+id/textView11"
         app:layout_constraintTop_toBottomOf="@+id/editTextEditStreetHouse" />
+
+    <Button
+        android:id="@+id/buttonEditImages"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/grey"
+        android:text="Alterar Imagens"
+        app:circularflow_defaultRadius="5dp"
+        app:cornerRadius="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
