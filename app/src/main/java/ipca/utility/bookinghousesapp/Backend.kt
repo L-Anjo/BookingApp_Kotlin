@@ -30,10 +30,6 @@ import io.swagger.client.models.Payment
 import io.swagger.client.models.Reservation
 import ipca.utility.bookinghousesapp.Backend.AUTHENTICATION_API
 import ipca.utility.bookinghousesapp.Backend.BASE_API
-import ipca.utility.bookinghousesapp.Models.House
-import ipca.utility.bookinghousesapp.Models.Image
-import ipca.utility.bookinghousesapp.Models.PostalCode
-import ipca.utility.bookinghousesapp.Models.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

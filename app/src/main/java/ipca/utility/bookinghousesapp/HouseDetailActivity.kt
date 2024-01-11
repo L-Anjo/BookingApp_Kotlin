@@ -23,8 +23,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import ipca.utility.bookinghousesapp.Models.Feedback
-import ipca.utility.bookinghousesapp.Models.House
 import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
 import org.json.JSONArray
 import org.json.JSONObject

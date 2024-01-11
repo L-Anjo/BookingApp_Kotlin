@@ -12,9 +12,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import ipca.utility.bookinghousesapp.Models.House
-import ipca.utility.bookinghousesapp.Models.Reservation
-import ipca.utility.bookinghousesapp.Models.User
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminReservationsListBinding
 import java.time.LocalDateTime
 import java.util.Date

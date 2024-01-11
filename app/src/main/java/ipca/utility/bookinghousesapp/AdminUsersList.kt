@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import ipca.utility.bookinghousesapp.Models.User
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminUsersListBinding
 
 class AdminUsersList : AppCompatActivity() {

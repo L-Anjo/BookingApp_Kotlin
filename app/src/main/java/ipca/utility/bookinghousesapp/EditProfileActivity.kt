@@ -64,13 +64,6 @@ class EditProfileActivity : AppCompatActivity() {
             val newUserEmail = binding.EditTextUserEditEmail.text.toString()
             val newUserPhone = binding.EditTextUserEditPhone.text.toString().toIntOrNull() ?: 0
 
-            /*Backend.UpdateUserProfile(this, lifecycleScope, newUserName, newUserEmail, newUserPhone) { updateSuccessful ->
-                if (updateSuccessful) {
-                    val intent = Intent(this, ProfilePageActivity::class.java)
-                    startActivity(intent)
-                    Log.d("UpdateActivity", "Update bem-sucedido!")
-                }
-            }*/
             Backend.UpdateUserProfile(this, newUserName, newUserEmail, newUserPhone).observe(this){
                 it.onError {error ->
                     Toast.makeText(

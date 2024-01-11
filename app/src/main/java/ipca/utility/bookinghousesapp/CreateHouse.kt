@@ -9,9 +9,6 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import ipca.utility.bookinghousesapp.Models.House
-import ipca.utility.bookinghousesapp.Models.PostalCode
-import ipca.utility.bookinghousesapp.Models.User
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminUsersListBinding
 import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
 import android.widget.Button
@@ -25,7 +22,7 @@ import ipca.utility.bookinghousesapp.databinding.ActivityCreateHouseBinding
 
 class CreateHouse : AppCompatActivity() {
 
-    private lateinit var binding: ActivityCreateHouseBinding // Substitua pelo seu layout de criação de casas
+    private lateinit var binding: ActivityCreateHouseBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -11,9 +11,6 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import ipca.utility.bookinghousesapp.Models.House
-import ipca.utility.bookinghousesapp.Models.PostalCode
-import ipca.utility.bookinghousesapp.Models.User
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminUsersListBinding
 import ipca.utility.bookinghousesapp.databinding.ActivityHousedetailBinding
 import android.widget.Button
@@ -22,7 +19,6 @@ import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
-import ipca.utility.bookinghousesapp.Models.Image
 import ipca.utility.bookinghousesapp.databinding.ActivityAdminHousesApproveListBinding
 
 
