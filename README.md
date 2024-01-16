@@ -87,7 +87,7 @@ Para cada Página da Aplicação, começamos por criar um arquivo ".xml" para de
 Com o seguinte resultado:
 
 <div style="text-align: center;">
-    <img src="readme_assets/Imagem1.jpg" alt="Lista de Todos os alojamentos e quartos – Admin" title="Lista de Todos os alojamentos e quartos – Admin" width="300">
+    <img src="readme_assets/Imagem1.jpeg" alt="Lista de Todos os alojamentos e quartos – Admin" title="Lista de Todos os alojamentos e quartos – Admin" width="300">
 </div>
 
 - Foi criado um arquivo ".xml" para cada "row", especificamente utilizado na página da respetiva lista de item, por exemplo: "row_reservation.xml" que foi utilizado na lista das reservas;
