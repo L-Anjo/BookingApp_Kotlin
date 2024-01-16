@@ -27,7 +27,7 @@
 No âmbito das unidades curriculares de Projeto Aplicado, Programação de Dispositivos Móveis e Integração de Sistemas de Informação foi proposto o desenvolvimento de uma Aplicação Móvel no qual será possível disponibilizar alojamentos locais para reserva, assim como, efetuar a reserva dos mesmos.
 
 <div style="display: flex; justify-content: center;">
-    <img src="readme_assets/Imagem1.jpg" alt="Página Inicial" title="Página Inicial" width="300">
+    <img src="readme_assets/Imagem1.jpeg" alt="Página Inicial" title="Página Inicial" width="300">
     <img src="readme_assets/Imagem2.jpg" alt="Página Reserva" title="Página Reserva" width="300">
 </div>
 
